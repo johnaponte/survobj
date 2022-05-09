@@ -7,11 +7,19 @@ Authors@R: person(
     email = "john.j.aponte@gmail.com", 
     role = c("aut","cre"),
     comment = c(ORCID = "0000-0002-3014-3673"))
+Description: Functions to generate objects that simulate survival times.
 License: AGPL (>= 3)
-Description: Factory of objects and utilities to simulate survival times.
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Suggests: 
-    spelling
+    spelling,
+    testthat (>= 3.0.0)
 Language: en-US
+Config/testthat/edition: 3
+Imports: 
+    dplyr,
+    ggplot2,
+    magrittr,
+    plyr,
+    tidyr

@@ -1,2 +1,2 @@
 # survobj
-Objectes to simulate survival times
+Objects to simulate survival times
