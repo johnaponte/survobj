@@ -60,7 +60,7 @@ WEIBULL_surverg <- function(logscale, logshape ){
 #' @describeIn  SURVIVAL_factory Weibull distribution
 #' @export
 #' @importFrom stats runif
-SURVIVAL_factory.PWEIBULL <- function(PSURVIVAL,...){
+SURVIVAL_factory.PWEIBULL <- function(PSURVIVAL, ...){
   stopifnot("PSURVIVAL should be of class SURVIVALPARAM" = inherits(PSURVIVAL, "SURVIVALPARAM"))
   stopifnot("PSURVIVAL should be of class PWEIBULL" = inherits(PSURVIVAL,"PWEIBULL"))
   iCum_Hfx <- function(H){

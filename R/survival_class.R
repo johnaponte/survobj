@@ -6,7 +6,7 @@
 #'
 #' Creates a SURVIVAL object using the information from the SURVIVALPARAM parameter
 #' This is implemented by each subclass of the SURVIVALPARAM, i.e.
-#'PEXPONENTIAL, PWEIBULL, PGOMPETRZ PPIECEWISE.
+#'PEXPONENTIAL, PWEIBULL, PGOMPERTZ PPIECEWISE.
 #'
 #' @param PSURVIVAL an object of class SURVIVALPARAM
 #' @param ... Currently not used
@@ -31,13 +31,14 @@
 #' the coefficients specified in coeffs.
 #'
 SURVIVAL_factory <- function(PSURVIVAL, ...){
-  UseMethod("SURVIVAL_factory", PSURVIVAL,...)
+  UseMethod("SURVIVAL_factory", PSURVIVAL)
 }
+
 
 #' @describeIn SURVIVAL_factory Default implementation
 #' @aliases SURVIVAL_factory
 #' @export
-SURVIVAL_factory.default <- function(PSURVIVAL,...) {
+SURVIVAL_factory.default <- function(PSURVIVAL, ...) {
   stopifnot("params should of class SURVIVALPARAM" = inherits(PSURVIVAL, "SURVIVALPARAM"))
   structure(
     list(
@@ -71,7 +72,7 @@ SURVIVAL_factory.default <- function(PSURVIVAL,...) {
 
 
 #' @export
-print.SURVIVALPARAM<- function(x,...){
+print.SURVIVALPARAM<- function(x, ...){
   cat("Parameters for survival distribution\n")
   namesx <- names(x)
   lapply(namesx, function(y){cat(y,":",x[[y]],"\n")})

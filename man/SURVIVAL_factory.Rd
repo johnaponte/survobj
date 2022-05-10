@@ -20,7 +20,7 @@ SURVIVAL_factory(PSURVIVAL, ...)
 \method{SURVIVAL_factory}{PWEIBULL}(PSURVIVAL, ...)
 }
 \arguments{
-\item{PSURVIVAL}{an object of class SURVIVALPARAMS}
+\item{PSURVIVAL}{an object of class SURVIVALPARAM}
 
 \item{...}{Currently not used}
 }
@@ -29,8 +29,8 @@ a SURVIVAL object
 }
 \description{
 Creates a SURVIVAL object using the information from the SURVIVALPARAM parameter
-This is implemented by each subclass of the SURVIVALPARAMS, ie
-for PEXPONENTIAL, PWEIBULL, PPIECEWISEEXP.
+This is implemented by each subclass of the SURVIVALPARAM, i.e.
+PEXPONENTIAL, PWEIBULL, PGOMPERTZ PPIECEWISE.
 }
 \section{Methods (by class)}{
 \itemize{

@@ -9,7 +9,7 @@ ggplot_random(SURVIVAL, timeto, subjects, nsim, alpha = 0.1)
 \arguments{
 \item{SURVIVAL}{a SURVIVAL object}
 
-\item{timeto}{timeto plot the distribution}
+\item{timeto}{plot the distribution up to timeto}
 
 \item{subjects}{number of subjects to simulate in each simulation}
 
