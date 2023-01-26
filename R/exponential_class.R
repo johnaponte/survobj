@@ -13,6 +13,11 @@
 #' @export
 #' @return an object of class SURVIVALPARAM, PEXPONENTIAL
 EXPONENTIAL_hazard <- function(lambda) {
+  stopifnot("lambda should be a single positive number" = is.atomic(lambda) )
+  stopifnot("lambda should be a single positive number" = length(lambda) == 1 )
+  stopifnot("lambda should be a single positive number" = is.numeric(lambda) )
+  stopifnot("lambda should be a single positive number" = lambda > 0 )
+
 structure(
   list(
     distribution = "Exponential",

@@ -14,8 +14,15 @@
 #' @export
 #' @return  an object
 GOMPERTZ_hazard <- function(scale, shape) {
-  stopifnot("scale must be greater than 0" = scale > 0)
-  stopifnot("shape can't be 0 " = shape != 0)
+  stopifnot("scale should be a single number" = is.atomic(scale) )
+  stopifnot("scale should be a single number" = length(scale) == 1 )
+  stopifnot("scale should be a single number" = is.numeric(scale) )
+  stopifnot("scale should be a number greater than 0" = scale > 0 )
+  stopifnot("shape should be a single number" = is.atomic(shape) )
+  stopifnot("shape should be a single number" = length(shape) == 1 )
+  stopifnot("shape should be a single number" = is.numeric(shape) )
+  stopifnot("shape can't be 0" = shape != 0 )
+
   structure(
     list(
       distribution = "Gompertz",

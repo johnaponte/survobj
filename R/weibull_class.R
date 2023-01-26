@@ -15,6 +15,12 @@
 #' @export
 #' @return an object of class SURVIVALPARAM, PWEIBULL
 WEIBULL_hazard <- function(scale, shape) {
+  stopifnot("scale should be a single number" = is.atomic(scale) )
+  stopifnot("scale should be a single number" = length(scale) == 1 )
+  stopifnot("scale should be a single number" = is.numeric(scale) )
+  stopifnot("shape should be a single number" = is.atomic(shape) )
+  stopifnot("shape should be a single number" = length(shape) == 1 )
+  stopifnot("shape should be a single number" = is.numeric(shape) )
   stopifnot("scale must be greater than 0" = scale > 0)
   stopifnot("shape must be greater than 0 " = shape > 0)
   structure(
@@ -30,6 +36,9 @@ WEIBULL_hazard <- function(scale, shape) {
 #' @describeIn WEIBULL_hazard Survival at time t
 #' @export
 WEIBULL_surviving <- function(surv, t, shape) {
+  stopifnot("surv should be a single number" = is.atomic(surv) )
+  stopifnot("surv should be a single number" = length(surv) == 1 )
+  stopifnot("surv should be a single number" = is.numeric(surv) )
   stopifnot("surv must be greater than 0" = surv > 0)
   stopifnot("surv must be smaller than 1" = surv < 1)
   stopifnot("t must be greater than 0" = t > 0)
@@ -41,6 +50,9 @@ WEIBULL_surviving <- function(surv, t, shape) {
 #' @describeIn WEIBULL_hazard Failure at time t
 #' @export
 WEIBULL_failure <- function(fail, t, shape) {
+  stopifnot("fail should be a single number" = is.atomic(fail) )
+  stopifnot("fail should be a single number" = length(fail) == 1 )
+  stopifnot("fail should be a single number" = is.numeric(fail) )
   stopifnot("fail must be greater than 0" = fail > 0)
   stopifnot("fail must be lower than 1" = fail <1)
   stopifnot("t must be greater than 0" = t > 0)

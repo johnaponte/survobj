@@ -15,6 +15,8 @@
 #' @export
 #' @return an object of class SURVIVALPARAM, PPIECEWISE_EXP
 PIECEWISE_hazards <- function(breaks, hazards) {
+  stopifnot("breaks should be a vector" = is.atomic(breaks))
+  stopifnot("hazards should be a vector" = is.atomic(vector))
   stopifnot("first break must be >0" = breaks[1] > 0)
   stopifnot("length of breaks and hazards must be equal"= length(breaks) == length(hazards))
   stopifnot("breaks must be in ascending order" = breaks[order(breaks)]== breaks)
@@ -35,6 +37,9 @@ PIECEWISE_hazards <- function(breaks, hazards) {
 #' @describeIn PIECEWISE_hazards Survival at last segment
 #' @export
 PIECEWISE_surviving <- function(surv, breaks, segments){
+  stopifnot("surv must be a single number" = is.atomic(surv))
+  stopifnot("surv must be a single number" = length(surv) == 1)
+  stopifnot("surv must be numeric" = is.numeric(surv))
   stopifnot("surv must be greater than 0" = surv > 0)
   stopifnot("surv must be lower than 1" = surv < 1)
   ntimes = length(breaks)
