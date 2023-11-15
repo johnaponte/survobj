@@ -31,8 +31,8 @@ Create an object with parameters for a survival piece wise exponential distribut
 }
 \section{Functions}{
 \itemize{
-\item \code{PIECEWISE_surviving}: Survival at last segment
+\item \code{PIECEWISE_surviving()}: Survival at last segment
 
-\item \code{PIECEWISE_failure}: Failure at last segment
+\item \code{PIECEWISE_failure()}: Failure at last segment
+
 }}
-

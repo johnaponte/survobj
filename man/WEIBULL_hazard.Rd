@@ -38,10 +38,10 @@ Create an object with parameters for a Weibull exponential distribution
 }
 \section{Functions}{
 \itemize{
-\item \code{WEIBULL_surviving}: Survival at time t
+\item \code{WEIBULL_surviving()}: Survival at time t
 
-\item \code{WEIBULL_failure}: Failure at time t
+\item \code{WEIBULL_failure()}: Failure at time t
 
-\item \code{WEIBULL_surverg}: From survreg model
+\item \code{WEIBULL_surverg()}: From survreg model
+
 }}
-

@@ -36,16 +36,16 @@ adjustment for lap days or ours or difference of days between months
 }
 \section{Functions}{
 \itemize{
-\item \code{dtom}: convert days to months
+\item \code{dtom()}: convert days to months
 
-\item \code{mtod}: convert months to days
+\item \code{mtod()}: convert months to days
 
-\item \code{dtoy}: convert days to years
+\item \code{dtoy()}: convert days to years
 
-\item \code{ytod}: convert years to days
+\item \code{ytod()}: convert years to days
 
-\item \code{mtoy}: convert months to year
+\item \code{mtoy()}: convert months to year
 
-\item \code{ytom}: convert years to months
+\item \code{ytom()}: convert years to months
+
 }}
-

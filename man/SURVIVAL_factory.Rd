@@ -34,15 +34,15 @@ PEXPONENTIAL, PWEIBULL, PGOMPERTZ PPIECEWISE.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{PGOMPERTZ}: Gompertz distribution
+\item \code{SURVIVAL_factory(PGOMPERTZ)}: Gompertz distribution
 
-\item \code{PPIECEWISE_EXP}: Piece wise exponential distribution
+\item \code{SURVIVAL_factory(PPIECEWISE_EXP)}: Piece wise exponential distribution
 
-\item \code{default}: Default implementation
+\item \code{SURVIVAL_factory(default)}: Default implementation
 
-\item \code{PWEIBULL}: Weibull distribution
+\item \code{SURVIVAL_factory(PWEIBULL)}: Weibull distribution
+
 }}
-
 \note{
 The created object has the following methods (functions)
 

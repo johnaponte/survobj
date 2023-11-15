@@ -96,3 +96,19 @@ SURVIVAL_factory.PEXPONENTIAL <- function(PSURVIVAL,...){
 #       coxph(Surv(timeto) ~treatment, data = x) %>%
 #       broom::tidy() %>% mutate(ve = (1-exp(estimate))*100)
 #     })
+#
+#
+#
+# df <-
+#   expand_grid(simid = 1:100, treatment = c(rep(0,1000),rep(1,1000)),rep(2,1000))) %>%
+#   mutate(group0 = ifelse(group == 0, 1, 0)) %>%
+#   mutate(group1 = ifelse(group == 1, 1, 0)) %>%
+#   mutate(group2 = ifelse(group == 2, 1, 0)) %>%
+#   group_by(simid) %>%
+#   mutate(timeto = myS$rsurvdf(tibble(., c("group1","group2"), c(log(1-0.5),log(1-0.25)))) %>%
+#   ddply(
+#     .(simid),
+#     function(x){
+#       coxph(Surv(timeto) ~group1 + group2, data = x) %>%
+#         broom::tidy() %>% mutate(ve = (1-exp(estimate))*100)
+#     })

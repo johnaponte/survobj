@@ -31,8 +31,8 @@ Create an object with parameters for a Gompertz distribution
 }
 \section{Functions}{
 \itemize{
-\item \code{GOMPERTZ_surviving}: Survival at time t
+\item \code{GOMPERTZ_surviving()}: Survival at time t
 
-\item \code{GOMPERTZ_failure}: Failure at time t
+\item \code{GOMPERTZ_failure()}: Failure at time t
+
 }}
-

@@ -29,8 +29,8 @@ Create an object with parameters for a survival exponential distribution
 }
 \section{Functions}{
 \itemize{
-\item \code{EXPONENTIAL_surviving}: Survival proportion at time t
+\item \code{EXPONENTIAL_surviving()}: Survival proportion at time t
 
-\item \code{EXPONENTIAL_failure}: Failure proportion at time t
+\item \code{EXPONENTIAL_failure()}: Failure proportion at time t
+
 }}
-
