@@ -1,5 +1,5 @@
-# Gompertz survival objects for simulations
-# by JJAV 20220425
+## Gompertz survival objects for simulations
+## by JJAV 20220425
 
 
 #' Parameters for a Gompertz distribution
@@ -83,8 +83,8 @@ SURVIVAL_factory.PGOMPERTZ <- function(PSURVIVAL,...){
       rsurv =  function(n){
         iCum_Hfx(-log(runif(n)))
       },
-      rsurvdf = function(.data,vars, coeffs){
-        iCum_Hfx(-log(runif(nrow(.data)))*exp(-linsum(.data,vars,coeffs)))
+      rsurvhr = function(hr){
+        iCum_Hfx(-log(runif(length(hr)))/hr)
       }
     ),
     class = c("SURVIVAL","EXPONENTIAL")

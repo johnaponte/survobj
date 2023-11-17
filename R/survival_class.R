@@ -1,5 +1,5 @@
-# Survival Class
-# 20220425 by JJAV
+## Survival Class
+## 20220425 by JJAV
 ##################
 
 #'SURVIVAL class object's factory generic
@@ -25,11 +25,10 @@
 #'
 #' rsurv(x): A function that returns random times from the survival distribution
 #'
-#' rsurvdf(.data, vars, coeffs): A function that returns random times from the survival distribution
-#' but following a proportional hazard assumption, the log(time) is modified by the
-#' linear combination of the parameters given by the variables specified in vars and
-#' the coefficients specified in coeffs.
-#'
+#' rsurvhr(hr): A function that returns random times from the survival distribution
+#' but following a proportional hazard assumption. For example a rsurvhr(c(1,0.5))
+#' will produce a random survival time in which the first observation has a hazard
+#' ratio of 1 and the second a hazard ratio of 0.5.
 SURVIVAL_factory <- function(PSURVIVAL, ...){
   UseMethod("SURVIVAL_factory", PSURVIVAL)
 }
@@ -212,6 +211,8 @@ plot_survival <- function(SURVIVAL, timeto) {
 #' @importFrom dplyr mutate
 #' @importFrom tidyr pivot_longer
 #' @importFrom plyr ddply
+#' @importFrom plyr .
+#' @importFrom survival survfit
 ggplot_random <- function(SURVIVAL, timeto, subjects, nsim, alpha = 0.1) {
   df<- data.frame(simid = 1:nsim) %>%
     ddply(

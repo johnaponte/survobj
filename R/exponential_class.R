@@ -1,6 +1,5 @@
-# Survival objects for simulations
-# by JJAV 20220420
-
+## Survival objects for simulations
+## by JJAV 20220420
 
 #' Parameters for a exponential distribution
 #'
@@ -47,7 +46,7 @@ EXPONENTIAL_failure <- function(fail, t) {
 }
 
 
-#' @describeIn  in  SURVIVAL_factory Exponential distribution
+#' @describeIn SURVIVAL_factory Exponential distribution
 #' @export
 #' @importFrom stats runif
 SURVIVAL_factory.PEXPONENTIAL <- function(PSURVIVAL,...){
@@ -71,8 +70,8 @@ SURVIVAL_factory.PEXPONENTIAL <- function(PSURVIVAL,...){
       rsurv =  function(n){
         iCum_Hfx(-log(runif(n)))
       },
-      rsurvdf = function(.data,vars, coeffs){
-        iCum_Hfx(-log(runif(nrow(.data)))*exp(-linsum(.data,vars,coeffs)))
+      rsurvhr = function(hr){
+        iCum_Hfx(-log(runif(length(hr)))/hr)
       }
     ),
     class = c("SURVIVAL","EXPONENTIAL")
@@ -89,7 +88,7 @@ SURVIVAL_factory.PEXPONENTIAL <- function(PSURVIVAL,...){
 # df <-
 #   expand_grid(simid = 1:100, treatment = c(rep(0,1000),rep(1,1000))) %>%
 #   group_by(simid) %>%
-#   mutate(timeto = myS$rsurvdf(tibble(treatment), "treatment", log(1-0.5))) %>%
+#   mutate(timeto = myS$rsurvhr(ifelse(treatment == 0, 1,0.3))) %>%
 #   ddply(
 #     .(simid),
 #     function(x){
@@ -100,12 +99,12 @@ SURVIVAL_factory.PEXPONENTIAL <- function(PSURVIVAL,...){
 #
 #
 # df <-
-#   expand_grid(simid = 1:100, treatment = c(rep(0,1000),rep(1,1000)),rep(2,1000))) %>%
+#   expand_grid(simid = 1:100, group = c(rep(0,1000),rep(1,1000)),rep(2,1000)) %>%
 #   mutate(group0 = ifelse(group == 0, 1, 0)) %>%
 #   mutate(group1 = ifelse(group == 1, 1, 0)) %>%
 #   mutate(group2 = ifelse(group == 2, 1, 0)) %>%
-#   group_by(simid) %>%
-#   mutate(timeto = myS$rsurvdf(tibble(., c("group1","group2"), c(log(1-0.5),log(1-0.25)))) %>%
+#   mutate(hr = case_when(group ==0 ~ 1, group ==1 ~ 0.75, group ==2 ~ 0.50)) %>%
+#   mutate(timeto = myS$rsurvhr(hr)) %>%
 #   ddply(
 #     .(simid),
 #     function(x){

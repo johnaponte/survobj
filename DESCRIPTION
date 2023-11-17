@@ -22,4 +22,5 @@ Imports:
     ggplot2,
     magrittr,
     plyr,
-    tidyr
+    tidyr, 
+    survival

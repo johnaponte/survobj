@@ -1,5 +1,5 @@
-# Weibull survival objects for simulations
-# by JJAV 20220425
+## Weibull survival objects for simulations
+3# by JJAV 20220425
 
 
 #' Parameters for a Weibull distribution

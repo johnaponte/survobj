@@ -4,10 +4,10 @@
 \alias{linsum}
 \title{Linear sum within a data.frame}
 \usage{
-linsum(data, vars, coeffs)
+linsum(.data, vars, coeffs)
 }
 \arguments{
-\item{data}{the data.frame with the variables}
+\item{.data}{the data.frame with the variables}
 
 \item{vars}{the variables  to select from the data.frame}
 

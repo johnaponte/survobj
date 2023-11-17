@@ -1,6 +1,6 @@
-# Piece wise survival
-# 20220425 by JJAV
-####################
+## Piece wise survival
+## 20220425 by JJAV
+#####################
 
 
 #' Parameters for a piece wise exponential distribution
@@ -126,8 +126,8 @@ SURVIVAL_factory.PPIECEWISE_EXP <- function(PSURVIVAL,...){
       rsurv =  function(n){
         iCum_Hfx(-log(runif(n)))
       },
-      rsurvdf = function(.data,vars, coeffs){
-        iCum_Hfx(-log(runif(nrow(.data)))*exp(-linsum(.data,vars,coeffs)))
+      rsurvhr = function(hr){
+        iCum_Hfx(-log(runif(length(hr)))/hr)
       }
     ),
     class = c("SURVIVAL","PIECEWISE_EXP")
