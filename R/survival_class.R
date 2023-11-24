@@ -8,8 +8,8 @@
 #' This is implemented by each subclass of the SURVIVALPARAM, i.e.
 #'PEXPONENTIAL, PWEIBULL, PGOMPERTZ PPIECEWISE.
 #'
-#' @param PSURVIVAL an object of class SURVIVALPARAM
-#' @param ... Currently not used
+#' @param s_family an object of class S_FAMILY
+#' @param ... parameters to define the survival distribution
 #' @return a SURVIVAL object
 #' @export
 #' @note
@@ -29,58 +29,15 @@
 #' but following a proportional hazard assumption. For example a rsurvhr(c(1,0.5))
 #' will produce a random survival time in which the first observation has a hazard
 #' ratio of 1 and the second a hazard ratio of 0.5.
-SURVIVAL_factory <- function(PSURVIVAL, ...){
-  UseMethod("SURVIVAL_factory", PSURVIVAL)
-}
-
-
-#' @describeIn SURVIVAL_factory Default implementation
-#' @aliases SURVIVAL_factory
-#' @export
-SURVIVAL_factory.default <- function(PSURVIVAL, ...) {
-  stopifnot("params should of class SURVIVALPARAM" = inherits(PSURVIVAL, "SURVIVALPARAM"))
-  structure(
-    list(
-      .params = PSURVIVAL,
-      sfx = function(t) {
-        stop("sfx not implementet")
-      },
-      hfx = function(t) {
-        stop("hfx not implemented")
-      },
-      Cum_Hfx = function(t) {
-        stop("hfx not implemented")
-      },
-      invCum_Hfx = function(H) {
-        stop("invCum_Hfx not implemented")
-      },
-      rsurv =  function(n){
-        stop("rsurv not implemented")
-        #invCum_Hfx(-log(runif(n)))
-      },
-      rsurvdf = function(.data,vars, coeffs){
-        stop("rsurvdf not implemented")
-        #invCum_Hfx(-log(runif(nrow(.data)))*exp(-linsum(df,vars,coeffs)))
-      }
-
-    ),
-    class = "SURVIVAL"
-  )
-}
-
-
-
-#' @export
-print.SURVIVALPARAM<- function(x, ...){
-  cat("Parameters for survival distribution\n")
-  namesx <- names(x)
-  lapply(namesx, function(y){cat(y,":",x[[y]],"\n")})
+s_factory <- function(s_family, ...){
+    s_family(...)
 }
 
 #' @export
 print.SURVIVAL <- function(x, ...){
-  cat("Survival object\n")
+  cat("SURVIVAL object\n")
   namesx <- names(x$params)
+  cat("Distribution: ", x$distribution,"\n")
   lapply(namesx, function(y){cat(y,":",x$params[[y]],"\n")})
 }
 
@@ -93,7 +50,7 @@ print.SURVIVAL <- function(x, ...){
 #' @param SURVIVAL a SURVIVAL object
 #' @return Proportion surviving at time t
 #' @export
-sfx <- function(t, SURVIVAL){
+sfx <- function(SURVIVAL, t){
   stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
   SURVIVAL$sfx(t)
 }
@@ -106,7 +63,7 @@ sfx <- function(t, SURVIVAL){
 #' @param SURVIVAL a Survival object
 #' @return the hazard at time t
 #' @export
-hfx <- function(t, SURVIVAL){
+hfx <- function(SURVIVAL, t){
   stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
   SURVIVAL$hfx(t)
 }
@@ -121,7 +78,7 @@ hfx <- function(t, SURVIVAL){
 #' @param SURVIVAL a SURVIVAL object
 #' @return a cumulative hazard at time t
 #' @export
-Cum_Hfx <- function(t, SURVIVAL){
+Cum_Hfx <- function(SURVIVAL, t){
   stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
   SURVIVAL$Cum_Hfx(t)
 }
@@ -133,7 +90,7 @@ Cum_Hfx <- function(t, SURVIVAL){
 #' @param H cumulative hazard
 #' @param SURVIVAL a SURVIVAL object
 #' @export
-invCum_Hfx <- function(H, SURVIVAL){
+invCum_Hfx <- function(SURVIVAL, H){
   stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
   SURVIVAL$invCum_Hfx(H)
 }
@@ -147,28 +104,27 @@ invCum_Hfx <- function(H, SURVIVAL){
 #' @param SURVIVAL a SURVIVAL object
 #' @return random survival times
 #' @export
-rsurv <- function(n, SURVIVAL){
+rsurv <- function(SURVIVAL, n){
   stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
   SURVIVAL$rsurv(n)
 }
 
-#' Random survival times for a data frame
+#' Random survival times for a hazard rate
 #'
 #' Return random survival times following the distribution defined in the SURVIVAL
 #' object, and assuming a proportionality of the hazards, the log(time) is
-#' modified by the linear combination of the vars and coeffs values in the data
+#' modified by the hazard ratio. A hazard ratio of 1 means not change to the
+#' baseline hazard of the distribution. A hazard ratio lower than 1 means longer
+#' times and hazard ratios higher than 1 means shorter times.
 #' frame
 #'
-#' @param .data a data.frame
-#' @param vars a character vector with names of variables in the data.frame
-#' @param coeffs a numeric vector with the value of the coefficient to multiply
-#' to the corresponding variable
+#' @param hr a vector with hazard rates.
 #' @param SURVIVAL a SURVIVAL object
 #' @return random survival times
 #' @export
-rsurvdf <- function(.data, vars, coeffs, SURVIVAL){
+rsurvdf <- function(SURVIVAL, hr){
   stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
-  SURVIVAL$rsuvdf(.data,vars,coeffs)
+  SURVIVAL$rsurvhr(hr)
 }
 
 #' Plot a SURVIVAL OBJECT
