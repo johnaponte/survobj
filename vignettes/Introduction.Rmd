@@ -1,0 +1,129 @@
+---
+title: "Introduction to survobj"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to survobj}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(survobj)
+```
+
+---
+title: "structure of the survival simulation objects"
+author: "John Aponte"
+format: html
+editor: visual
+---
+
+## Introduction
+
+This document explores how the package `survobj` should organize the classes required for easy understanding and use.
+
+The objective is to create an object that can be used in graphs and simulation of survival times but give the flexibility of using the same API to change the survival distribution type.
+
+So the object should be produced from a factory
+
+s_factory(s_family, parameters)
+
+s_factory(s_exponential, list(attack_rate = 0.4, time = 1))
+
+it should return an object of survobj class that has the methods to show the parameters, produce survival at time t, produce hazard at time t, cumulative hazard at time t, random times, random times under proportional hazard, under accelerated failure and under accelerated hazard. Also survival times with function of time?
+
+```{r}
+s_factory<- function(s_family, ...) {
+  s_family(...)
+}
+
+s_exponential <- function(...) {
+  params <- list(...)
+  
+  nparam <- names(params)
+  
+  # This function is the factory of the class
+  .factory_exponential <- function(
+    
+    lambda) {
+    iCum_Hfx <- function(H){H/PSURVIVAL$lambda}
+    structure(
+      list(
+        distribution = "EXPONENTIAL",
+        params = list(lambda = lambda),
+        sfx = function(t) {
+          exp(-lambda*t)
+        },
+        hfx = function(t) {
+          rep(lambda,length(t))
+        },
+        Cum_Hfx = function(t) {
+          lambda*t
+        },
+        invCum_Hfx=iCum_Hfx,
+        rsurv =  function(n){
+          iCum_Hfx(-log(runif(n)))
+        },
+        rsurvhr = function(hr){
+          iCum_Hfx(-log(runif(length(hr)))/hr)
+        }
+      ),
+    class = c("SURVIVAL")
+    )
+  }
+
+  # Definition based on lambda
+  if (length(nparam == 1) & 
+      ("lambda" %in% nparam)) {
+    stopifnot("lambda should be a single positive number" = is.numeric(params$lambda) )
+    stopifnot("lambda should be a single positive number" = params$lambda > 0 )
+    return(.factory_exponential(params$lambda))
+  }
+
+  # Definition based in proportion surviving and time
+  if(
+    length(nparam == 2) & 
+    all(c("surv","t") %in% nparam)) {
+        stopifnot("surv must be greater than 0" = params$surv > 0)
+        stopifnot("surv must be smaller than 1" = params$surv < 1)
+        stopifnot("t must be greater than 0" = params$t > 0)
+        lambda = -log(params$surv) / params$t
+        return(.factory_exponential(lambda))
+  }
+
+  # Definition based on proportion failing and time
+  if(
+    length(nparam == 2) & 
+    identical(any(pmatch(nparam, "fail")),TRUE) & 
+    identical(any(pmatch(nparam,"t")),TRUE)) {
+      stopifnot("fail must be greater than 0" = params$fail > 0)
+      stopifnot("fail must be lower than 1" = params$fail <1)
+      stopifnot("t must be greater than 0" = params$t > 0)
+      lambda = -log(1 -params$fail)/params$t
+      return(.factory_exponential(lambda))
+  }
+  cat("Error defining s_exponential object \n")
+  cat("Valid parameters are: \n")
+  cat("lambda: for the hazard parameter\n")
+  cat("surv, t: for the surviving proportion (no events) at time t\n")
+  cat("fail, t: for the failure proportion (events) at time t \n")
+  stop("Error in parameters")
+}
+library(testthat)
+test_that( "Exponential factory works well", {-
+ xx <- s_factory(s_exponential, lambda = 3)
+ expect_type(xx,"list")
+ expect_s3_class(xx,"SURVIVAL")
+ expect_s3_class(s_factory(s_exponential, surv = 0.4, t=1), "SURVIVAL")
+ expect_s3_class(s_factory(s_exponential, fail = 0.6, t=1), "SURVIVAL")
+ expect_error(s_factory(s_exponential, hola = 4))
+}) 
+
+```
