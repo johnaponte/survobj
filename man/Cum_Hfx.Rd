@@ -4,12 +4,12 @@
 \alias{Cum_Hfx}
 \title{Cumulative hazard}
 \usage{
-Cum_Hfx(t, SURVIVAL)
+Cum_Hfx(SURVIVAL, t)
 }
 \arguments{
-\item{t}{Time}
-
 \item{SURVIVAL}{a SURVIVAL object}
+
+\item{t}{Time}
 }
 \value{
 a cumulative hazard at time t

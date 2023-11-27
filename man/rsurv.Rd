@@ -4,12 +4,12 @@
 \alias{rsurv}
 \title{Random survival times}
 \usage{
-rsurv(n, SURVIVAL)
+rsurv(SURVIVAL, n)
 }
 \arguments{
-\item{n}{number of observations}
-
 \item{SURVIVAL}{a SURVIVAL object}
+
+\item{n}{number of observations}
 }
 \value{
 random survival times

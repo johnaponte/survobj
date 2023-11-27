@@ -4,7 +4,7 @@
 \alias{plot_survival}
 \title{Plot a SURVIVAL OBJECT}
 \usage{
-plot_survival(SURVIVAL, timeto)
+plot_survival(SURVIVAL, timeto, main = "SURVIVAL object")
 }
 \arguments{
 \item{SURVIVAL}{a SURVIVAL object}

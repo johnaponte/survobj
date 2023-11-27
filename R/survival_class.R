@@ -135,15 +135,52 @@ rsurvdf <- function(SURVIVAL, hr){
 #' @param timeto timeto used in the graphs
 #' @export
 #' @importFrom graphics par
-plot_survival <- function(SURVIVAL, timeto) {
+plot_survival <- function(SURVIVAL, timeto, main = "SURVIVAL object") {
   oldpar <- par(no.readonly = TRUE)
   par(mfrow=c(2,2))
-  plot(SURVIVAL$sfx, from = 0, to = timeto, main = "Survival function", xlab = "Time", ylab = "Proportion without events")
-  plot(SURVIVAL$hfx, from = 0, to = timeto, main = "Hazard function", xlab = "Time", ylab = "Hazard")
-  plot(SURVIVAL$Cum_Hfx, from = 0, to = timeto, main = "Cumulative Hazard", xlab = "Time", ylab = "Cumulative Hazard")
-  plot(SURVIVAL$invCum_Hfx, from = 0, to = SURVIVAL$Cum_Hfx(timeto), main = "Inverse Cumulative Hazard", xlab = "Cumulative Hazard", ylab = "Time")
+  plot(
+    SURVIVAL$sfx,
+    from = 0,
+    to = timeto,
+    main = "Survival function",
+    xlab = "Time",
+    ylab = "Proportion without events")
+  plot(
+    SURVIVAL$hfx,
+    from = 0,
+    to = timeto,
+    main = "Hazard function",
+    xlab = "Time",
+    ylab = "Hazard")
+  plot(
+    SURVIVAL$Cum_Hfx,
+    from = 0,
+    to = timeto,
+    main = "Cumulative Hazard",
+    xlab = "Time",
+    ylab = "Cumulative Hazard")
+  plot(
+    SURVIVAL$invCum_Hfx,
+    from = 0,
+    to = SURVIVAL$Cum_Hfx(timeto),
+    main = "Inverse Cumulative Hazard",
+    xlab = "Cumulative Hazard",
+    ylab = "Time")
+  title(main, outer = TRUE, line = -1)
   par(oldpar)
 }
+
+#' @export
+plot.SURVIVAL <- function(x, main = "SURVIVAL object"){
+  p5 <- try(uniroot(function(y){x$sfx(y)-0.05}, interval=c(0,1000)),silent = T)
+  if (! inherits(p5,"try-error")){
+    plot_survival(x, timeto = p5$root, main = main)
+  }
+  else {
+    stop("Error finding and adequate time interval. Use the function plot_survival instead")
+  }
+}
+
 
 
 #' Plot random draws from the distribution

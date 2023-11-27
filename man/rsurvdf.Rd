@@ -2,19 +2,14 @@
 % Please edit documentation in R/survival_class.R
 \name{rsurvdf}
 \alias{rsurvdf}
-\title{Random survival times for a data frame}
+\title{Random survival times for a hazard rate}
 \usage{
-rsurvdf(.data, vars, coeffs, SURVIVAL)
+rsurvdf(SURVIVAL, hr)
 }
 \arguments{
-\item{.data}{a data.frame}
-
-\item{vars}{a character vector with names of variables in the data.frame}
-
-\item{coeffs}{a numeric vector with the value of the coefficient to multiply
-to the corresponding variable}
-
 \item{SURVIVAL}{a SURVIVAL object}
+
+\item{hr}{a vector with hazard rates.}
 }
 \value{
 random survival times
@@ -22,6 +17,8 @@ random survival times
 \description{
 Return random survival times following the distribution defined in the SURVIVAL
 object, and assuming a proportionality of the hazards, the log(time) is
-modified by the linear combination of the vars and coeffs values in the data
+modified by the hazard ratio. A hazard ratio of 1 means not change to the
+baseline hazard of the distribution. A hazard ratio lower than 1 means longer
+times and hazard ratios higher than 1 means shorter times.
 frame
 }

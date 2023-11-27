@@ -18,6 +18,22 @@ linsum <- function(.data, vars , coeffs) {
   as.vector(as.matrix(.data[vars]) %*% coeffs)
 }
 
+#' Confirm is a single number
+#'
+#' Evaluates if the argument is a single number
+#' @param x a variable to evaluate
+#' @return `TRUE` if is a single number, `FALSE` otherwise
+#' @export
+#' @examples
+#' is_single_number(3)  #TRUE
+#' is_single_number(c(3,3,3)) #FALSE
+#' is_single_number(list(a=3)) #FALSE
+#' is_single_number("3") #FALSE
+is_single_number<- function(x){
+  is.atomic(x) &
+    length(x)==1 &
+    is.numeric(x)
+}
 
 #' Functions to help in time conversion
 #'

@@ -4,12 +4,12 @@
 \alias{invCum_Hfx}
 \title{Inverse of the cumulative hazard}
 \usage{
-invCum_Hfx(H, SURVIVAL)
+invCum_Hfx(SURVIVAL, H)
 }
 \arguments{
-\item{H}{cumulative hazard}
-
 \item{SURVIVAL}{a SURVIVAL object}
+
+\item{H}{cumulative hazard}
 }
 \description{
 Return the time t for a give cumulative hazard using the method

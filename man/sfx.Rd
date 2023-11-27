@@ -4,12 +4,12 @@
 \alias{sfx}
 \title{Survival proportion}
 \usage{
-sfx(t, SURVIVAL)
+sfx(SURVIVAL, t)
 }
 \arguments{
-\item{t}{Time}
-
 \item{SURVIVAL}{a SURVIVAL object}
+
+\item{t}{Time}
 }
 \value{
 Proportion surviving at time t

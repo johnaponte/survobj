@@ -1,109 +1,145 @@
 ## Weibull survival objects for simulations
-3# by JJAV 20220425
+# by JJAV 20221124
 
-
-#' Parameters for a Weibull distribution
+#' Factory of SURVIVAL objects with Weibull distributions
 #'
-#' Create an object with parameters for a Weibull exponential distribution
-#' @param fail proportion fail at time t
-#' @param surv proportion surviving at time t
-#' @param t  time t
-#' @param scale scale parameter
-#' @param shape shape parameter
-#' @param logscale scale parameter from a survreg model
-#' @param logshape shape parameter from a survreg model
+#' Creates a SURVIVAL object with a Weibull distribution.
+#'
+#' @section Parameters:
+#'
+#' To create an exponential survival object the following
+#' options are available:
+#'
+#' _`scale`_ and _`shape`_ to specify the canonical parameters of the distribution, or
+#'
+#' _`surv`_, _`t`_ and _`shape`_ for the proportion surviving (no events) at time t and the shape parameter, or
+#'
+#' _`fail`_, _`t`_ and _`shape`_ for the proportion failing (events) at time t and the shape parameter or
+#'
+#' _`intercept`_ and _`logscale`_ for the parameters returned by `summary(survreg(...))` models.
+#'
+#' {scale = -log(surv)/(t^shape)}
+#'
+#' {scale = -log((1-fail))/(t^shape)}
+#'
+#' {scale = exp(-intercept/exp(logscale))} and {shape = 1/exp(logscale}
+#'
+#' The parameters should be spell correctly as partial matching is not available
+#'
+#' @param ... Parameters to define the distribution. See the Parameters for details
+#' @return a SURVIVAL object of the exponential distribution family. See the
+#' documentation of `s_factory` for the methods available for SURVIVAL objects
 #' @export
-#' @return an object of class SURVIVALPARAM, PWEIBULL
-WEIBULL_hazard <- function(scale, shape) {
-  stopifnot("scale should be a single number" = is.atomic(scale) )
-  stopifnot("scale should be a single number" = length(scale) == 1 )
-  stopifnot("scale should be a single number" = is.numeric(scale) )
-  stopifnot("shape should be a single number" = is.atomic(shape) )
-  stopifnot("shape should be a single number" = length(shape) == 1 )
-  stopifnot("shape should be a single number" = is.numeric(shape) )
-  stopifnot("scale must be greater than 0" = scale > 0)
-  stopifnot("shape must be greater than 0 " = shape > 0)
-  structure(
-    list(
-      distribution = "Weibull",
-      scale = scale,
-      shape = shape
-    ),
-    class = c("SURVIVALPARAM", "PWEIBULL")
-  )
-}
+#' @examples
+#' s_weibull(scale = 2,shape = 2)
+#' s_weibull(surv = 0.6, t= 12, shape = 0.5)
+#' s_weibull(fail = 0.4, t = 12, shape =0.5)
+#' s_weibull(logscale = 0.4, logshape = 0.4)
+s_weibull <- function(...) {
+  params <- list(...)
+  nparam <- names(params)
 
-#' @describeIn WEIBULL_hazard Survival at time t
-#' @export
-WEIBULL_surviving <- function(surv, t, shape) {
-  stopifnot("surv should be a single number" = is.atomic(surv) )
-  stopifnot("surv should be a single number" = length(surv) == 1 )
-  stopifnot("surv should be a single number" = is.numeric(surv) )
-  stopifnot("surv must be greater than 0" = surv > 0)
-  stopifnot("surv must be smaller than 1" = surv < 1)
-  stopifnot("t must be greater than 0" = t > 0)
-  stopifnot("shape must be greater than 0 " = shape > 0)
-  scale = -log(surv)/(t^shape)
-  WEIBULL_hazard(scale, shape)
-}
-
-#' @describeIn WEIBULL_hazard Failure at time t
-#' @export
-WEIBULL_failure <- function(fail, t, shape) {
-  stopifnot("fail should be a single number" = is.atomic(fail) )
-  stopifnot("fail should be a single number" = length(fail) == 1 )
-  stopifnot("fail should be a single number" = is.numeric(fail) )
-  stopifnot("fail must be greater than 0" = fail > 0)
-  stopifnot("fail must be lower than 1" = fail <1)
-  stopifnot("t must be greater than 0" = t > 0)
-  stopifnot("shape must be greater than 0 " = shape > 0)
-  WEIBULL_surviving(1-fail, t, shape)
-}
-
-#' @describeIn WEIBULL_hazard From survreg model
-#' @export
-WEIBULL_surverg <- function(logscale, logshape ){
-  shape = 1/exp(logshape)
-  scale = exp(logscale)^-shape
-  WEIBULL_hazard(shape, scale)
-}
-
-
-#' @describeIn  SURVIVAL_factory Weibull distribution
-#' @export
-#' @importFrom stats runif
-SURVIVAL_factory.PWEIBULL <- function(PSURVIVAL, ...){
-  stopifnot("PSURVIVAL should be of class SURVIVALPARAM" = inherits(PSURVIVAL, "SURVIVALPARAM"))
-  stopifnot("PSURVIVAL should be of class PWEIBULL" = inherits(PSURVIVAL,"PWEIBULL"))
-  iCum_Hfx <- function(H){
-    (H/PSURVIVAL$scale)^(1/PSURVIVAL$shape)
-  }
+  # This function is the factory of the class
+  .factory_weibull <- function(scale, shape) {
+    iCum_Hfx <- function(H){
+      stopifnot("Must be positive number" = all(H >= 0))
+      (H/scale)^(1/shape)
+    }
     structure(
-    list(
-      params = PSURVIVAL,
-      sfx = function(t) {
-        exp(-PSURVIVAL$scale*(t^PSURVIVAL$shape))
-      },
-      hfx = function(t) {
-        PSURVIVAL$scale*PSURVIVAL$shape*(t)^(PSURVIVAL$shape-1)
-      },
-      Cum_Hfx = function(t) {
-        PSURVIVAL$scale*t^PSURVIVAL$shape
-      },
-      invCum_Hfx=function(H){
-        iCum_Hfx(H)
-      },
-      rsurv =  function(n){
-        iCum_Hfx(-log(runif(n)))
-      },
-      rsurvdf = function(.data,vars, coeffs){
-        iCum_Hfx(-log(runif(nrow(.data)))*exp(-linsum(.data,vars,coeffs)))
+      list(
+        distribution = "WEIBULL",
+        params = list(scale = scale, shape = shape),
+        sfx = function(t) {
+          stopifnot("Must be positive number" = all(t >= 0))
+          exp(-scale*(t^shape))
+        },
+        hfx = function(t) {
+          stopifnot("Must be positive number" = all(t >= 0))
+          scale*shape*(t)^(shape-1)
+        },
+        Cum_Hfx = function(t) {
+          stopifnot("Must be positive number" = all(t >= 0))
+          scale*t^shape
+        },
+        invCum_Hfx=iCum_Hfx,
+        rsurv =  function(n){
+          stopifnot("Must be positive number" = all(n > 0))
+          iCum_Hfx(-log(runif(n)))
+        },
+        rsurvhr = function(hr){
+          stopifnot("Must be positive numbers > 0" = all(hr > 0))
+          # Following Bender, Augustin and Blettner 2005
+          iCum_Hfx(-log(runif(length(hr)))/hr)
+        }
+      ),
+      class = c("SURVIVAL")
+    )
+  }
 
-      }
-    ),
-    class = c("SURVIVAL","EXPONENTIAL")
-  )
+  # Definition based on scale and shape
+  if (length(nparam == 2) &
+      all(c("scale","shape") %in% nparam)) {
+    stopifnot("scale should be a single number" = is_single_number(params$scale))
+    stopifnot("scale must be greater than 0" = params$scale > 0)
+    stopifnot("shape should be a single number" = is_single_number(params$shape))
+    stopifnot("shape must be greater than 0 " = params$shape > 0)
+
+    return(.factory_weibull(params$scale, params$shape))
+  }
+
+  # Definition based in proportion surviving, time and shape
+  if(
+    length(nparam == 3) &
+    all(c("surv","t","shape") %in% nparam)) {
+    stopifnot("surv must be a single number" = is_single_number(params$surv))
+    stopifnot("surv must be greater than 0" = params$surv > 0)
+    stopifnot("surv must be smaller than 1" = params$surv < 1)
+    stopifnot("t must be a single number" = is_single_number(params$t))
+    stopifnot("t must be greater than 0" = params$t > 0)
+    stopifnot("shape should be a single number" = is_single_number(params$shape))
+    stopifnot("shape must be greater than 0 " = params$shape > 0)
+
+    scale = -log(params$surv)/(params$t^params$shape)
+    return(.factory_weibull(scale, params$shape))
+
+  }
+
+  # Definition based on proportion failing and time
+  if(
+    length(nparam == 3) &
+    all(c("fail","t","shape") %in% nparam)) {
+    stopifnot("fail must be a single number" = is_single_number(params$fail))
+    stopifnot("fail must be greater than 0" = params$fail > 0)
+    stopifnot("fail must be lower than 1" = params$fail < 1)
+    stopifnot("t must be a single number" = is_single_number(params$t))
+    stopifnot("t must be greater than 0" = params$t > 0)
+    stopifnot("shape should be a single number" = is_single_number(params$shape))
+    stopifnot("shape must be greater than 0 " = params$shape > 0)
+
+    scale = -log((1-params$fail))/(params$t^params$shape)
+    return(.factory_weibull(scale, params$shape))
+  }
+
+  if(
+    length(nparam == 2) &
+    all(c("intercept","logscale") %in% nparam)) {
+    stopifnot("intercept must be a single number" = is_single_number(params$intercept))
+    stopifnot("logscale must be a single number" = is_single_number(params$logscale))
+    scale = exp(-params$intercept/exp(params$logscale))
+    shape = 1/exp(params$logscale)
+    return(.factory_weibull(scale, shape))
+  }
+
+  cat("\nError defining s_weibull  object \n")
+  cat("Valid parameters are: \n")
+  cat("scale and shape: for the canonical parameters of the distribution, or\n")
+  cat("surv, t and shape: for the surviving proportion (no events) at time t and shape, or\n")
+  cat("fail, t and shape: for the failure proportion (events) at time t and shape, or \n")
+  cat("intercept and logscale: for values from a surv regression\n")
+  stop("Error in parameters")
 }
+
+
 
 
 # myp <- WEIBULL_failure(0.70, t = 40 , shape = 2.4)

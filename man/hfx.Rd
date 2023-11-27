@@ -4,12 +4,12 @@
 \alias{hfx}
 \title{Hazard}
 \usage{
-hfx(t, SURVIVAL)
+hfx(SURVIVAL, t)
 }
 \arguments{
-\item{t}{Time}
-
 \item{SURVIVAL}{a Survival object}
+
+\item{t}{Time}
 }
 \value{
 the hazard at time t
