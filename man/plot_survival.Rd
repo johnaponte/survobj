@@ -4,12 +4,14 @@
 \alias{plot_survival}
 \title{Plot a SURVIVAL OBJECT}
 \usage{
-plot_survival(SURVIVAL, timeto, main = "SURVIVAL object")
+plot_survival(SURVIVAL, timeto, main)
 }
 \arguments{
 \item{SURVIVAL}{a SURVIVAL object}
 
 \item{timeto}{timeto used in the graphs}
+
+\item{main}{title of the graph}
 }
 \description{
 Plot of the functions in the survival object until timeto t

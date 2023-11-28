@@ -36,5 +36,5 @@ The parameters should be spell correctly as partial matching is not available
 \examples{
 s_exponential(lambda = 3)
 s_exponential(surv = 0.4, t = 2)
-s_exponential(fail = 3, t = 2)
+s_exponential(fail = 0.6, t = 2)
 }

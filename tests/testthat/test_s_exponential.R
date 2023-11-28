@@ -24,7 +24,7 @@ test_that(
     expect_error(xx$rsurv(-1))
     expect_error(xx$rsurvhr(-1))
 
-  if (TRUE) {
+  if (FALSE) {
 
     # Test the survhr but it takes a lot of time
     reps = 1000

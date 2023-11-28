@@ -49,3 +49,11 @@ adjustment for lap days or ours or difference of days between months
 \item \code{ytom()}: convert years to months
 
 }}
+\examples{
+dtom(365.25)
+mtod(12)
+dtoy(165.25)
+ytod(1)
+mtoy(12)
+ytom(365.25)
+}

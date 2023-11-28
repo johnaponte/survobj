@@ -133,9 +133,12 @@ rsurvdf <- function(SURVIVAL, hr){
 #'
 #' @param SURVIVAL a SURVIVAL object
 #' @param timeto timeto used in the graphs
+#' @param main title of the graph
 #' @export
 #' @importFrom graphics par
-plot_survival <- function(SURVIVAL, timeto, main = "SURVIVAL object") {
+#' @importFrom graphics title
+plot_survival <- function(SURVIVAL, timeto, main) {
+  if (missing(main)) main = NA_character_
   oldpar <- par(no.readonly = TRUE)
   par(mfrow=c(2,2))
   plot(
@@ -166,15 +169,26 @@ plot_survival <- function(SURVIVAL, timeto, main = "SURVIVAL object") {
     main = "Inverse Cumulative Hazard",
     xlab = "Cumulative Hazard",
     ylab = "Time")
-  title(main, outer = TRUE, line = -1)
+  if (! is.na(main)) {
+    title(main, outer = TRUE, line = -1)
+  }
   par(oldpar)
 }
 
+
+
 #' @export
-plot.SURVIVAL <- function(x, main = "SURVIVAL object"){
+plot.SURVIVAL <- function(x,...){
+  params <- list(...)
+  if (! "main" %in% names(params)) {
+    maint = paste0(x$distribution, " distribution")
+  }
+  else {
+    maint = params$main
+  }
   p5 <- try(uniroot(function(y){x$sfx(y)-0.05}, interval=c(0,1000)),silent = T)
   if (! inherits(p5,"try-error")){
-    plot_survival(x, timeto = p5$root, main = main)
+    plot_survival(x, timeto = p5$root, main = maint)
   }
   else {
     stop("Error finding and adequate time interval. Use the function plot_survival instead")
@@ -203,43 +217,44 @@ plot.SURVIVAL <- function(x, main = "SURVIVAL object"){
 #' @importFrom dplyr select
 #' @importFrom dplyr mutate
 #' @importFrom tidyr pivot_longer
-#' @importFrom plyr ddply
-#' @importFrom plyr .
 #' @importFrom survival survfit
 ggplot_random <- function(SURVIVAL, timeto, subjects, nsim, alpha = 0.1) {
-  df<- data.frame(simid = 1:nsim) %>%
-    ddply(
-      .(simid),
-      function(x){
-        data.frame(simtime = SURVIVAL$rsurv(subjects)) %>%
-        mutate(simevent = ifelse(simtime <= timeto,1,0)) %>%
-        mutate(simtime = ifelse(simevent == 0, timeto, simtime))
-    })
 
-  survdf <-
-    df %>%
-    ddply(
-      .(simid),
-      function(x){
-        so <- survfit(Surv(simtime,simevent)~1, data = x)
-        data.frame(time = so$time, survival = so$surv, cumhazard = so$cumhaz)
-      }
-    ) %>%
+  ldf<- lapply(
+    1:nsim,
+    function(x){
+        simtime <- SURVIVAL$rsurv(subjects)
+        simevent <- ifelse(simtime <= timeto,1,0)
+        simtime <- ifelse(simevent == 0, timeto, simtime)
+        so<- survfit(Surv(simtime, simevent) ~ 1)
+        return(
+          data.frame(
+            simid = x,
+            time = so$time,
+            survival = so$surv,
+            cumhazard = so$cumhaz
+          )
+        )
+    }
+  )
+  survdf <- do.call(rbind,ldf) |>
     pivot_longer(
       -c(simid,time), names_to = "varname" , values_to = "value"
-    ) %>% mutate(varname = factor(varname, levels = c("survival", "cumhazard"),
+    ) |>
+    mutate(varname = factor(varname, levels = c("survival", "cumhazard"),
                               labels = c("Survival","Cumulative Hazard")))
 
   expsurv <-
-    survdf %>%
-    select(time) %>%
-    unique() %>%
-    mutate(survival = SURVIVAL$sfx(time)) %>%
-    mutate(cumhazard = SURVIVAL$Cum_Hfx(time)) %>%
-    mutate(simid = 0) %>%
+    survdf |>
+    select(time) |>
+    unique() |>
+    mutate(survival = SURVIVAL$sfx(time)) |>
+    mutate(cumhazard = SURVIVAL$Cum_Hfx(time)) |>
+    mutate(simid = 0) |>
     pivot_longer(
       -c(simid,time), names_to = "varname" , values_to = "value"
-    )  %>% mutate(varname = factor(varname, levels = c("survival", "cumhazard"),
+    )  |>
+    mutate(varname = factor(varname, levels = c("survival", "cumhazard"),
                                labels = c("Survival","Cumulative Hazard")))
 
 
@@ -254,4 +269,112 @@ ggplot_random <- function(SURVIVAL, timeto, subjects, nsim, alpha = 0.1) {
       "Simulations from a SURVIVAL object",
       subtitle = paste0("Subjects: ", subjects, "  Number of simulations: ", nsim))
 }
+
+
+#' Compares graphically two survival objects
+#'
+#' Plot of the functions in the survival objects until timeto t
+#'
+#' @param SURVIVAL1 a SURVIVAL object
+#' @param SURVIVAL2 a SURVIVAL object
+#' @param timeto timeto used in the graphs
+#' @param main title of the graph
+#' @export
+#' @importFrom graphics par
+#' @importFrom graphics title
+compare_survival <- function(SURVIVAL1, SURVIVAL2, timeto, main) {
+  if (missing(main)) main = NA_character_
+  oldpar <- par(no.readonly = TRUE)
+  col1 = 2
+  col2 = 3
+  par(mfrow=c(2,3))
+
+  plot(
+    SURVIVAL1$sfx,
+    from = 0,
+    to = timeto,
+    main = "Survival function",
+    xlab = "Time",
+    ylab = "Proportion without events",
+    ylim = c(0,1),
+    col = col1)
+  plot(
+    SURVIVAL2$sfx,
+    from = 0,
+    to = timeto,
+    col = col2,
+    add = TRUE
+  )
+
+  #min for scale
+  yvals <- c(SURVIVAL1$hfx(0:timeto), SURVIVAL2$hfx(c(0,timeto)))
+  yvals<- yvals[is.finite(yvals)]
+
+  plot(
+    SURVIVAL1$hfx,
+    from = 0,
+    to = timeto,
+    main = "Hazard function",
+    xlab = "Time",
+    ylab = "Hazard",
+    ylim = c(min(yvals,na.rm = T),
+             max(yvals,na.rm = T)),
+    col = col1)
+  plot(
+    SURVIVAL2$hfx,
+    from = 0,
+    to = timeto,
+    col = col2,
+    add = TRUE
+  )
+
+  plot(
+    SURVIVAL1$Cum_Hfx,
+    from = 0,
+    to = timeto,
+    main = "Cumulative Hazard",
+    xlab = "Time",
+    ylab = "Cumulative Hazard",
+    col = col1)
+  plot(
+    SURVIVAL2$Cum_Hfx,
+    from = 0,
+    to = timeto,
+    col = col2,
+    add = TRUE)
+
+  plot(
+    function(x){SURVIVAL1$hfx(x) / SURVIVAL2$hfx(x)},
+    from = 0,
+    to = timeto,
+    main = "Hazard Ratio",
+    xlab = "Time",
+    ylab = "Ratio"
+  )
+
+  plot(
+    function(x){SURVIVAL1$Cum_Hfx(x) / SURVIVAL2$Cum_Hfx(x)},
+    from = 0,
+    to = timeto,
+    main = "Ratio of Cumulative hazard",
+    xlab = "Time",
+    ylab = "Ratio"
+  )
+
+  plot(
+    function(x){SURVIVAL1$Cum_Hfx(x) - SURVIVAL2$Cum_Hfx(x)},
+    from = 0,
+    to = timeto,
+    main = "Difference in Cumulative hazard",
+    xlab = "Time",
+    ylab = "Difference"
+  )
+
+  if (! is.na(main)) {
+    title(main, outer = TRUE, line = -1)
+  }
+  par(oldpar)
+}
+
+
 

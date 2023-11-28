@@ -27,7 +27,7 @@ test_that(
 
     # This test takes a lot of time. Only done if required
 
-  if (TRUE) {
+  if (FALSE) {
 
     # Test the survhr
     reps = 1000
@@ -62,7 +62,7 @@ test_that(
    # test parameters from survreg
    intercept = 2
    scale = 1.5
-   yobj <- s_weibull(intercept = intercept, logscale = log(scale))
+   yobj <- s_weibull(intercept = intercept, scale = scale)
    resp <- lapply(1:reps, function(x){
      t<- yobj$rsurv(1000)
      fitmod <- survival::survreg(Surv(t) ~ 1, dist = "weibull")

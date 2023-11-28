@@ -27,7 +27,7 @@
 #' @examples
 #' s_exponential(lambda = 3)
 #' s_exponential(surv = 0.4, t = 2)
-#' s_exponential(fail = 3, t = 2)
+#' s_exponential(fail = 0.6, t = 2)
 s_exponential <- function(...) {
   params <- list(...)
   nparam <- names(params)

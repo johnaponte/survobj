@@ -2,21 +2,7 @@
 # by JJAV 20220425
 ############################
 
-#' Linear sum within a data.frame
-#'
-#' Perform a sum with the linear combination between the variables
-#' and the coefficients
-#'
-#' @param .data the data.frame with the variables
-#' @param vars the variables  to select from the data.frame
-#' @param coeffs the coefficients to apply
-#' @return a vector with the sum of each variable value multiply by the coefficient.
-#' @export
-linsum <- function(.data, vars , coeffs) {
-  stopifnot("vars and coefficients must be of the same lenght" = length(vars) == length(coeffs))
-  stopifnot("vars must be valid names in data"= all(vars %in% names(.data)))
-  as.vector(as.matrix(.data[vars]) %*% coeffs)
-}
+
 
 #' Confirm is a single number
 #'
@@ -45,6 +31,13 @@ is_single_number<- function(x){
 #' @param x the time to convert
 #' @return the converted time
 #' @name fx_h_time
+#' @examples
+#' dtom(365.25)
+#' mtod(12)
+#' dtoy(165.25)
+#' ytod(1)
+#' mtoy(12)
+#' ytom(365.25)
 NULL
 
 #' @describeIn fx_h_time convert days to months
@@ -71,21 +64,44 @@ mtoy <- function(x){dtoy(mtod(x))}
 #' @export
 ytom <- function(x){dtom(ytod(x))}
 
+#' Censor of events
+#'
+#'  if censor_time < time, event is change to 0, otherwise not changed
+#'
+#'  if censor_time < time, time is changed to censor_time, otherwise no change
+#'
+#'  Be careful and do not overwrite the time with censor time to not loose track
+#'  of the events
+#'
+#' @param censor_time the time to censor
+#' @param time the time variable to censor
+#' @param event if there is an event at time
+#' @return censored time or event
+#' @examplesIf {FALSE}
+#'
+#' # Typical workflow on a simulation of survival time.
+#' # Simulate time to event (sim_t_event)
+#' # and simulates the time to lost to follow up (tim_t_ltof)
+#' # the simulation time frame is 1, so everything after 1 is censored
+#'
+#' require(dplyr)
+#' data.frame(
+#'   sim_t_event = c(0.5,0.6,1,10,20),
+#'   sim_t_ltof = c(2,0.5,2,2,0.8)
+#'  ) |>
+#'  mutate(sevent = censor_event(1,sim_t_event,sim_event=1)) |>
+#'  mutate(stime = censor_time(1,sim_t_event)) |>
+#'  mutate(event = censor_event(sim_t_ltof, stime, sevent)) |>
+#'  mutate(timeto = censor_time(sim_t_ltof, stime))
+censor_event <- function(censor_time, time, event){
+  ifelse(censor_time < time, 0, event)
+}
+
+#' @describeIn censor_event Censor time
+#' @export
+censor_time <- function(censor_time, time) {
+  ifelse(censor_time < time, censor_time, time)
+}
 
 
-# testdf <- data.frame(
-#   id = c(1, 2, 3, 4, 5),
-#   treatment = c(0, 0, 1, 1, 1),
-#   age = c(1, 0, 0, 1, 1)
-# ) %>%
-#   mutate(lc = linsum(
-#     .,
-#     vars = c("treatment", "age"),
-#     coeffs = c(0.5, 0.1)
-#   )) %>%
-#   mutate(lc2 = linsum(
-#     .,
-#     vars = c("age", "treatment"),
-#     coeffs = c(0.1, 0.5)
-#   ))
-#
+

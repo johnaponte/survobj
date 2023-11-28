@@ -16,13 +16,13 @@
 #'
 #' _`fail`_, _`t`_ and _`shape`_ for the proportion failing (events) at time t and the shape parameter or
 #'
-#' _`intercept`_ and _`logscale`_ for the parameters returned by `summary(survreg(...))` models.
+#' _`intercept`_ and _`scale`_ for the parameters returned by `survreg(...)` models.
 #'
 #' {scale = -log(surv)/(t^shape)}
 #'
 #' {scale = -log((1-fail))/(t^shape)}
 #'
-#' {scale = exp(-intercept/exp(logscale))} and {shape = 1/exp(logscale}
+#' {scale = exp(-intercept/scale)} and {shape = 1/scale}
 #'
 #' The parameters should be spell correctly as partial matching is not available
 #'
@@ -34,7 +34,7 @@
 #' s_weibull(scale = 2,shape = 2)
 #' s_weibull(surv = 0.6, t= 12, shape = 0.5)
 #' s_weibull(fail = 0.4, t = 12, shape =0.5)
-#' s_weibull(logscale = 0.4, logshape = 0.4)
+#' s_weibull(intercept = 0.4, scale = 0.5)
 s_weibull <- function(...) {
   params <- list(...)
   nparam <- names(params)
@@ -122,11 +122,11 @@ s_weibull <- function(...) {
 
   if(
     length(nparam == 2) &
-    all(c("intercept","logscale") %in% nparam)) {
+    all(c("intercept","scale") %in% nparam)) {
     stopifnot("intercept must be a single number" = is_single_number(params$intercept))
-    stopifnot("logscale must be a single number" = is_single_number(params$logscale))
-    scale = exp(-params$intercept/exp(params$logscale))
-    shape = 1/exp(params$logscale)
+    stopifnot("scale must be a single number" = is_single_number(params$scale))
+    scale = exp(-params$intercept/params$scale)
+    shape = 1/params$scale
     return(.factory_weibull(scale, shape))
   }
 
