@@ -282,6 +282,11 @@ ggplot_random <- function(SURVIVAL, timeto, subjects, nsim, alpha = 0.1) {
 #' @export
 #' @importFrom graphics par
 #' @importFrom graphics title
+#' @examples
+#' s1 <- s_factory(s_weibull, scale = 2, shape = 1.2)
+#' s2 <- s_factory(s_weibull, scale = 2.5, shape = 1.3)
+#' compare_survival(s1,s2, timeto=2, main = "Compare two Weibull distributions")
+#'
 compare_survival <- function(SURVIVAL1, SURVIVAL2, timeto, main) {
   if (missing(main)) main = NA_character_
   oldpar <- par(no.readonly = TRUE)
