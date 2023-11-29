@@ -23,6 +23,7 @@
 #' @param ... Parameters to define the distribution. See the Parameters for details
 #' @return a SURVIVAL object of the exponential distribution family. See the
 #' documentation of `s_factory` for the methods available for SURVIVAL objects
+#' @importFrom stats runif
 #' @export
 #' @examples
 #' s_exponential(lambda = 3)

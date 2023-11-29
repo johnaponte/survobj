@@ -28,7 +28,7 @@ options are available:
 
 \emph{\code{fail}}, \emph{\code{t}} and \emph{\code{shape}} for the proportion failing (events) at time t and the shape parameter or
 
-\emph{\code{intercept}} and \emph{\code{scale}} for the parameters returned by \code{survreg(...)} models.
+\emph{\code{intercept}} and \emph{\code{scale}} for the parameters returned by \code{survreg(.., dist = "weibull")} models.
 
 {scale = -log(surv)/(t^shape)}
 

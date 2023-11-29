@@ -16,7 +16,7 @@
 #'
 #' _`fail`_, _`t`_ and _`shape`_ for the proportion failing (events) at time t and the shape parameter or
 #'
-#' _`intercept`_ and _`scale`_ for the parameters returned by `survreg(...)` models.
+#' _`intercept`_ and _`scale`_ for the parameters returned by `survreg(.., dist = "weibull")` models.
 #'
 #' {scale = -log(surv)/(t^shape)}
 #'
@@ -30,6 +30,7 @@
 #' @return a SURVIVAL object of the exponential distribution family. See the
 #' documentation of `s_factory` for the methods available for SURVIVAL objects
 #' @export
+#' @importFrom stats runif
 #' @examples
 #' s_weibull(scale = 2,shape = 2)
 #' s_weibull(surv = 0.6, t= 12, shape = 0.5)
@@ -138,12 +139,3 @@ s_weibull <- function(...) {
   cat("intercept and logscale: for values from a surv regression\n")
   stop("Error in parameters")
 }
-
-
-
-
-# myp <- WEIBULL_failure(0.70, t = 40 , shape = 2.4)
-# myS <- SURVIVAL_factory(myp)
-# myS
-# plot_survival(myS, 40)
-# ggplot_random(myS,40,250,100)

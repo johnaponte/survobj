@@ -21,8 +21,7 @@ Language: en-US
 Config/testthat/edition: 3
 Imports: 
     dplyr,
+    tidyr,
     ggplot2,
-    magrittr,
-    tidyr, 
     survival
 VignetteBuilder: knitr

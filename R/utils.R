@@ -77,6 +77,7 @@ ytom <- function(x){dtom(ytod(x))}
 #' @param time the time variable to censor
 #' @param event if there is an event at time
 #' @return censored time or event
+#' @export
 #' @examplesIf {FALSE}
 #'
 #' # Typical workflow on a simulation of survival time.

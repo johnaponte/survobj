@@ -2,12 +2,12 @@
 % Please edit documentation in R/survival_class.R
 \name{s_factory}
 \alias{s_factory}
-\title{SURVIVAL class object's factory generic}
+\title{Factory of objects of class SURVIVAL}
 \usage{
 s_factory(s_family, ...)
 }
 \arguments{
-\item{s_family}{an object of class S_FAMILY}
+\item{s_family}{a factory for a specific distribution}
 
 \item{...}{parameters to define the survival distribution}
 }
@@ -15,25 +15,59 @@ s_factory(s_family, ...)
 a SURVIVAL object
 }
 \description{
-Creates a SURVIVAL object using the information from the SURVIVALPARAM parameter
-This is implemented by each subclass of the SURVIVALPARAM, i.e.
-PEXPONENTIAL, PWEIBULL, PGOMPERTZ PPIECEWISE.
+Create objects of the class SURVIVAL
 }
-\note{
-The created object has the following methods (functions)
+\details{
+The objects of the class SURVIVAL define different distributions of
+survival times. Each class has its own set of parameters but once the
+SURVIVAL object is defined, they have access to the same functions to
+calculate:
+\itemize{
+\item survival time function: \code{sfx()},
+\item hazard time function: \code{hfx()},
+\item cumulative hazard function: \code{Cum_Hfx()}
+\item the inverse of the cumulative hazard function: \code{invCum_Hfx()}.
+\item generate random survival times: \code{rsurv()}
+\item generate random survival times under proportional hazard ratio: \code{rsurvhr()}.
+}
 
-sfx(t): S function that returns the survival proportion at a given time
+There several functions to plot the distributions
+\itemize{
+\item generic S3:  \code{plot.SURVIVAL()}
+\item \code{plot_survival()}: to plot the functions
+\item \code{ggplot_survival_random()}: to ggplot random draws from the distribution
+\item \code{compare_survival()}:  to compare the functions of two SURVIVAL objects
+}
+}
+\section{Distributions}{
 
-hfx(t): A function that returns the hazard at a given time
+The current factories are implemented:
+\itemize{
+\item \code{s_exponential()}: for Exponential distributions
+\item \code{s_weibull()}: for Weibull distributions
+\item \code{s_gompertz()}: for Gompertz distributions
+\item \code{s_picewise()}: for Piecewise exponential distributions
+}
+}
 
-Cum_Hfx(t): A function that returns the cumulative hazard at a given time
+\examples{
+# Define a SURVIVAL object
+obj <- s_factory(s_exponential, lambda = 2)
 
-invHFx(H): A function the returns the time given a cumulative hazard value
+# Survival, Hazard and Cumulative hazard at time 0.4
+sfx(SURVIVAL = obj, t= 0.4)
+hfx(SURVIVAL = obj, t = 0.4)
+Cum_Hfx(SURVIVAL = obj, t = 0.4)
 
-rsurv(x): A function that returns random times from the survival distribution
+# Time when the Cumulative hazard is 0.8
+invCum_Hfx(SURVIVAL = obj, H = 0.8)
 
-rsurvhr(hr): A function that returns random times from the survival distribution
-but following a proportional hazard assumption. For example a rsurvhr(c(1,0.5))
-will produce a random survival time in which the first observation has a hazard
-ratio of 1 and the second a hazard ratio of 0.5.
+# Draw one random survival time from the distribution
+rsurv(SURVIVAL = obj, n = 1)
+
+# Draw one random survival time from the distribution, with hazard ratio 0.5
+rsurvhr(SURVIVAL = obj, hr = 0.5)
+
+# Plot the survival functions
+plot(obj)
 }

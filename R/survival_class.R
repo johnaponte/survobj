@@ -2,33 +2,72 @@
 ## 20220425 by JJAV
 ##################
 
-#'SURVIVAL class object's factory generic
+#' Factory of objects of class SURVIVAL
 #'
-#' Creates a SURVIVAL object using the information from the SURVIVALPARAM parameter
-#' This is implemented by each subclass of the SURVIVALPARAM, i.e.
-#'PEXPONENTIAL, PWEIBULL, PGOMPERTZ PPIECEWISE.
+#' Create objects of the class SURVIVAL
 #'
-#' @param s_family an object of class S_FAMILY
+#' The objects of the class SURVIVAL define different distributions of
+#' survival times. Each class has its own set of parameters but once the
+#' SURVIVAL object is defined, they have access to the same functions to
+#' calculate:
+#'
+#'   - survival time function: `sfx()`,
+#'
+#'   - hazard time function: `hfx()`,
+#'
+#'   - cumulative hazard function: `Cum_Hfx()`
+#'
+#'   - the inverse of the cumulative hazard function: `invCum_Hfx()`.
+#'
+#'   - generate random survival times: `rsurv()`
+#'
+#'   - generate random survival times under proportional hazard ratio: `rsurvhr()`.
+#'
+#' There several functions to plot the distributions
+#'
+#'   - generic S3:  `plot.SURVIVAL()`
+#'
+#'   - `plot_survival()`: to plot the functions
+#'
+#'   - `ggplot_survival_random()`: to ggplot random draws from the distribution
+#'
+#'   - `compare_survival()`:  to compare the functions of two SURVIVAL objects
+#'
+#' @section Distributions:
+#' The current factories are implemented:
+#'
+#'   - `s_exponential()`: for Exponential distributions
+#'
+#'   - `s_weibull()`: for Weibull distributions
+#'
+#'   - `s_gompertz()`: for Gompertz distributions
+#'
+#'   - `s_picewise()`: for Piecewise exponential distributions
+#'
+#' @param s_family a factory for a specific distribution
 #' @param ... parameters to define the survival distribution
 #' @return a SURVIVAL object
 #' @export
-#' @note
-#' The created object has the following methods (functions)
+#' @examples
+#' # Define a SURVIVAL object
+#' obj <- s_factory(s_exponential, lambda = 2)
 #'
-#' sfx(t): S function that returns the survival proportion at a given time
+#' # Survival, Hazard and Cumulative hazard at time 0.4
+#' sfx(SURVIVAL = obj, t= 0.4)
+#' hfx(SURVIVAL = obj, t = 0.4)
+#' Cum_Hfx(SURVIVAL = obj, t = 0.4)
 #'
-#' hfx(t): A function that returns the hazard at a given time
+#' # Time when the Cumulative hazard is 0.8
+#' invCum_Hfx(SURVIVAL = obj, H = 0.8)
 #'
-#' Cum_Hfx(t): A function that returns the cumulative hazard at a given time
+#' # Draw one random survival time from the distribution
+#' rsurv(SURVIVAL = obj, n = 1)
 #'
-#' invHFx(H): A function the returns the time given a cumulative hazard value
+#' # Draw one random survival time from the distribution, with hazard ratio 0.5
+#' rsurvhr(SURVIVAL = obj, hr = 0.5)
 #'
-#' rsurv(x): A function that returns random times from the survival distribution
-#'
-#' rsurvhr(hr): A function that returns random times from the survival distribution
-#' but following a proportional hazard assumption. For example a rsurvhr(c(1,0.5))
-#' will produce a random survival time in which the first observation has a hazard
-#' ratio of 1 and the second a hazard ratio of 0.5.
+#' # Plot the survival functions
+#' plot(obj)
 s_factory <- function(s_family, ...){
     s_family(...)
 }
@@ -42,42 +81,56 @@ print.SURVIVAL <- function(x, ...){
 }
 
 
-#' Survival proportion
+#' Functions for SURVIVAL objects
 #'
-#' Survival proportion at time t using the method from the SURVIVAL object
+#' All the SURVIVAL objects have access to the functions described here
 #'
 #' @param t Time
 #' @param SURVIVAL a SURVIVAL object
-#' @return Proportion surviving at time t
+#' @return Depending on the function a proportion surviving, hazard,
+#' cumulative hazard, inverse of the cumulative hazard, a random draw or a plot
+#' @examples
+#' #' # Define a SURVIVAL object
+#' obj <- s_factory(s_weibull, surv = 0.8, t = 2, shape = 1.2)
+#'
+#' # Survival, Hazard and Cumulative hazard at time 0.4
+#' sfx(SURVIVAL = obj, t= 0.4)
+#' hfx(SURVIVAL = obj, t = 0.4)
+#' Cum_Hfx(SURVIVAL = obj, t = 0.4)
+#'
+#' # Time when the Cumulative hazard is 0.8
+#' invCum_Hfx(SURVIVAL = obj, H = 0.8)
+#'
+#' # Draw one random survival time from the distribution
+#' rsurv(SURVIVAL = obj, n = 1)
+#'
+#' # Draw one random survival time from the distribution, with hazard ratio 0.5
+#' rsurvhr(SURVIVAL = obj, hr = 0.5)
+#'
+#' # Plot the survival functions
+#' plot_survival(SURVIVAL = obj, timeto = 2, main = "Example of Weibull distribution" )
+#'
 #' @export
+#' @describeIn SURVIVAL Survival function
 sfx <- function(SURVIVAL, t){
   stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
   SURVIVAL$sfx(t)
 }
 
-#' Hazard
-#'
-#' Hazard a time t using the hazard method from the SURVIVAL object
-#'
 #' @param t Time
 #' @param SURVIVAL a Survival object
-#' @return the hazard at time t
 #' @export
+#' @describeIn SURVIVAL Hazard function
 hfx <- function(SURVIVAL, t){
   stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
   SURVIVAL$hfx(t)
 }
 
 
-#' Cumulative hazard
-#'
-#' Cumulative hazard at time t using the cumulative hazard method
-#' from the SURVIVAL object
-#'
 #' @param t Time
 #' @param SURVIVAL a SURVIVAL object
-#' @return a cumulative hazard at time t
 #' @export
+#' @describeIn SURVIVAL Cumulative Hazard function
 Cum_Hfx <- function(SURVIVAL, t){
   stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
   SURVIVAL$Cum_Hfx(t)
@@ -85,58 +138,40 @@ Cum_Hfx <- function(SURVIVAL, t){
 
 #' Inverse of the cumulative hazard
 #'
-#' Return the time t for a give cumulative hazard using the method
-#' from the SURVIVAL object
 #' @param H cumulative hazard
 #' @param SURVIVAL a SURVIVAL object
 #' @export
+#' @describeIn SURVIVAL Inverse of the Cumulative Hazard function
 invCum_Hfx <- function(SURVIVAL, H){
   stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
   SURVIVAL$invCum_Hfx(H)
 }
 
-#' Random survival times
-#'
-#' Return random survival times following the distribution defined in the SURVIVAL
-#' object
-#'
 #' @param n number of observations
 #' @param SURVIVAL a SURVIVAL object
-#' @return random survival times
 #' @export
+#' @describeIn SURVIVAL Generate random values from the distribution
 rsurv <- function(SURVIVAL, n){
   stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
   SURVIVAL$rsurv(n)
 }
 
-#' Random survival times for a hazard rate
-#'
-#' Return random survival times following the distribution defined in the SURVIVAL
-#' object, and assuming a proportionality of the hazards, the log(time) is
-#' modified by the hazard ratio. A hazard ratio of 1 means not change to the
-#' baseline hazard of the distribution. A hazard ratio lower than 1 means longer
-#' times and hazard ratios higher than 1 means shorter times.
-#' frame
-#'
 #' @param hr a vector with hazard rates.
 #' @param SURVIVAL a SURVIVAL object
-#' @return random survival times
 #' @export
-rsurvdf <- function(SURVIVAL, hr){
+#' @describeIn SURVIVAL Generate random values from the distribution under proportional hazard ratios
+rsurvhr <- function(SURVIVAL, hr){
   stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
   SURVIVAL$rsurvhr(hr)
 }
 
-#' Plot a SURVIVAL OBJECT
-#'
-#' Plot of the functions in the survival object until timeto t
-#'
 #' @param SURVIVAL a SURVIVAL object
 #' @param timeto timeto used in the graphs
 #' @param main title of the graph
 #' @export
 #' @importFrom graphics par
 #' @importFrom graphics title
+#' @describeIn SURVIVAL Plot of the survival functions
 plot_survival <- function(SURVIVAL, timeto, main) {
   if (missing(main)) main = NA_character_
   oldpar <- par(no.readonly = TRUE)
@@ -147,7 +182,8 @@ plot_survival <- function(SURVIVAL, timeto, main) {
     to = timeto,
     main = "Survival function",
     xlab = "Time",
-    ylab = "Proportion without events")
+    ylab = "Proportion without events",
+    ylim = c(0,1))
   plot(
     SURVIVAL$hfx,
     from = 0,
@@ -178,6 +214,7 @@ plot_survival <- function(SURVIVAL, timeto, main) {
 
 
 #' @export
+#' @importFrom stats uniroot
 plot.SURVIVAL <- function(x,...){
   params <- list(...)
   if (! "main" %in% names(params)) {
@@ -186,7 +223,7 @@ plot.SURVIVAL <- function(x,...){
   else {
     maint = params$main
   }
-  p5 <- try(uniroot(function(y){x$sfx(y)-0.05}, interval=c(0,1000)),silent = T)
+  p5 <- uniroot(function(y){ifelse(y < 0, -10,x$sfx(y)-0.05)}, lower = 0, upper = 10, extendInt = "downX")
   if (! inherits(p5,"try-error")){
     plot_survival(x, timeto = p5$root, main = maint)
   }
@@ -196,12 +233,6 @@ plot.SURVIVAL <- function(x,...){
 }
 
 
-
-#' Plot random draws from the distribution
-#'
-#' a ggPlot with random survival times using the random generator in the
-#' SURVIVAL object
-#'
 #' @param SURVIVAL a SURVIVAL object
 #' @param timeto plot the distribution up to timeto
 #' @param subjects number of subjects to simulate in each simulation
@@ -218,7 +249,8 @@ plot.SURVIVAL <- function(x,...){
 #' @importFrom dplyr mutate
 #' @importFrom tidyr pivot_longer
 #' @importFrom survival survfit
-ggplot_random <- function(SURVIVAL, timeto, subjects, nsim, alpha = 0.1) {
+#' @describeIn SURVIVAL ggplot of the simulation of survival times
+ggplot_survival_random <- function(SURVIVAL, timeto, subjects, nsim, alpha = 0.1) {
 
   ldf<- lapply(
     1:nsim,
@@ -258,7 +290,7 @@ ggplot_random <- function(SURVIVAL, timeto, subjects, nsim, alpha = 0.1) {
                                labels = c("Survival","Cumulative Hazard")))
 
 
-  survdf %>%
+  survdf |>
     ggplot() +
     aes(x = time, y = value, group = simid) +
     geom_step(alpha = alpha) +
@@ -266,15 +298,10 @@ ggplot_random <- function(SURVIVAL, timeto, subjects, nsim, alpha = 0.1) {
     facet_wrap(~varname, scales = "free_y") +
     scale_y_continuous("") +
     ggtitle(
-      "Simulations from a SURVIVAL object",
+      paste(SURVIVAL$distribution, "simulations"),
       subtitle = paste0("Subjects: ", subjects, "  Number of simulations: ", nsim))
 }
 
-
-#' Compares graphically two survival objects
-#'
-#' Plot of the functions in the survival objects until timeto t
-#'
 #' @param SURVIVAL1 a SURVIVAL object
 #' @param SURVIVAL2 a SURVIVAL object
 #' @param timeto timeto used in the graphs
@@ -282,11 +309,7 @@ ggplot_random <- function(SURVIVAL, timeto, subjects, nsim, alpha = 0.1) {
 #' @export
 #' @importFrom graphics par
 #' @importFrom graphics title
-#' @examples
-#' s1 <- s_factory(s_weibull, scale = 2, shape = 1.2)
-#' s2 <- s_factory(s_weibull, scale = 2.5, shape = 1.3)
-#' compare_survival(s1,s2, timeto=2, main = "Compare two Weibull distributions")
-#'
+#' @describeIn SURVIVAL Compare graphically two survival distributions
 compare_survival <- function(SURVIVAL1, SURVIVAL2, timeto, main) {
   if (missing(main)) main = NA_character_
   oldpar <- par(no.readonly = TRUE)
@@ -380,6 +403,5 @@ compare_survival <- function(SURVIVAL1, SURVIVAL2, timeto, main) {
   }
   par(oldpar)
 }
-
 
 
