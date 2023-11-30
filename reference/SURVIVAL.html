@@ -36,7 +36,13 @@
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
-      <ul class="navbar-nav"></ul></div>
+      <ul class="navbar-nav"><li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/johnaponte/survobj/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul></div>
 
     
   </div>
@@ -44,7 +50,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Functions for SURVIVAL objects</h1>
-      
+      <small class="dont-index">Source: <a href="https://github.com/johnaponte/survobj/blob/HEAD/R/survival_class.R" class="external-link"><code>R/survival_class.R</code></a></small>
       <div class="d-none name"><code>SURVIVAL.Rd</code></div>
     </div>
 
@@ -163,11 +169,11 @@ cumulative hazard, inverse of the cumulative hazard, a random draw or a plot</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draw one random survival time from the distribution</span></span></span>
 <span class="r-in"><span><span class="fu">rsurv</span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.577657</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.117139</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draw one random survival time from the distribution, with hazard ratio 0.5</span></span></span>
 <span class="r-in"><span><span class="fu">rsurvhr</span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, hr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 16.94157</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 17.04478</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot the survival functions</span></span></span>
 <span class="r-in"><span><span class="fu">plot_survival</span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, timeto <span class="op">=</span> <span class="fl">2</span>, main <span class="op">=</span> <span class="st">"Example of Weibull distribution"</span> <span class="op">)</span></span></span>

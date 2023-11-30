@@ -36,7 +36,13 @@
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
-      <ul class="navbar-nav"></ul></div>
+      <ul class="navbar-nav"><li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/johnaponte/survobj/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul></div>
 
     
   </div>
@@ -44,7 +50,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Censor of events</h1>
-      
+      <small class="dont-index">Source: <a href="https://github.com/johnaponte/survobj/blob/HEAD/R/utils.R" class="external-link"><code>R/utils.R</code></a></small>
       <div class="d-none name"><code>censor_event.Rd</code></div>
     </div>
 
@@ -66,11 +72,12 @@
 
 
 <dt>time</dt>
-<dd><p>the time variable to censor</p></dd>
+<dd><p>the time variable where the censor_time is applied</p></dd>
 
 
 <dt>event</dt>
-<dd><p>if there is an event at time</p></dd>
+<dd><p>the variable with the event. It can be initialized in the
+call with a value for all times.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -82,8 +89,8 @@
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>if censor_time &lt; time, time is changed to censor_time, otherwise no change</p>
-<p>Be careful and do not overwrite the time with censor time to not loose track
-of the events</p>
+<p>Be careful and do not overwrite the time variable with the censor time variable
+to not loose track of the events</p>
     </div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
@@ -95,7 +102,7 @@ of the events</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># {     FALSE }</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Typical workflow on a simulation of survival time.</span></span></span>
+<span class="r-in"><span><span class="co"># Typical workflow in a simulation of survival time.</span></span></span>
 <span class="r-in"><span><span class="co"># Simulate time to event (sim_t_event)</span></span></span>
 <span class="r-in"><span><span class="co"># and simulates the time to lost to follow up (tim_t_ltof)</span></span></span>
 <span class="r-in"><span><span class="co"># the simulation time frame is 1, so everything after 1 is censored</span></span></span>

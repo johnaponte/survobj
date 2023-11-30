@@ -36,7 +36,13 @@
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
-      <ul class="navbar-nav"></ul></div>
+      <ul class="navbar-nav"><li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/johnaponte/survobj/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul></div>
 
     
   </div>
@@ -44,7 +50,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Factory of objects of class SURVIVAL</h1>
-      
+      <small class="dont-index">Source: <a href="https://github.com/johnaponte/survobj/blob/HEAD/R/survival_class.R" class="external-link"><code>R/survival_class.R</code></a></small>
       <div class="d-none name"><code>s_factory.Rd</code></div>
     </div>
 
@@ -118,11 +124,11 @@ calculate:</p><ul><li><p>survival time function: <code><a href="SURVIVAL.html">s
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draw one random survival time from the distribution</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="SURVIVAL.html">rsurv</a></span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1568796</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9087337</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draw one random survival time from the distribution, with hazard ratio 0.5</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="SURVIVAL.html">rsurvhr</a></span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, hr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.4959494</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3457791</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot the survival functions</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">obj</span><span class="op">)</span></span></span>
