@@ -25,4 +25,5 @@ Imports:
     ggplot2,
     survival
 VignetteBuilder: knitr
-URL: https://johnaponte.github.io/survobj/
+URL: https://johnaponte.github.io/survobj/, https://github.com/johnaponte/survobj
+BugReports: https://github.com/johnaponte/survobj/issues
