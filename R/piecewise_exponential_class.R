@@ -1,6 +1,6 @@
 ## Piecewise survival
 ## 20221129 by JJAV
-###xx##################
+#####################
 
 
 #' Factory of SURVIVAL objects with Piecewise Exponential distributions

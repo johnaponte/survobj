@@ -46,6 +46,10 @@ See the vignettes for examples on the use on simulation of survival data.
 
 ## Installation
 
-To install this package from github
+To install the development version of this package from github use:
 
 `devtools::install_github("johnaponte/survobj", build_manual = T, build_vignettes = T)`
+
+For more information:
+
+<https://johnaponte.github.io/survobj/>

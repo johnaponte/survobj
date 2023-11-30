@@ -24,7 +24,7 @@ We can use objects of the class SURVIVAL to simulate surviving times in
 clinical trials. We present in this example the evaluation of empirical
 power to detect non proportionality of the hazard.
 
-In this example, simulation of the surival times in the control group
+In this example, simulation of the survival times in the control group
 follows a Weibull distribution with shape 0.8 (negative) and a failure
 rate of 0.6 at month 12. The experimental group have a vaccine efficacy
 of 80% during the first month, but it decrease linearly to 10% at month
@@ -55,8 +55,8 @@ Assumptions:
 -   The control group follows an Weibull distribution with shape 0.8 and
     a failure rate of 0.4 at month 12.
 
--   The simulated data is analized using Cox regression, and evaluate
-    the proportionality of the hazard assumption following the method
+-   The simulated data is analyzed using Cox regression, and 
+    the proportionality of the hazard assumption evaluated following the method
     described by @grambsch1994 and implemented in the `survival` package
     with the function `cox.zph()`
 
@@ -107,9 +107,10 @@ The following graph compare the two distributions
 compare_survival(s_ctrl, s_vacc, timeto = 12)
 ```
 
-```{r simulation3}
 
 ## Simulation
+
+```{r simulation3, echo=TRUE, eval=FALSE}
 set.seed(12345)
 
 # Define the group for the subjects
@@ -145,8 +146,17 @@ sim <- lapply(
 
 # Join all the simulations in a single data frame
 sim_df <- do.call(rbind, sim)
+```
 
-# Analyze the simulation
+```{r loadsimul, include=FALSE }
+ # The simulation takes to much time to be included in CRAN
+ # Load a previous simulation
+ load("sim_df2.rda")
+```
+
+## Analyze the simulation
+
+```{r analyze}
 empirical_power = binom.test(sum(sim_df$pval <= 0.05), length(sim_df$pval))
 empirical_power$estimate
 empirical_power$conf.int
@@ -158,8 +168,10 @@ summary(sim_df$ve)
 summary(sim_df$nevents)
 ```
 
+## Conclusion
+
 The simulation provides an estimate of the empirical power to reject the
-proprotionality of the hazard assumption in this condition as
+proportionality of the hazard assumption in this condition as
 `r round(empirical_power$estimate*100,1)`% with a 95%CI of (
 `r round(empirical_power$conf.int[1]*100,1)`%,
 `r round(empirical_power$conf.int[2]*100,1)`% )

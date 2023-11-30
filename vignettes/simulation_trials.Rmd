@@ -24,8 +24,8 @@ We can use objects of the class SURVIVAL to simulate surviving times in
 clinical trials. We present one example in which we want to estimate the
 empirical power to detect significantly a vaccine efficacy.
 
-The empirical power is define as the percentage of times the p-value is
-equal or below 0.05.
+The empirical power is define as the percentage of times the p-value for the 
+coefficient that indicates the treatment is equal or below 0.05.
 
 ```{r setup}
 library(survobj)
@@ -46,7 +46,7 @@ Assumptions:
 -   The control group follows an exponential distribution with 40% of
     subjects having an event at time 12 months (365.25 days)
 
--   The simulated data is analized using Cox regression.
+-   The simulated data is analyzed using Cox regression.
 
 -   We estimate the empirical power as the percentage of the simulations
     where the p-value of the coefficient for the group is 0.05 or lower.
@@ -76,8 +76,11 @@ fail_control = 0.4
 # Define Object with exponential distribution for events in controls
 s_events <- s_exponential(fail = fail_control, t = ftime)
 
+```
 
 ## Simulation
+
+```{r simulation, eval= FALSE}
 set.seed(12345)
 
 # Define the group for the subjects
@@ -112,8 +115,18 @@ sim <- lapply(
 
 # Join all the simulations in a single data frame
 sim_df <- do.call(rbind, sim)
+```
 
-# Analyze the simulation
+
+```{r loadsimul, include=FALSE }
+ # The simulation takes to much time to be included in CRAN
+ # Load a previous simulation
+ load("sim_df.rda")
+```
+
+## Analyze the simulation
+
+```{r analyze}
 empirical_power = binom.test(sum(sim_df$pval <= 0.05), length(sim_df$pval))
 empirical_power$estimate
 empirical_power$conf.int
@@ -124,6 +137,8 @@ summary(sim_df$ve)
 # Distribution of the simulated number of events
 summary(sim_df$nevents)
 ```
+
+## Conclusion
 
 The simulation provides an estimate of the empirical power of 
 `r round(empirical_power$estimate*100,1)`% with a 95%CI of 

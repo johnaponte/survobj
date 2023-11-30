@@ -9,7 +9,7 @@
 Functions to generate objects that simulate survival times.
 }
 \author{
-\strong{Maintainer}: Aponte John \email{john.j.aponte@gmail.com} (\href{https://orcid.org/0000-0002-3014-3673}{ORCID})
+\strong{Maintainer}: Aponte John \email{john.j.aponte@gmail.com} (\href{https://orcid.org/0000-0002-3014-3673}{ORCID}) [copyright holder]
 
 }
 \keyword{internal}

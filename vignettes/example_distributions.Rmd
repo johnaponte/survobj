@@ -26,7 +26,7 @@ class SURVIVAL.
 
 The function `s_factory(s_family,...)` is a function that call the
 constructor of the family of distribution. Each family has it own set of
-parameters. As the factories implement polymorphic behaviour according
+parameters. As the factories implement polymorphic behavior according
 to the parameters given, it is not possible to partial match the name of
 the parameters and they need to be spell correctly. If an error on
 processing the parameters, the factory return a message with the set of
@@ -75,7 +75,7 @@ In addition, the following functions help to plot the distributions
 -   `ggplot_survival_random(SURVIVAL, timeto, subjects, nsim, alpha = 0.1)`
     produces a ggplot of Kaplan-Meier curve and Cumulative Hazard for
     `nsim` simulations for the a study with `subjects` number of
-    subjects. The optional paramerter `alpha` defines the transparency
+    subjects. The optional parameter `alpha` defines the transparency
     of each simulation in the graph. In addition of the simulations, the
     graph also present the calculated survival and cumulative hazard
     function of the distribution, to evaluate how good the simulations
