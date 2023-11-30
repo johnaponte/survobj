@@ -4,9 +4,18 @@
 \name{survobj-package}
 \alias{survobj}
 \alias{survobj-package}
-\title{survobj: Objects to simulate survival times}
+\title{survobj: Objects to Simulate Survival Times}
 \description{
-Functions to generate objects that simulate survival times.
+Generate objects that simulate survival times. Random values for the distributions are generated using the method described by Bender 2003 \url{https://epub.ub.uni-muenchen.de/id/eprint/1716}.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://johnaponte.github.io/survobj/}
+  \item \url{https://github.com/johnaponte/survobj}
+  \item Report bugs at \url{https://github.com/johnaponte/survobj/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Aponte John \email{john.j.aponte@gmail.com} (\href{https://orcid.org/0000-0002-3014-3673}{ORCID}) [copyright holder]

@@ -12,9 +12,10 @@ censor_time(censor_time, time)
 \arguments{
 \item{censor_time}{the time to censor}
 
-\item{time}{the time variable to censor}
+\item{time}{the time variable where the censor_time is applied}
 
-\item{event}{if there is an event at time}
+\item{event}{the variable with the event. It can be initialized in the
+call with a value for all times.}
 }
 \value{
 censored time or event
@@ -25,8 +26,8 @@ if censor_time < time, event is change to 0, otherwise not changed
 \details{
 if censor_time < time, time is changed to censor_time, otherwise no change
 
-Be careful and do not overwrite the time with censor time to not loose track
-of the events
+Be careful and do not overwrite the time variable with the censor time variable
+to not loose track of the events
 }
 \section{Functions}{
 \itemize{
@@ -36,7 +37,7 @@ of the events
 \examples{
 \dontshow{if ({FALSE}) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
-# Typical workflow on a simulation of survival time.
+# Typical workflow in a simulation of survival time.
 # Simulate time to event (sim_t_event)
 # and simulates the time to lost to follow up (tim_t_ltof)
 # the simulation time frame is 1, so everything after 1 is censored

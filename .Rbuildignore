@@ -2,3 +2,6 @@
 ^docs$
 ^pkgdown$
 ^\.github$
+^survobj.Rproj$
+^cran-comments.md$
+^LICENSE.md$

@@ -18,7 +18,7 @@
 #' _`fail`_ and _`t`_ and _`shape`_ for the proportion failing (events) at time t and shape.
 #'
 #'
-#' {scale = -log(surv) x shape/(exp(shape x t)-1)}
+#' \eqn{scale = -log(surv) x shape/(exp(shape x t)-1)}
 #'
 #' The parameters should be spell correctly as partial matching is not available
 #'

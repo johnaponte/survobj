@@ -18,11 +18,11 @@
 #'
 #' _`intercept`_ and _`scale`_ for the parameters returned by `survreg(.., dist = "weibull")` models.
 #'
-#' {scale = -log(surv)/(t^shape)}
+#' \eqn{scale = -log(surv)/(t^shape)}
 #'
-#' {scale = -log((1-fail))/(t^shape)}
+#' \eqn{scale = -log((1-fail))/(t^shape)}
 #'
-#' {scale = exp(-intercept/scale)} and {shape = 1/scale}
+#' \eqn{scale = exp(-intercept/scale)} and \eqn{shape = 1/scale}
 #'
 #' The parameters should be spell correctly as partial matching is not available
 #'
