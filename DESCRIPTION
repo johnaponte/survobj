@@ -1,6 +1,6 @@
 Package: survobj
 Title: Objects to simulate survival times
-Version: 0.2
+Version: 0.3
 Authors@R: person(
     "Aponte", 
     "John", 
