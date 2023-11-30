@@ -372,7 +372,7 @@ compare_survival <- function(SURVIVAL1, SURVIVAL2, timeto, main) {
     add = TRUE)
 
   plot(
-    function(x){SURVIVAL1$hfx(x) / SURVIVAL2$hfx(x)},
+    function(x){SURVIVAL2$hfx(x) / SURVIVAL1$hfx(x)},
     from = 0,
     to = timeto,
     main = "Hazard Ratio",
@@ -381,7 +381,7 @@ compare_survival <- function(SURVIVAL1, SURVIVAL2, timeto, main) {
   )
 
   plot(
-    function(x){SURVIVAL1$Cum_Hfx(x) / SURVIVAL2$Cum_Hfx(x)},
+    function(x){SURVIVAL2$Cum_Hfx(x) / SURVIVAL1$Cum_Hfx(x)},
     from = 0,
     to = timeto,
     main = "Ratio of Cumulative hazard",
@@ -390,7 +390,7 @@ compare_survival <- function(SURVIVAL1, SURVIVAL2, timeto, main) {
   )
 
   plot(
-    function(x){SURVIVAL1$Cum_Hfx(x) - SURVIVAL2$Cum_Hfx(x)},
+    function(x){SURVIVAL2$Cum_Hfx(x) - SURVIVAL1$Cum_Hfx(x)},
     from = 0,
     to = timeto,
     main = "Difference in Cumulative hazard",

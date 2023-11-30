@@ -29,7 +29,6 @@ equal or below 0.05.
 
 ```{r setup}
 library(survobj)
-library(ggplot2)
 library(survival)
 ```
 
@@ -54,7 +53,7 @@ Assumptions:
     We present the empirical power and the distribution of the total
     number of events and the estimated vaccine efficacy
 
-```{r simulation 1, fig.align='center', fig.width= 7, fig.height=5}
+```{r simulation1, fig.align='center', fig.width= 7, fig.height=5}
 
 # Number of simulations
 nsim = 1000

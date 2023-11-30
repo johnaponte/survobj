@@ -1,0 +1,167 @@
+---
+title: "Simulation trials (2)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Simulation trials (2)}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 72
+bibliography: references.bib
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+We can use objects of the class SURVIVAL to simulate surviving times in
+clinical trials. We present in this example the evaluation of empirical
+power to detect non proportionality of the hazard.
+
+In this example, simulation of the surival times in the control group
+follows a Weibull distribution with shape 0.8 (negative) and a failure
+rate of 0.6 at month 12. The experimental group have a vaccine efficacy
+of 80% during the first month, but it decrease linearly to 10% at month
+12. We simulate survival times in the experimental group using a
+piecewise exponential distribution with changes each month to follow the
+linear decrease of vaccine efficacy.
+
+The empirical power is define as the percentage the test for
+non-proportionality p-value is lower or equal than 0.05
+
+```{r setup}
+library(survobj)
+library(survival)
+```
+
+## Empirical power to evaluate non proportionality of the hazard
+
+Assumptions:
+
+-   We made 1000 simulations
+
+-   There are 250 participants in each group, one group is control and
+    the other is vaccinated
+
+-   The vaccine efficacy is 90% during first month, and it decrease
+    linearly to 15% at the end of month12
+
+-   The control group follows an Weibull distribution with shape 0.8 and
+    a failure rate of 0.4 at month 12.
+
+-   The simulated data is analized using Cox regression, and evaluate
+    the proportionality of the hazard assumption following the method
+    described by @grambsch1994 and implemented in the `survival` package
+    with the function `cox.zph()`
+
+-   We estimate the empirical power as the percentage of the simulations
+    where the p-value of the coefficient for the group is 0.05 or lower.
+    We present the empirical power and the distribution of the total
+    number of events and the estimated vaccine efficacy
+
+```{r simulation1, fig.align='center', fig.width= 7, fig.height=5}
+
+# Number of simulations
+nsim = 1000
+
+# Participants in each group
+nsubjects = 250
+
+# Follow-up time
+ftime <- 12
+
+# Vaccine efficacy
+ve_start = 80
+ve_end = 10
+
+# Hazard ratio
+hr <- function(t){
+  vm <- ve_start - (ve_start-ve_end)/(ftime-1)*(t-1)
+  1-vm/100
+}
+
+# Fail events in controls 
+fail_control = 0.4
+
+# Define Object with weibull distribution for events in controls
+s_ctrl <- s_weibull(fail = fail_control, t = ftime, shape = 0.8)
+
+
+# Define Object with Picewise exponential distribution in vaccinated
+
+s_vacc <- s_piecewise(
+            breaks = c(1:12,Inf), 
+            hazards = c(s_ctrl$hfx(1:12)*hr(1:12), s_ctrl$hfx(12)*hr(12)))
+
+```
+
+The following graph compare the two distributions
+
+```{r simulation2, fig.align='center', fig.width= 7, fig.height=5}
+compare_survival(s_ctrl, s_vacc, timeto = 12)
+```
+
+```{r simulation3}
+
+## Simulation
+set.seed(12345)
+
+# Define the group for the subjects
+group = c(rep(0, nsubjects), rep(1, nsubjects))
+    
+
+# Loop    
+sim <- lapply(
+  1:nsim,
+  function(x){
+    # Simulate survival times for event
+    # Using one distribution for the controls and other for the vaccinated
+    sim_time_event <- c(s_ctrl$rsurv(nsubjects), s_vacc$rsurv(nsubjects))
+    
+    # Censor events at end of follow-up.
+    cevent <- censor_event(censor_time = ftime, time = sim_time_event, event = 1)
+    ctime <- censor_time(censor_time = ftime, time = sim_time_event)
+    
+    # Analyze the data using cox regression
+    reg <- coxph(Surv(ctime, cevent)~ group)
+    sreg <- summary(reg)
+    phz <- cox.zph(reg)
+    
+    # Collect the information
+    pval = phz$table["group","p"]
+    ve = (1- exp(sreg$coefficients["group","coef"]))*100
+    nevents = sreg$nevent
+    
+    # return values
+    return(data.frame(simid = x, pval,ve, nevents))
+  }
+)
+
+# Join all the simulations in a single data frame
+sim_df <- do.call(rbind, sim)
+
+# Analyze the simulation
+empirical_power = binom.test(sum(sim_df$pval <= 0.05), length(sim_df$pval))
+empirical_power$estimate
+empirical_power$conf.int
+
+# Distribution of the simulated VE estimated under PH assumpation
+summary(sim_df$ve)
+
+# Distribution of the simulated number of events
+summary(sim_df$nevents)
+```
+
+The simulation provides an estimate of the empirical power to reject the
+proprotionality of the hazard assumption in this condition as
+`r round(empirical_power$estimate*100,1)`% with a 95%CI of (
+`r round(empirical_power$conf.int[1]*100,1)`%,
+`r round(empirical_power$conf.int[2]*100,1)`% )
+
+## References
