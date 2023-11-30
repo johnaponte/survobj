@@ -39,7 +39,7 @@ Assumptions:
 
 -   We made 1000 simulations
 
--   There are 300 participants in each group, one group is control and
+-   There are 250 participants in each group, one group is control and
     the other is vaccinated
 
 -   The vaccine efficacy is 40% (i.e the hazard ratio is 1-40/100 = 0.6)
@@ -47,16 +47,12 @@ Assumptions:
 -   The control group follows an exponential distribution with 40% of
     subjects having an event at time 12 months (365.25 days)
 
--   There is equal probability in both groups to lost to follow-up and
-    do not finalize the expected follow-up time. It is expected that 5%
-    of the subjects are lost to follow-up
-
 -   The simulated data is analized using Cox regression.
 
 -   We estimate the empirical power as the percentage of the simulations
     where the p-value of the coefficient for the group is 0.05 or lower.
-    We present the empirical power and the distribution of estimated
-    vaccine efficacy
+    We present the empirical power and the distribution of the total
+    number of events and the estimated vaccine efficacy
 
 ```{r simulation 1, fig.align='center', fig.width= 7, fig.height=5}
 
@@ -64,7 +60,7 @@ Assumptions:
 nsim = 1000
 
 # Participants in each group
-nsubjects = 300
+nsubjects = 250
 
 # Vaccine efficacy
 ve = 40
@@ -78,16 +74,12 @@ ftime <- 12
 # Fail events in controls 
 fail_control = 0.4
 
-# Lost to follow up
-fail_lof = 0.05
-
 # Define Object with exponential distribution for events in controls
 s_events <- s_exponential(fail = fail_control, t = ftime)
 
-# Define Object with exponential distribution for lost to follow-up
-s_lof <- s_exponential(fail = fail_lof, t = ftime)
 
 ## Simulation
+set.seed(12345)
 
 # Define the group for the subjects
 group = c(rep(0, nsubjects), rep(1, nsubjects))
@@ -102,26 +94,20 @@ sim <- lapply(
     # Simulate survival times for event
     sim_time_event <- s_events$rsurvhr(hr_vector)
     
-    # Simulate survival times for lost to follow-up
-    sim_time_lof <- s_lof$rsurv(length(group))
-    
-    # Censor events at end of follow-up
+    # Censor events at end of follow-up.
     cevent <- censor_event(censor_time = ftime, time = sim_time_event, event = 1)
     ctime <- censor_time(censor_time = ftime, time = sim_time_event)
     
-    # Censor events due to lost to follow-up
-    event <- censor_event(censor_time = sim_time_lof, time = ctime, event = cevent)
-    timeto <- censor_time(censor_time = sim_time_lof, time = ctime)
-    
     # Analyze the data using cox regression
-    reg <- summary(coxph(Surv(timeto, event)~ group))
+    reg <- summary(coxph(Surv(ctime, cevent)~ group))
     
     # Collect the information
     pval = reg$coefficients["group","Pr(>|z|)"]
     ve = (1- exp(reg$coefficients["group","coef"]))*100
+    nevents = reg$nevent
     
     # return values
-    return(data.frame(simid = x, pval,ve))
+    return(data.frame(simid = x, pval,ve, nevents))
   }
 )
 
@@ -129,9 +115,25 @@ sim <- lapply(
 sim_df <- do.call(rbind, sim)
 
 # Analyze the simulation
-empirical_power = mean(sim_df$pval <= 0.05)
-empirical_power
+empirical_power = binom.test(sum(sim_df$pval <= 0.05), length(sim_df$pval))
+empirical_power$estimate
+empirical_power$conf.int
 
-# Distribution of the estimated VEs
-plot(density(sim_df$ve, adjust = 2), main = "Simulated VE")
+# Distribution of the simulated VEs}
+summary(sim_df$ve)
+
+# Distribution of the simulated number of events
+summary(sim_df$nevents)
 ```
+
+The simulation provides an estimate of the empirical power of 
+`r round(empirical_power$estimate*100,1)`% with a 95%CI of 
+(
+`r round(empirical_power$conf.int[1]*100,1)`%,
+`r round(empirical_power$conf.int[2]*100,1)`%
+)
+
+As reference, the output of power calculation using PASS 2021(R) using
+the same parameters
+
+![](report_pass.png)
