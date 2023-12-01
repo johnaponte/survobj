@@ -129,11 +129,11 @@ s_weibull <- function(...) {
     return(.factory_weibull(scale, shape))
   }
 
-  cat("\nError defining s_weibull  object \n")
-  cat("Valid parameters are: \n")
-  cat("scale and shape: for the canonical parameters of the distribution, or\n")
-  cat("surv, t and shape: for the surviving proportion (no events) at time t and shape, or\n")
-  cat("fail, t and shape: for the failure proportion (events) at time t and shape, or \n")
-  cat("intercept and logscale: for values from a surv regression\n")
-  stop("Error in parameters")
-}
+  message(
+    "Valid parameters to define a Weibull distribution are: \n",
+    "scale and shape: for the canonical parameters of the distribution, or\n",
+    "surv, t and shape: for the surviving proportion (no events) at time t and shape, or\n",
+    "fail, t and shape: for the failure proportion (events) at time t and shape, or\n",
+    "intercept and scale: for values from a survreg regression\n")
+  stop("Not valid parameters")
+  }
