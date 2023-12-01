@@ -6,3 +6,6 @@
 ^cran-comments.md$
 ^LICENSE.md$
 ^revdep$
+^CRAN-SUBMISSION$
+^.*\.Rproj$
+^\.Rproj\.user$

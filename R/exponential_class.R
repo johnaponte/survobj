@@ -16,7 +16,9 @@
 #'
 #' _`fail`_ and _`t`_ for the proportion failing (events) at time t
 #'
-#' lambda is defined as   \eqn{lambda = -log(surv) /t} or \eqn{lambda = -log((1-fail)) /t}
+#' lambda = -log(surv)/t
+#'
+#' lambda = -log(1-fail)/t
 #'
 #' The parameters should be spell correctly as partial matching is not available
 #'
