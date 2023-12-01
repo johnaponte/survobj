@@ -85,7 +85,8 @@ options are available:</p>
 <p><em><code>scale</code></em> and <em><code>shape</code></em> to specify the canonical parameter of the distribution, or</p>
 <p><em><code>surv</code></em>, <em><code>t</code></em> and <em><code>shape</code></em>  for the proportion surviving (no events) at time t and shape, or</p>
 <p><em><code>fail</code></em> and <em><code>t</code></em> and <em><code>shape</code></em> for the proportion failing (events) at time t and shape.</p>
-<p>scale = -log(surv) x shape/(exp(shape x t)-1)</p>
+<p>scale = -log(surv)·shape/(exp(shape·t))</p>
+<p>scale = -log(1-fail)·shape/(exp(shape·t))</p>
 <p>The parameters should be spell correctly as partial matching is not available</p>
     </div>
 
