@@ -1,8 +1,13 @@
 Version: 1.0
 <<<<<<< HEAD
+<<<<<<< HEAD
 Date: 2023-12-01 16:57:02 UTC
 SHA: 8b201315cde517b17eda4d96b9f3d8274b5b842d
 =======
 Date: 2023-11-30 22:38:44 UTC
 SHA: 6d6ae57760ee4af1307e5b75030bc37bfd2269ee
 >>>>>>> parent of 8b20131... Address comments from CRAN
+=======
+Date: 2023-12-01 16:57:02 UTC
+SHA: 8b201315cde517b17eda4d96b9f3d8274b5b842d
+>>>>>>> 9d931cd... Accepted by CRAN
