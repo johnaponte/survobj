@@ -30,9 +30,11 @@ options are available:
 
 \emph{\code{intercept}} and \emph{\code{scale}} for the parameters returned by \code{survreg(.., dist = "weibull")} models.
 
-scale = -log(surv)/(t^shape)
+{scale = -log(surv)/(t^shape)}
 
-scale = -log(1-fail)/(t^shape)
+{scale = -log((1-fail))/(t^shape)}
+
+{scale = exp(-intercept/scale)} and {shape = 1/scale}
 
 The parameters should be spell correctly as partial matching is not available
 }

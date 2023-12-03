@@ -182,12 +182,12 @@ s_piecewise <- function(...) {
     stopifnot("Unsucess scale" = abs(exp(-cumH) - (1-params$fail) ) < 1e-12)
     return(.factory_piecewise(params$breaks, hazards))
   }
-  message(
-    "Valid parameters to define a Piecewise Exponential distribution are: \n",
-    "breaks and hazards: for the exponential hazard until each break, or\n",
-    "surv, breaks and segments : for the surviving proportion (no events) at the last break, or\n",
-    "fail, breaks and segments: for the failure proportion (events) at the last finite break \n")
-  stop("Not valid parameters")
+  cat("\nError defining s_piecewise object \n")
+  cat("Valid parameters are: \n")
+  cat("breaks and hazards: for the exponential hazard until each break, or\n")
+  cat("surv, breaks and segments : for the surviving proportion (no events) at the last break, or\n")
+  cat("fail, breaks and segments: for the failure proportion (events) at the last finite break \n")
+  stop("Error in parameters")
 }
 
 

@@ -120,12 +120,12 @@ s_gompertz <- function(...) {
     return(.factory_gompertz(scale, params$shape))
   }
 
-  message(
-    "Valid parameters to define a Gompertz distribution are: \n",
-    "scale and shape: for the canonical parameters of the distribution, or\n",
-    "surv, t and shape: for the surviving proportion (no events) at time t and shape, or\n",
-    "fail, t and shape: for the failure proportion (events) at time t and shape, or \n")
-  stop("Not valid parameters")
+  cat("\nError defining s_weibull  object \n")
+  cat("Valid parameters are: \n")
+  cat("scale and shape: for the canonical parameters of the distribution, or\n")
+  cat("surv, t and shape: for the surviving proportion (no events) at time t and shape, or\n")
+  cat("fail, t and shape: for the failure proportion (events) at time t and shape, or \n")
+  stop("Error in parameters")
 }
 
 

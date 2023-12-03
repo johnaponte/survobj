@@ -6,7 +6,7 @@
 \alias{survobj-package}
 \title{survobj: Objects to Simulate Survival Times}
 \description{
-Generate objects that simulate survival times. Random values for the distributions are generated using the method described by Bender (2003) \url{https://epub.ub.uni-muenchen.de/id/eprint/1716}.
+Generate objects that simulate survival times. Random values for the distributions are generated using the method described by Bender 2003 \url{https://epub.ub.uni-muenchen.de/id/eprint/1716}.
 }
 \seealso{
 Useful links:
