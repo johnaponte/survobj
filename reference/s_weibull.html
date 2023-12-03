@@ -87,7 +87,8 @@ options are available:</p>
 <p><em><code>fail</code></em>, <em><code>t</code></em> and <em><code>shape</code></em> for the proportion failing (events) at time t and the shape parameter or</p>
 <p><em><code>intercept</code></em> and <em><code>scale</code></em> for the parameters returned by <code>survreg(.., dist = "weibull")</code> models.</p>
 <p>scale = -log(surv)/(t^shape)</p>
-<p>scale = -log(1-fail)/(t^shape)</p>
+<p>scale = -log((1-fail))/(t^shape)</p>
+<p>scale = exp(-intercept/scale) and shape = 1/scale</p>
 <p>The parameters should be spell correctly as partial matching is not available</p>
     </div>
 
