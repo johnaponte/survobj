@@ -28,7 +28,9 @@ options are available:
 
 \emph{\code{fail}} and \emph{\code{t}} and \emph{\code{shape}} for the proportion failing (events) at time t and shape.
 
-{scale = -log(surv) x shape/(exp(shape x t)-1)}
+scale = -log(surv)·shape/(exp(shape·t))
+
+scale = -log(1-fail)·shape/(exp(shape·t))
 
 The parameters should be spell correctly as partial matching is not available
 }

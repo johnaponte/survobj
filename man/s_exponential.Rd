@@ -28,7 +28,9 @@ options are available:
 
 \emph{\code{fail}} and \emph{\code{t}} for the proportion failing (events) at time t
 
-lambda is defined as   {lambda = -log(surv) /t} or {lambda = -log((1-fail)) /t}
+lambda = -log(surv)/t
+
+lambda = -log(1-fail)/t
 
 The parameters should be spell correctly as partial matching is not available
 }

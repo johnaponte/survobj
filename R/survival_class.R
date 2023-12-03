@@ -175,6 +175,7 @@ rsurvhr <- function(SURVIVAL, hr){
 plot_survival <- function(SURVIVAL, timeto, main) {
   if (missing(main)) main = NA_character_
   oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(mfrow=c(2,2))
   plot(
     SURVIVAL$sfx,
@@ -313,6 +314,7 @@ ggplot_survival_random <- function(SURVIVAL, timeto, subjects, nsim, alpha = 0.1
 compare_survival <- function(SURVIVAL1, SURVIVAL2, timeto, main) {
   if (missing(main)) main = NA_character_
   oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   col1 = 2
   col2 = 3
   par(mfrow=c(2,3))

@@ -113,10 +113,10 @@ s_exponential <- function(...) {
     lambda = -log(1 -params$fail)/params$t
     return(.factory_exponential(lambda))
   }
-  cat("\nError defining s_exponential object \n")
-  cat("Valid parameters are: \n")
-  cat("lambda: for the canonical parameter of the distribution, or\n")
-  cat("surv, t: for the surviving proportion (no events) at time t, or\n")
-  cat("fail, t: for the failure proportion (events) at time t \n")
-  stop("Error in parameters")
+  message(
+    "Valid parameters to define a Exponential distribution are: \n",
+    "lambda: for the canonical parameter of the distribution, or\n",
+    "surv, t: for the surviving proportion (no events) at time t, or\n",
+    "fail, t: for the failure proportion (events) at time t \n")
+  stop("Not valid parameters")
 }
