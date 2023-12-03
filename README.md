@@ -46,6 +46,8 @@ See the vignettes for examples on the use on simulation of survival data.
 
 ## Installation
 
+The stable version can be instaled from CRAN
+
 To install the development version of this package from github use:
 
 `devtools::install_github("johnaponte/survobj", build_manual = T, build_vignettes = T)`
