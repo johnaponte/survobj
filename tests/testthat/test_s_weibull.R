@@ -60,6 +60,7 @@ test_that(
 
 
    # test parameters from survreg
+   reps = 1000
    intercept = 2
    scale = 1.5
    yobj <- s_weibull(intercept = intercept, scale = scale)

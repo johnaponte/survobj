@@ -35,6 +35,8 @@ Define the last break point as \code{Inf} to fully define the distribution, othe
 an error will be produce if function after the last break is requested
 
 The parameters should be spell correctly as partial matching is not available
+
+https://square.github.io/pysurvival/models/simulations_theory.html
 }
 
 \examples{

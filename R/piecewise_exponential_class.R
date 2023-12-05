@@ -26,6 +26,8 @@
 #'
 #' The parameters should be spell correctly as partial matching is not available
 #'
+#' https://square.github.io/pysurvival/models/simulations_theory.html
+#'
 #' @param ... Parameters to define the distribution. See the Parameters for details
 #' @return a SURVIVAL object of the piecewise exponential distribution family. See the
 #' documentation of `s_factory` for the methods available for SURVIVAL objects
