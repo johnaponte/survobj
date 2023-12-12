@@ -26,7 +26,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/example_distributions.html">Defining and using objects of class SURVIVAL</a>
     <a class="dropdown-item" href="../articles/simulation_trials.html">Simulating trials with survival endpoints</a>
-    <a class="dropdown-item" href="../articles/simulation_trials2.html">Simulation trials (2)</a>
+    <a class="dropdown-item" href="../articles/simulation_trials2.html">Simulation trials: non-proportional hazard</a>
   </div>
 </li>
 <li class="nav-item">
@@ -94,24 +94,21 @@ an error will be produce if function after the last break is requested</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">s_piecewise</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, hazards <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">0.6</span>,<span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Last break is not Inf. The distribution is not fully defined</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">s_piecewise</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="cn">Inf</span><span class="op">)</span>, hazards <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">0.6</span>,<span class="fl">0.5</span>,<span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SURVIVAL object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Distribution:  PIECEWISE </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> breaks : 1 2 3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hazards : 0.5 0.6 0.5 </span>
-<span class="r-in"><span><span class="fu">s_piecewise</span><span class="op">(</span>surv <span class="op">=</span> <span class="fl">0.4</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, segments <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Last break is not Inf. The distribution is not fully defined</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> breaks : 1 2 3 Inf </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hazards : 0.5 0.6 0.5 0.1 </span>
+<span class="r-in"><span><span class="fu">s_piecewise</span><span class="op">(</span>surv <span class="op">=</span> <span class="fl">0.4</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="cn">Inf</span><span class="op">)</span>, segments <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SURVIVAL object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Distribution:  PIECEWISE </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> breaks : 1 2 3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hazards : 0.2290727 0.4581454 0.2290727 </span>
-<span class="r-in"><span><span class="fu">s_piecewise</span><span class="op">(</span>fail <span class="op">=</span> <span class="fl">0.6</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, segments <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Last break is not Inf. The distribution is not fully defined</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> breaks : 1 2 3 Inf </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hazards : 0.2290727 0.4581454 0.2290727 0.4581454 </span>
+<span class="r-in"><span><span class="fu">s_piecewise</span><span class="op">(</span>fail <span class="op">=</span> <span class="fl">0.6</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="cn">Inf</span><span class="op">)</span>, segments <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SURVIVAL object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Distribution:  PIECEWISE </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> breaks : 1 2 3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hazards : 0.2290727 0.4581454 0.2290727 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> breaks : 1 2 3 Inf </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hazards : 0.2290727 0.4581454 0.2290727 0.4581454 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

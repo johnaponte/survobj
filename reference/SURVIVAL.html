@@ -26,7 +26,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/example_distributions.html">Defining and using objects of class SURVIVAL</a>
     <a class="dropdown-item" href="../articles/simulation_trials.html">Simulating trials with survival endpoints</a>
-    <a class="dropdown-item" href="../articles/simulation_trials2.html">Simulation trials (2)</a>
+    <a class="dropdown-item" href="../articles/simulation_trials2.html">Simulation trials: non-proportional hazard</a>
   </div>
 </li>
 <li class="nav-item">
@@ -71,11 +71,23 @@
 <span></span>
 <span><span class="fu">rsurvhr</span><span class="op">(</span><span class="va">SURVIVAL</span>, <span class="va">hr</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">rsurvhr</span><span class="op">(</span><span class="va">SURVIVAL</span>, <span class="va">hr</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">rsurvaft</span><span class="op">(</span><span class="va">SURVIVAL</span>, <span class="va">aft</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">rsurvah</span><span class="op">(</span><span class="va">SURVIVAL</span>, <span class="va">aft</span>, <span class="va">hr</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">plot_survival</span><span class="op">(</span><span class="va">SURVIVAL</span>, <span class="va">timeto</span>, <span class="va">main</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ggplot_survival_random</span><span class="op">(</span><span class="va">SURVIVAL</span>, <span class="va">timeto</span>, <span class="va">subjects</span>, <span class="va">nsim</span>, alpha <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">compare_survival</span><span class="op">(</span><span class="va">SURVIVAL1</span>, <span class="va">SURVIVAL2</span>, <span class="va">timeto</span>, <span class="va">main</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">compare_survival</span><span class="op">(</span><span class="va">SURVIVAL1</span>, <span class="va">SURVIVAL2</span>, <span class="va">timeto</span>, <span class="va">main</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ggplot_survival_hr</span><span class="op">(</span><span class="va">SURVIVAL</span>, <span class="va">hr</span>, <span class="va">timeto</span>, <span class="va">subjects</span>, <span class="va">nsim</span>, alpha <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ggplot_survival_aft</span><span class="op">(</span><span class="va">SURVIVAL</span>, <span class="va">aft</span>, <span class="va">timeto</span>, <span class="va">subjects</span>, <span class="va">nsim</span>, alpha <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ggplot_survival_ah</span><span class="op">(</span><span class="va">SURVIVAL</span>, <span class="va">aft</span>, <span class="va">hr</span>, <span class="va">timeto</span>, <span class="va">subjects</span>, <span class="va">nsim</span>, alpha <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -97,11 +109,15 @@
 
 
 <dt>hr</dt>
-<dd><p>a vector with hazard rates.</p></dd>
+<dd><p>hazard ratio</p></dd>
+
+
+<dt>aft</dt>
+<dd><p>accelerated failure time</p></dd>
 
 
 <dt>timeto</dt>
-<dd><p>timeto used in the graphs</p></dd>
+<dd><p>plot the distribution up to timeto</p></dd>
 
 
 <dt>main</dt>
@@ -109,7 +125,7 @@
 
 
 <dt>subjects</dt>
-<dd><p>number of subjects to simulate in each simulation</p></dd>
+<dd><p>number of subjects per group to simulate in each simulation</p></dd>
 
 
 <dt>nsim</dt>
@@ -144,9 +160,15 @@ cumulative hazard, inverse of the cumulative hazard, a random draw or a plot</p>
 <li><p><code>invCum_Hfx()</code>: Inverse of the Cumulative Hazard function</p></li>
 <li><p><code>rsurv()</code>: Generate random values from the distribution</p></li>
 <li><p><code>rsurvhr()</code>: Generate random values from the distribution under proportional hazard ratios</p></li>
+<li><p><code>rsurvhr()</code>: Generate random values from the distribution under proportional hazard ratios</p></li>
+<li><p><code>rsurvaft()</code>: Generate random values from the distribution under accelerated failure time ratios</p></li>
+<li><p><code>rsurvah()</code>: Generate random values from the distribution under accelerated hazard ratios</p></li>
 <li><p><code>plot_survival()</code>: Plot of the survival functions</p></li>
 <li><p><code>ggplot_survival_random()</code>: ggplot of the simulation of survival times</p></li>
 <li><p><code>compare_survival()</code>: Compare graphically two survival distributions</p></li>
+<li><p><code>ggplot_survival_hr()</code>: ggplot of the simulation of survival times with hazard ratios</p></li>
+<li><p><code>ggplot_survival_aft()</code>: ggplot of the simulation of survival times with accelerated time failures</p></li>
+<li><p><code>ggplot_survival_ah()</code>: ggplot of the simulation of survival times with accelerated hazard</p></li>
 </ul></div>
 
     <div class="section level2">
@@ -168,11 +190,16 @@ cumulative hazard, inverse of the cumulative hazard, a random draw or a plot</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draw one random survival time from the distribution</span></span></span>
 <span class="r-in"><span><span class="fu">rsurv</span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.4343</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7329355</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Draw one random survival time from the distribution, with hazard ratio 0.5</span></span></span>
+<span class="r-in"><span><span class="co"># Draw one random survival time from the distribution under Proportional</span></span></span>
+<span class="r-in"><span><span class="co"># hazard, Accelerated time failure or Accelerated hazard.</span></span></span>
 <span class="r-in"><span><span class="fu">rsurvhr</span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, hr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 19.36317</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 14.38623</span>
+<span class="r-in"><span><span class="fu">rsurvaft</span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, aft <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12.92626</span>
+<span class="r-in"><span><span class="fu">rsurvah</span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, aft <span class="op">=</span> <span class="fl">2</span>, hr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 14.55077</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot the survival functions</span></span></span>
 <span class="r-in"><span><span class="fu">plot_survival</span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, timeto <span class="op">=</span> <span class="fl">2</span>, main <span class="op">=</span> <span class="st">"Example of Weibull distribution"</span> <span class="op">)</span></span></span>
