@@ -7,9 +7,14 @@
 \alias{invCum_Hfx}
 \alias{rsurv}
 \alias{rsurvhr}
+\alias{rsurvaft}
+\alias{rsurvah}
 \alias{plot_survival}
 \alias{ggplot_survival_random}
 \alias{compare_survival}
+\alias{ggplot_survival_hr}
+\alias{ggplot_survival_aft}
+\alias{ggplot_survival_ah}
 \title{Functions for SURVIVAL objects}
 \usage{
 sfx(SURVIVAL, t)
@@ -24,11 +29,23 @@ rsurv(SURVIVAL, n)
 
 rsurvhr(SURVIVAL, hr)
 
+rsurvhr(SURVIVAL, hr)
+
+rsurvaft(SURVIVAL, aft)
+
+rsurvah(SURVIVAL, aft, hr)
+
 plot_survival(SURVIVAL, timeto, main)
 
 ggplot_survival_random(SURVIVAL, timeto, subjects, nsim, alpha = 0.1)
 
 compare_survival(SURVIVAL1, SURVIVAL2, timeto, main)
+
+ggplot_survival_hr(SURVIVAL, hr, timeto, subjects, nsim, alpha = 0.1)
+
+ggplot_survival_aft(SURVIVAL, aft, timeto, subjects, nsim, alpha = 0.1)
+
+ggplot_survival_ah(SURVIVAL, aft, hr, timeto, subjects, nsim, alpha = 0.1)
 }
 \arguments{
 \item{SURVIVAL}{a SURVIVAL object}
@@ -39,13 +56,15 @@ compare_survival(SURVIVAL1, SURVIVAL2, timeto, main)
 
 \item{n}{number of observations}
 
-\item{hr}{a vector with hazard rates.}
+\item{hr}{hazard ratio}
 
-\item{timeto}{timeto used in the graphs}
+\item{aft}{accelerated failure time}
+
+\item{timeto}{plot the distribution up to timeto}
 
 \item{main}{title of the graph}
 
-\item{subjects}{number of subjects to simulate in each simulation}
+\item{subjects}{number of subjects per group to simulate in each simulation}
 
 \item{nsim}{number of simulations}
 
@@ -76,11 +95,23 @@ All the SURVIVAL objects have access to the functions described here
 
 \item \code{rsurvhr()}: Generate random values from the distribution under proportional hazard ratios
 
+\item \code{rsurvhr()}: Generate random values from the distribution under proportional hazard ratios
+
+\item \code{rsurvaft()}: Generate random values from the distribution under accelerated failure time ratios
+
+\item \code{rsurvah()}: Generate random values from the distribution under accelerated hazard ratios
+
 \item \code{plot_survival()}: Plot of the survival functions
 
 \item \code{ggplot_survival_random()}: ggplot of the simulation of survival times
 
 \item \code{compare_survival()}: Compare graphically two survival distributions
+
+\item \code{ggplot_survival_hr()}: ggplot of the simulation of survival times with hazard ratios
+
+\item \code{ggplot_survival_aft()}: ggplot of the simulation of survival times with accelerated time failures
+
+\item \code{ggplot_survival_ah()}: ggplot of the simulation of survival times with accelerated hazard
 
 }}
 \examples{
@@ -98,8 +129,11 @@ invCum_Hfx(SURVIVAL = obj, H = 0.8)
 # Draw one random survival time from the distribution
 rsurv(SURVIVAL = obj, n = 1)
 
-# Draw one random survival time from the distribution, with hazard ratio 0.5
+# Draw one random survival time from the distribution under Proportional
+# hazard, Accelerated time failure or Accelerated hazard.
 rsurvhr(SURVIVAL = obj, hr = 0.5)
+rsurvaft(SURVIVAL = obj, aft = 2)
+rsurvah(SURVIVAL = obj, aft = 2, hr = 0.5)
 
 # Plot the survival functions
 plot_survival(SURVIVAL = obj, timeto = 2, main = "Example of Weibull distribution" )

@@ -71,6 +71,19 @@ s_exponential <- function(...) {
           stopifnot("hr must be positive numbers > 0" = all(hr > 0))
           # Following Bender, Augustin and Blettner 2005
           iCum_Hfx(-log(runif(length(hr)))/hr)
+        },
+        rsurvaft = function(aft){
+          stopifnot("aft must be numeric" = is.numeric(aft))
+          stopifnot("aft must be positive numbers > 0" = all(aft > 0))
+          iCum_Hfx(-log(runif(length(aft))))*aft
+        },
+        rsurvah = function(aft,hr){
+          stopifnot("aft must be numeric" = is.numeric(aft))
+          stopifnot("hr must be numeric" = is.numeric(hr))
+          stopifnot("aft and hr must be of the same length" = length(aft)==length(hr) )
+          stopifnot("aft must be positive numbers > 0" = all(aft > 0))
+          stopifnot("hr must be positive numbers > 0" = all(hr > 0))
+          iCum_Hfx(-log(runif(length(aft)))/hr)*aft
         }
       ),
       class = c("SURVIVAL")

@@ -34,18 +34,22 @@
 #' @importFrom stats uniroot
 #' @export
 #' @examples
-#' s_piecewise(breaks = c(1,2,3), hazards = c(0.5,0.6,0.5))
-#' s_piecewise(surv = 0.4, breaks = c(1,2,3), segments = c(1,2,1))
-#' s_piecewise(fail = 0.6, breaks = c(1,2,3), segments = c(1,2,1))
+#' s_piecewise(breaks = c(1,2,3,Inf), hazards = c(0.5,0.6,0.5,0.1))
+#' s_piecewise(surv = 0.4, breaks = c(1,2,3,Inf), segments = c(1,2,1,2))
+#' s_piecewise(fail = 0.6, breaks = c(1,2,3,Inf), segments = c(1,2,1,2))
 s_piecewise <- function(...) {
   params <- list(...)
   nparam <- names(params)
 
   # This function is the factory of the class
   .factory_piecewise <- function(breaks, hazards) {
-    ntimes = length(breaks)
-    maxfinit <-  max(breaks[!is.infinite(breaks)])
-    if (is.finite(breaks[ntimes])) {
+    maxfinitb <- which(breaks == max(breaks[is.finite(breaks)]))
+    dtimes <- c(breaks[1],breaks[2:maxfinitb]-breaks[1:(maxfinitb-1)])
+    chazards <- c(0,dtimes*hazards[1:maxfinitb])
+    cumhazards<-c(cumsum(chazards))
+    tbreaks <- c(0, breaks[1:maxfinitb])
+
+    if (is.finite(breaks[length(breaks)])) {
       warning("Last break is not Inf. The distribution is not fully defined")
     }
 
@@ -56,28 +60,22 @@ s_piecewise <- function(...) {
       vapply(
         t,
         function(x){
-          wh = which(breaks >= x)
-          xbreaks <- breaks
-          xbreaks[wh[1]]<- x
-          if (wh[1] < ntimes) {
-            xbreaks[wh[-1]] <- xbreaks[wh[1]]
-          }
-          xdtime = c(xbreaks[1],xbreaks[2:ntimes] - xbreaks[1:(ntimes-1)])
-          sum(hazards*xdtime)
+          wh <- max(which(tbreaks <= x))
+          cumhazards[wh]+hazards[wh]*(x-tbreaks[wh])
         },
         0.0
       )
     }
 
 
-    # Function to invert numerically the cumulative hazard
+    # Function to invert analytically the cumulative hazard
     iCum_Hfx <- function(H){
       stopifnot("Must be positive number" = all(H >= 0))
       vapply(
         H,
         function(x){
-          difwithH <- function(y) {cumH(y)-x}
-          uniroot(difwithH, lower = 0,upper = maxfinit, extendInt = "upX")$root
+          wh <- max(which(cumhazards <= x))
+          (x-cumhazards[wh])/hazards[wh] + tbreaks[wh]
         },
         0.0
       )
@@ -116,6 +114,19 @@ s_piecewise <- function(...) {
           stopifnot("hr must be positive numbers > 0" = all(hr > 0))
           # Following Bender, Augustin and Blettner 2005
           iCum_Hfx(-log(runif(length(hr)))/hr)
+        },
+        rsurvaft = function(aft){
+          stopifnot("aft must be numeric" = is.numeric(aft))
+          stopifnot("aft must be positive numbers > 0" = all(aft > 0))
+          iCum_Hfx(-log(runif(length(aft))))*aft
+        },
+        rsurvah = function(aft,hr){
+          stopifnot("aft must be numeric" = is.numeric(aft))
+          stopifnot("hr must be numeric" = is.numeric(hr))
+          stopifnot("aft and hr must be of the same length" = length(aft)==length(hr) )
+          stopifnot("aft must be positive numbers > 0" = all(aft > 0))
+          stopifnot("hr must be positive numbers > 0" = all(hr > 0))
+          iCum_Hfx(-log(runif(length(aft)))/hr)*aft
         }
       ),
       class = c("SURVIVAL")

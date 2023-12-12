@@ -8,6 +8,8 @@ utils::globalVariables(
     "simevent",
     "time",
     "varname",
-    "value"
+    "value",
+    "id",
+    "grp"
   )
 )

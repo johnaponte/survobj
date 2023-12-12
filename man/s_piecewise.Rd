@@ -38,7 +38,7 @@ The parameters should be spell correctly as partial matching is not available
 }
 
 \examples{
-s_piecewise(breaks = c(1,2,3), hazards = c(0.5,0.6,0.5))
-s_piecewise(surv = 0.4, breaks = c(1,2,3), segments = c(1,2,1))
-s_piecewise(fail = 0.6, breaks = c(1,2,3), segments = c(1,2,1))
+s_piecewise(breaks = c(1,2,3,Inf), hazards = c(0.5,0.6,0.5,0.1))
+s_piecewise(surv = 0.4, breaks = c(1,2,3,Inf), segments = c(1,2,1,2))
+s_piecewise(fail = 0.6, breaks = c(1,2,3,Inf), segments = c(1,2,1,2))
 }

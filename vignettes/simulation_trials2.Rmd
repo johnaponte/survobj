@@ -1,5 +1,5 @@
 ---
-title: "Simulation trials (2)"
+title: "Simulation trials: non-proportional hazard"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Simulation trials (2)}

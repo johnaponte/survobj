@@ -65,6 +65,32 @@ test_that(
    resp2 <- apply(do.call(rbind, resp),2,mean)
    expect_equal(unname(resp2["intercept"]),intercept, tolerance = 1/reps*10)
    expect_equal(unname(resp2["scale"]),scale, tolerance = 1/reps*10)
-  }
 
+    # Test the aft but it takes a lot of time
+    reps = 1000
+    aft = 0.5
+    npergroup = 1000
+    intercept = 2
+    scale = 1.5
+    zobj <- s_loglogistic(intercept = intercept, scale = scale)
+    grp <- c(rep(0,npergroup),rep(1,npergroup))
+    aftvector = c(rep(1,npergroup), rep(aft, npergroup))
+    res <- lapply(1:reps, function(x){
+      t = zobj$rsurvaft(aftvector)
+      df <- data.frame(grp, t)
+      # From AFT model
+      fitaft <- survival::survreg(Surv(t) ~ grp, data = df, dist = "loglogistic")
+      pintercept = fitaft$coefficients["(Intercept)"]
+      pscale = fitaft$scale
+      baft <- exp(coef(fitaft))
+      return(c(intercept = unname(pintercept),
+               scale = unname(pscale),
+               baft = unname(baft[2])))
+    })
+    res2 <- apply(do.call(rbind,res),2,mean)
+    expect_equal(unname(res2["scale"]),scale, tolerance = 1/reps*10)
+    expect_equal(unname(res2["intercept"]),intercept, tolerance = 1/reps*10)
+    expect_equal(unname(res2["baft"]), aft, tolerance =1/reps*100)
+
+  }
 })

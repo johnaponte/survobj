@@ -49,6 +49,29 @@ test_that(
     expect_equal(unname(res2["lambda"]),lambda, tolerance = 1/reps*10)
     expect_equal(unname(res2["hrph"]),hr, tolerance = 1/reps*10)
     expect_equal(unname(res2["hrcox"]),hr, tolerance = 1/reps*10)
+
+
+    # Test the aft but it takes a lot of time
+    reps = 1000
+    aft = 0.5
+    lambda = 3
+    npergroup = 1000
+    xobj <- s_exponential(lambda = lambda)
+    grp <- c(rep(0,npergroup),rep(1,npergroup))
+    aftvector = c(rep(1,npergroup), rep(aft, npergroup))
+    res <- lapply(1:reps, function(x){
+      t = xobj$rsurvaft(aftvector)
+      df <- data.frame(grp, t)
+      # From AFT model
+      fitaft <- survival::survreg(Surv(t) ~ grp, data = df, dist = "exponential")
+      rph <- exp(-coef(fitaft) / fitaft$scale)
+      baft <- exp(coef(fitaft))
+      return(c(lambda = unname(rph[1]), baft = unname(baft[2])))
+    })
+    res2 <- apply(do.call(rbind,res),2,mean)
+    expect_equal(unname(res2["lambda"]),lambda, tolerance = 1/reps*10)
+    expect_equal(unname(res2["baft"]),aft, tolerance = 1/reps*10)
   }
 
 })
+

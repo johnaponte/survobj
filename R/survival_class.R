@@ -104,8 +104,11 @@ print.SURVIVAL <- function(x, ...){
 #' # Draw one random survival time from the distribution
 #' rsurv(SURVIVAL = obj, n = 1)
 #'
-#' # Draw one random survival time from the distribution, with hazard ratio 0.5
+#' # Draw one random survival time from the distribution under Proportional
+#' # hazard, Accelerated time failure or Accelerated hazard.
 #' rsurvhr(SURVIVAL = obj, hr = 0.5)
+#' rsurvaft(SURVIVAL = obj, aft = 2)
+#' rsurvah(SURVIVAL = obj, aft = 2, hr = 0.5)
 #'
 #' # Plot the survival functions
 #' plot_survival(SURVIVAL = obj, timeto = 2, main = "Example of Weibull distribution" )
@@ -164,6 +167,35 @@ rsurvhr <- function(SURVIVAL, hr){
   stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
   SURVIVAL$rsurvhr(hr)
 }
+
+#' @param hr a vector with hazard rates.
+#' @param SURVIVAL a SURVIVAL object
+#' @export
+#' @describeIn SURVIVAL Generate random values from the distribution under proportional hazard ratios
+rsurvhr <- function(SURVIVAL, hr){
+  stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
+  SURVIVAL$rsurvhr(hr)
+}
+
+#' @param aft a vector with accelerated failure time ratio.
+#' @param SURVIVAL a SURVIVAL object
+#' @export
+#' @describeIn SURVIVAL Generate random values from the distribution under accelerated failure time ratios
+rsurvaft <- function(SURVIVAL, aft){
+  stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
+  SURVIVAL$rsurvaft(aft)
+}
+
+#' @param aft a vector with accelerated failure time ratio.
+#' @param hr  a vector with hazard ratios.
+#' @param SURVIVAL a SURVIVAL object
+#' @export
+#' @describeIn SURVIVAL Generate random values from the distribution under accelerated hazard ratios
+rsurvah <- function(SURVIVAL, aft, hr){
+  stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
+  SURVIVAL$rsurvah(aft, hr)
+}
+
 
 #' @param SURVIVAL a SURVIVAL object
 #' @param timeto timeto used in the graphs
@@ -407,3 +439,244 @@ compare_survival <- function(SURVIVAL1, SURVIVAL2, timeto, main) {
 }
 
 
+
+#' @param SURVIVAL a SURVIVAL object
+#' @param hr the hazard ratio
+#' @param timeto plot the distribution up to timeto
+#' @param subjects number of subjects per group to simulate in each simulation
+#' @param nsim number of simulations
+#' @param alpha alpha value for the graph
+#' @export
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 aes
+#' @importFrom ggplot2 geom_step
+#' @importFrom ggplot2 facet_wrap
+#' @importFrom ggplot2 scale_y_continuous
+#' @importFrom ggplot2 scale_color_discrete
+#' @importFrom ggplot2 theme
+#' @importFrom ggplot2 ggtitle
+#' @importFrom dplyr select
+#' @importFrom dplyr mutate
+#' @importFrom tidyr pivot_longer
+#' @importFrom survival survfit
+#' @importFrom survival Surv
+#' @describeIn SURVIVAL ggplot of the simulation of survival times with hazard ratios
+ggplot_survival_hr <- function(SURVIVAL, hr, timeto, subjects, nsim, alpha = 0.1) {
+
+  ldf<- lapply(
+    1:nsim,
+    function(x){
+      simtime <- c(SURVIVAL$rsurvhr(rep(1,subjects)),SURVIVAL$rsurvhr(rep(hr,subjects)))
+      simgrp <- factor(c(rep(0,subjects),rep(1,subjects)))
+      simevent <- ifelse(simtime <= timeto,1,0)
+      simtime <- ifelse(simevent == 0, timeto, simtime)
+      so<- survfit(Surv(simtime, simevent) ~ simgrp)
+      return(
+        data.frame(
+          simid = x,
+          grp = factor(c(rep(0,so$strata[1]), rep(1,so$strata[2]))),
+          time = so$time,
+          survival = so$surv,
+          cumhazard = so$cumhaz
+        )
+      )
+    }
+  )
+  survdf <- do.call(rbind,ldf) |>
+    pivot_longer(
+      -c(simid,time,grp), names_to = "varname" , values_to = "value"
+    ) |>
+    mutate(varname = factor(varname, levels = c("survival", "cumhazard"),
+                            labels = c("Survival","Cumulative Hazard"))) |>
+    mutate(id = ifelse(grp==0,simid + 0.01, simid + 0.02)) |>
+    mutate(grp = ifelse(grp == 0, "Baseline", paste("HR: ",hr)))
+
+  expsurv <-
+    survdf |>
+    select(time) |>
+    unique() |>
+    mutate(survival = SURVIVAL$sfx(time)) |>
+    mutate(cumhazard = SURVIVAL$Cum_Hfx(time)) |>
+    mutate(simid = 0) |>
+    mutate(grp = 3) |>
+    pivot_longer(
+      -c(simid,time, grp), names_to = "varname" , values_to = "value"
+    )  |>
+    mutate(varname = factor(varname, levels = c("survival", "cumhazard"),
+                            labels = c("Survival","Cumulative Hazard"))) |>
+    mutate(id = 0.01)
+
+  survdf |>
+    ggplot() +
+    aes(x = time, y = value, group = id, color = grp) +
+    geom_step(alpha = alpha) +
+    geom_step(data = expsurv, color = "black") +
+    facet_wrap(~varname, scales = "free_y") +
+    scale_y_continuous("") +
+    scale_color_discrete("Group") +
+    ggtitle(
+      paste(SURVIVAL$distribution, "simulations with proportional hazard ratios"),
+      subtitle = paste0("Subjects per group: ", subjects, "  Number of simulations: ", nsim)) +
+    theme(legend.position = "bottom")
+}
+
+
+#' @param SURVIVAL a SURVIVAL object
+#' @param aft accelerated failure time
+#' @param timeto plot the distribution up to timeto
+#' @param subjects number of subjects per group to simulate in each simulation
+#' @param nsim number of simulations
+#' @param alpha alpha value for the graph
+#' @export
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 aes
+#' @importFrom ggplot2 geom_step
+#' @importFrom ggplot2 facet_wrap
+#' @importFrom ggplot2 scale_y_continuous
+#' @importFrom ggplot2 ggtitle
+#' @importFrom dplyr select
+#' @importFrom dplyr mutate
+#' @importFrom tidyr pivot_longer
+#' @importFrom survival survfit
+#' @importFrom survival Surv
+#' @describeIn SURVIVAL ggplot of the simulation of survival times with accelerated time failures
+ggplot_survival_aft <- function(SURVIVAL, aft, timeto, subjects, nsim, alpha = 0.1) {
+
+  ldf<- lapply(
+    1:nsim,
+    function(x){
+      simtime <- c(SURVIVAL$rsurvaft(rep(1,subjects)),SURVIVAL$rsurvaft(rep(aft,subjects)))
+      simgrp <- factor(c(rep(0,subjects),rep(1,subjects)))
+      simevent <- ifelse(simtime <= timeto,1,0)
+      simtime <- ifelse(simevent == 0, timeto, simtime)
+      so<- survfit(Surv(simtime, simevent) ~ simgrp)
+      return(
+        data.frame(
+          simid = x,
+          grp = factor(c(rep(0,so$strata[1]), rep(1,so$strata[2]))),
+          time = so$time,
+          survival = so$surv,
+          cumhazard = so$cumhaz
+        )
+      )
+    }
+  )
+  survdf <- do.call(rbind,ldf) |>
+    pivot_longer(
+      -c(simid,time,grp), names_to = "varname" , values_to = "value"
+    ) |>
+    mutate(varname = factor(varname, levels = c("survival", "cumhazard"),
+                            labels = c("Survival","Cumulative Hazard"))) |>
+    mutate(id = ifelse(grp==0,simid + 0.01, simid + 0.02)) |>
+    mutate(grp = ifelse(grp == 0, "Baseline", paste("AFT: ",aft)))
+
+  expsurv <-
+    survdf |>
+    select(time) |>
+    unique() |>
+    mutate(survival = SURVIVAL$sfx(time)) |>
+    mutate(cumhazard = SURVIVAL$Cum_Hfx(time)) |>
+    mutate(simid = 0) |>
+    mutate(grp = 3) |>
+    pivot_longer(
+      -c(simid,time, grp), names_to = "varname" , values_to = "value"
+    )  |>
+    mutate(varname = factor(varname, levels = c("survival", "cumhazard"),
+                            labels = c("Survival","Cumulative Hazard"))) |>
+    mutate(id = 0.01)
+
+  survdf |>
+    ggplot() +
+    aes(x = time, y = value, group = id, color = grp) +
+    geom_step(alpha = alpha) +
+    geom_step(data = expsurv, color = "black") +
+    facet_wrap(~varname, scales = "free_y") +
+    scale_y_continuous("") +
+    scale_color_discrete("Group") +
+    ggtitle(
+      paste(SURVIVAL$distribution, "simulations with accelerated failure times"),
+      subtitle = paste0("Subjects per group: ", subjects, "  Number of simulations: ", nsim)) +
+    theme(legend.position = "bottom")
+}
+
+
+
+#' @param SURVIVAL a SURVIVAL object
+#' @param aft accelerated failure time
+#' @param hr hazard ratio
+#' @param timeto plot the distribution up to timeto
+#' @param subjects number of subjects per group to simulate in each simulation
+#' @param nsim number of simulations
+#' @param alpha alpha value for the graph
+#' @export
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 aes
+#' @importFrom ggplot2 geom_step
+#' @importFrom ggplot2 facet_wrap
+#' @importFrom ggplot2 scale_y_continuous
+#' @importFrom ggplot2 ggtitle
+#' @importFrom dplyr select
+#' @importFrom dplyr mutate
+#' @importFrom tidyr pivot_longer
+#' @importFrom survival survfit
+#' @importFrom survival Surv
+#' @describeIn SURVIVAL ggplot of the simulation of survival times with accelerated hazard
+ggplot_survival_ah <- function(SURVIVAL, aft, hr, timeto, subjects, nsim, alpha = 0.1) {
+
+  ldf<- lapply(
+    1:nsim,
+    function(x){
+      simtime <- c(SURVIVAL$rsurvah(rep(1,subjects), rep(1,subjects)),
+                   SURVIVAL$rsurvah(rep(aft,subjects), rep(hr, subjects)))
+      simgrp <- factor(c(rep(0,subjects),rep(1,subjects)))
+      simevent <- ifelse(simtime <= timeto,1,0)
+      simtime <- ifelse(simevent == 0, timeto, simtime)
+      so<- survfit(Surv(simtime, simevent) ~ simgrp)
+      return(
+        data.frame(
+          simid = x,
+          grp = factor(c(rep(0,so$strata[1]), rep(1,so$strata[2]))),
+          time = so$time,
+          survival = so$surv,
+          cumhazard = so$cumhaz
+        )
+      )
+    }
+  )
+  survdf <- do.call(rbind,ldf) |>
+    pivot_longer(
+      -c(simid,time,grp), names_to = "varname" , values_to = "value"
+    ) |>
+    mutate(varname = factor(varname, levels = c("survival", "cumhazard"),
+                            labels = c("Survival","Cumulative Hazard"))) |>
+    mutate(id = ifelse(grp==0,simid + 0.01, simid + 0.02)) |>
+    mutate(grp = ifelse(grp == 0, "Baseline", paste("AFT: ",aft, "HR: ", hr)))
+
+  expsurv <-
+    survdf |>
+    select(time) |>
+    unique() |>
+    mutate(survival = SURVIVAL$sfx(time)) |>
+    mutate(cumhazard = SURVIVAL$Cum_Hfx(time)) |>
+    mutate(simid = 0) |>
+    mutate(grp = 3) |>
+    pivot_longer(
+      -c(simid,time, grp), names_to = "varname" , values_to = "value"
+    )  |>
+    mutate(varname = factor(varname, levels = c("survival", "cumhazard"),
+                            labels = c("Survival","Cumulative Hazard"))) |>
+    mutate(id = 0.01)
+
+  survdf |>
+    ggplot() +
+    aes(x = time, y = value, group = id, color = grp) +
+    geom_step(alpha = alpha) +
+    geom_step(data = expsurv, color = "black") +
+    facet_wrap(~varname, scales = "free_y") +
+    scale_y_continuous("") +
+    scale_color_discrete("Group") +
+    ggtitle(
+      paste(SURVIVAL$distribution, "simulations with accelerated hazard"),
+      subtitle = paste0("Subjects per group: ", subjects, "  Number of simulations: ", nsim)) +
+    theme(legend.position = "bottom")
+}

@@ -22,6 +22,8 @@ test_that(
     expect_error(xx$invCum_Hfx(-1))
     expect_error(xx$rsurv(-1))
     expect_error(xx$rsurvhr(-1))
+    xx <- s_piecewise(fail = 0.4, breaks = c(1.5,2.5,3.5,4.5,Inf), segments = c(2,4,6,8,10))
+    expect_equal(xx$invCum_Hfx(xx$Cum_Hfx(seq(0,10,0.5))), seq(0,10,0.5))
 
 })
 
