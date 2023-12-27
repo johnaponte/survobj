@@ -2,6 +2,25 @@
 
 # News
 
+# survobj 2.0
+Addition of new distributions and new random generators functions
+
+  - Add Log-Logistic distribution
+  
+  - Add Log-Normal distribution
+  
+  - Add generation of accelerated failure random times
+  
+  - Add generation of accelerated hazard times
+  
+  - Improve the cumulative hazard and inverse cumulative hazard function for 
+  the Exponential Piece wise distribution
+  
+  - Add function to graph random generated times under proportional hazard
+  model, accelerated failure time models, and accelerated hazard model.
+  
+  - New vignette shows the generator of accelerated failure random times.
+
 # survobj 1.0
 Submission to CRAN
 
