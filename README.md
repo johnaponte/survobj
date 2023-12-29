@@ -6,7 +6,7 @@ by John Aponte
 
 This package defines a set of classes that encapsulate survival distributions
 
-The objects of the class SURVIVAL contain distributions of survival times. Each class has its own set of parameters but once the SURVIVAL object is defined, they have access to the same functions to calculate:
+The objects of the class SURVIVAL encapsulate distributions of survival times. Each class has its own set of parameters but once the SURVIVAL object is defined, they have access to the same functions to calculate:
 
 -   survival time function: `sfx()`,
 
@@ -20,6 +20,11 @@ The objects of the class SURVIVAL contain distributions of survival times. Each 
 
 -   generate random survival times under proportional hazard ratio: `rsurvhr()`.
 
+-   generate random survival times under accelerated failure : `rsuvrvaft()`
+
+-   generate random survival times under accelerate hazard: `rsurvah()`
+
+
 There are several functions to plot the distributions
 
 -   generic S3: `plot.SURVIVAL()`
@@ -27,6 +32,12 @@ There are several functions to plot the distributions
 -   `plot_survival()`: to plot the functions
 
 -   `ggplot_survival_random()`: to ggplot random draws from the distribution
+
+-   `ggplot_survival_hr()`: to ggplot random draws from the distribution using hazard ratio
+
+-   `ggplot_survival_aft()`: to ggplot random draws from the distribution using accelerated time failure
+
+-   `ggplot_survival_ah()`: to ggplot random draws from the distribution using accelerated hazard 
 
 -   `compare_survival()`: to graphically compare the functions of two SURVIVAL objects
 
@@ -41,6 +52,10 @@ The current factories are implemented:
 -   `s_gompertz()`: for Gompertz distributions
 
 -   `s_piecewise()`: for Piecewise exponential distributions
+
+-   `s_loglogistic()`: for Log Logisitic distributions
+
+-   `s_lognormal()`: for Log Normal distributions
 
 See the vignettes for examples on the use on simulation of survival data.
 
