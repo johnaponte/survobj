@@ -118,7 +118,7 @@ s_piecewise <- function(...) {
         rsurvaft = function(aft){
           stopifnot("aft must be numeric" = is.numeric(aft))
           stopifnot("aft must be positive numbers > 0" = all(aft > 0))
-          iCum_Hfx(-log(runif(length(aft))))*aft
+          iCum_Hfx(-log(runif(length(aft))))/aft
         },
         rsurvah = function(aft,hr){
           stopifnot("aft must be numeric" = is.numeric(aft))
@@ -126,7 +126,7 @@ s_piecewise <- function(...) {
           stopifnot("aft and hr must be of the same length" = length(aft)==length(hr) )
           stopifnot("aft must be positive numbers > 0" = all(aft > 0))
           stopifnot("hr must be positive numbers > 0" = all(hr > 0))
-          iCum_Hfx(-log(runif(length(aft)))/hr)*aft
+          iCum_Hfx(-log(runif(length(aft)))/hr)/aft
         }
       ),
       class = c("SURVIVAL")

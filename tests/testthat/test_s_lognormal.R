@@ -82,7 +82,7 @@ test_that(
      fitaft <- survival::survreg(Surv(t) ~ grp, data = df, dist = "lognormal")
      pintercept = fitaft$coefficients["(Intercept)"]
      pscale = fitaft$scale
-     baft <- exp(coef(fitaft))
+     baft <- exp(-coef(fitaft))
      return(c(intercept = unname(pintercept),
               scale = unname(pscale),
               baft = unname(baft[2])))

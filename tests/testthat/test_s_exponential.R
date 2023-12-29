@@ -24,7 +24,7 @@ test_that(
     expect_error(xx$rsurv(-1))
     expect_error(xx$rsurvhr(-1))
 
-  if (FALSE) {
+  if (TRUE) {
 
     # Test the survhr but it takes a lot of time
     reps = 1000
@@ -65,7 +65,7 @@ test_that(
       # From AFT model
       fitaft <- survival::survreg(Surv(t) ~ grp, data = df, dist = "exponential")
       rph <- exp(-coef(fitaft) / fitaft$scale)
-      baft <- exp(coef(fitaft))
+      baft <- exp(-coef(fitaft))
       return(c(lambda = unname(rph[1]), baft = unname(baft[2])))
     })
     res2 <- apply(do.call(rbind,res),2,mean)

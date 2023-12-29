@@ -72,21 +72,29 @@ In addition, the following functions help to plot the distributions
     functions from 0 to `timeto`. An optional title can be specified
     with the `main` parameter
 
--   `ggplot_survival_random(SURVIVAL, timeto, subjects, nsim, alpha = 0.1)`
-    produces a ggplot of Kaplan-Meier curve and Cumulative Hazard for
-    `nsim` simulations for the a study with `subjects` number of
-    subjects. The optional parameter `alpha` defines the transparency
-    of each simulation in the graph. In addition of the simulations, the
-    graph also present the calculated survival and cumulative hazard
-    function of the distribution, to evaluate how good the simulations
-    are compared with the real values.
-    
 -   `plot_compare(SURVIVAL1, SURVIVAL2, timeto)` produce a comparison of the
-     functions of two SURVIVAL objects.
+     functions of two SURVIVAL objects. It produces a ggplot of Kaplan-Meier 
+     curve and Cumulative Hazard for `nsim` simulations for the a study with `subjects`           number of
+     subjects, censored at time `timeto`. 
+     The optional parameter `alpha` defines the transparency
+     of each simulation in the graph. In addition of the simulations, the
+     graph also present the calculated survival and cumulative hazard
+     function of the distribution, to evaluate how good the simulations
+     are compared with the real values.
 
+     
+Functions to plots to simulated proportional hazards, accelerated failure time and accelerated hazard models:
+     
+-   `ggplot_survival_hr <- function(SURVIVAL, hr, timeto, subjects, nsim, alpha = 0.1)`
+
+-   `ggplot_survival_aft <- function(SURVIVAL, aft, timeto, subjects, nsim, alpha = 0.1)`
+
+-   `ggplot_survival_ah <- function(SURVIVAL, aft, hr, timeto, subjects, nsim, alpha = 0.1)`
+
+This functions produce Kaplan-Meier curves and Cumulative hazard curves for `nsim`simulations of the baseline distribution and the corresponding proportional hazard, accelerate failure time censored at `timeto` time.
 
 The simulation of survival times and survival times with hazard
-    ratios follow the method describe by @bender2003
+    ratios follow the methods described by @bender2003 and @leemis1987
 
 ```{r setup}
 library(survobj)
@@ -297,6 +305,28 @@ proportion is 0.2. See the following example
 pobj <- s_piecewise(surv = 0.2, breaks = c(1,2,3,Inf), segments = c(1,2,3,1))
 pobj
 pobj$sfx(3)
+plot_survival(pobj, timeto = 3)
+```
+
+## Log-logistic distribution
+
+The Log-logistic distribution have two canonical parameters, the scale and the 
+shape parameters.
+
+```{r loglogistic, fig.height=6, fig.width=7, fig.align='center'}
+pobj <- s_loglogistic(scale = 3, shape = 1.5)
+plot_survival(pobj, timeto = 3)
+```
+
+
+## Log-Normal distribution
+
+The Log-normal distribution have two canonical parameters. The shape parameter 
+that defined the median value of the distribution, and the shape parameter that
+represents the standard deviation of the distribution in the log scale.
+
+```{r lognormal, fig.height=6, fig.width=7, fig.align='center'}
+pobj <- s_lognormal(scale = 1.5, shape = 0.8)
 plot_survival(pobj, timeto = 3)
 ```
 
