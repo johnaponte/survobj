@@ -77,7 +77,7 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>This package defines a set of classes that encapsulate survival distributions</p>
-<p>The objects of the class SURVIVAL contain distributions of survival times. Each class has its own set of parameters but once the SURVIVAL object is defined, they have access to the same functions to calculate:</p>
+<p>The objects of the class SURVIVAL encapsulate distributions of survival times. Each class has its own set of parameters but once the SURVIVAL object is defined, they have access to the same functions to calculate:</p>
 <ul>
 <li><p>survival time function: <code><a href="reference/SURVIVAL.html">sfx()</a></code>,</p></li>
 <li><p>hazard time function: <code><a href="reference/SURVIVAL.html">hfx()</a></code>,</p></li>
@@ -85,12 +85,17 @@
 <li><p>the inverse of the cumulative hazard function: <code><a href="reference/SURVIVAL.html">invCum_Hfx()</a></code>.</p></li>
 <li><p>generate random survival times: <code><a href="reference/SURVIVAL.html">rsurv()</a></code></p></li>
 <li><p>generate random survival times under proportional hazard ratio: <code><a href="reference/SURVIVAL.html">rsurvhr()</a></code>.</p></li>
+<li><p>generate random survival times under accelerated failure : <code>rsuvrvaft()</code></p></li>
+<li><p>generate random survival times under accelerate hazard: <code><a href="reference/SURVIVAL.html">rsurvah()</a></code></p></li>
 </ul>
 <p>There are several functions to plot the distributions</p>
 <ul>
 <li><p>generic S3: <code>plot.SURVIVAL()</code></p></li>
 <li><p><code><a href="reference/SURVIVAL.html">plot_survival()</a></code>: to plot the functions</p></li>
 <li><p><code><a href="reference/SURVIVAL.html">ggplot_survival_random()</a></code>: to ggplot random draws from the distribution</p></li>
+<li><p><code><a href="reference/SURVIVAL.html">ggplot_survival_hr()</a></code>: to ggplot random draws from the distribution using hazard ratio</p></li>
+<li><p><code><a href="reference/SURVIVAL.html">ggplot_survival_aft()</a></code>: to ggplot random draws from the distribution using accelerated time failure</p></li>
+<li><p><code><a href="reference/SURVIVAL.html">ggplot_survival_ah()</a></code>: to ggplot random draws from the distribution using accelerated hazard</p></li>
 <li><p><code><a href="reference/SURVIVAL.html">compare_survival()</a></code>: to graphically compare the functions of two SURVIVAL objects</p></li>
 </ul>
 </div>
@@ -103,6 +108,8 @@
 <li><p><code><a href="reference/s_weibull.html">s_weibull()</a></code>: for Weibull distributions</p></li>
 <li><p><code><a href="reference/s_gompertz.html">s_gompertz()</a></code>: for Gompertz distributions</p></li>
 <li><p><code><a href="reference/s_piecewise.html">s_piecewise()</a></code>: for Piecewise exponential distributions</p></li>
+<li><p><code><a href="reference/s_loglogistic.html">s_loglogistic()</a></code>: for Log Logisitic distributions</p></li>
+<li><p><code><a href="reference/s_lognormal.html">s_lognormal()</a></code>: for Log Normal distributions</p></li>
 </ul>
 <p>See the vignettes for examples on the use on simulation of survival data.</p>
 </div>
