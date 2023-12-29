@@ -42,6 +42,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/example_distributions.html">Defining and using objects of class SURVIVAL</a>
+    <a class="dropdown-item" href="../articles/simulation_distributions.html">Simulation of survival times</a>
     <a class="dropdown-item" href="../articles/simulation_trials.html">Simulating trials with survival endpoints</a>
     <a class="dropdown-item" href="../articles/simulation_trials2.html">Simulation trials: non-proportional hazard</a>
   </div>
@@ -144,20 +145,32 @@ distributions</p>
 the survival, hazard, cumulative hazard and the inverse cumulative
 hazard functions from 0 to <code>timeto</code>. An optional title can be
 specified with the <code>main</code> parameter</p></li>
-<li><p><code>ggplot_survival_random(SURVIVAL, timeto, subjects, nsim, alpha = 0.1)</code>
-produces a ggplot of Kaplan-Meier curve and Cumulative Hazard for
-<code>nsim</code> simulations for the a study with <code>subjects</code>
-number of subjects. The optional parameter <code>alpha</code> defines
-the transparency of each simulation in the graph. In addition of the
-simulations, the graph also present the calculated survival and
-cumulative hazard function of the distribution, to evaluate how good the
-simulations are compared with the real values.</p></li>
 <li><p><code>plot_compare(SURVIVAL1, SURVIVAL2, timeto)</code> produce a
-comparison of the functions of two SURVIVAL objects.</p></li>
+comparison of the functions of two SURVIVAL objects. It produces a
+ggplot of Kaplan-Meier curve and Cumulative Hazard for <code>nsim</code>
+simulations for the a study with <code>subjects</code> number of
+subjects, censored at time <code>timeto</code>. The optional parameter
+<code>alpha</code> defines the transparency of each simulation in the
+graph. In addition of the simulations, the graph also present the
+calculated survival and cumulative hazard function of the distribution,
+to evaluate how good the simulations are compared with the real
+values.</p></li>
 </ul>
+<p>Functions to plots to simulated proportional hazards, accelerated
+failure time and accelerated hazard models:</p>
+<ul>
+<li><p><code>ggplot_survival_hr &lt;- function(SURVIVAL, hr, timeto, subjects, nsim, alpha = 0.1)</code></p></li>
+<li><p><code>ggplot_survival_aft &lt;- function(SURVIVAL, aft, timeto, subjects, nsim, alpha = 0.1)</code></p></li>
+<li><p><code>ggplot_survival_ah &lt;- function(SURVIVAL, aft, hr, timeto, subjects, nsim, alpha = 0.1)</code></p></li>
+</ul>
+<p>This functions produce Kaplan-Meier curves and Cumulative hazard
+curves for <code>nsim</code>simulations of the baseline distribution and
+the corresponding proportional hazard, accelerate failure time censored
+at <code>timeto</code> time.</p>
 <p>The simulation of survival times and survival times with hazard
-ratios follow the method describe by <span class="citation">Bender,
-Augustin, and Blettner (2003)</span></p>
+ratios follow the methods described by <span class="citation">Bender,
+Augustin, and Blettner (2003)</span> and <span class="citation">Leemis
+(1987)</span></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://johnaponte.github.io/survobj/">survobj</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
@@ -389,12 +402,34 @@ proportion is 0.2. See the following example</p>
 <p><img src="example_distributions_files/figure-html/piecewise-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
+<h2 id="log-logistic-distribution">Log-logistic distribution<a class="anchor" aria-label="anchor" href="#log-logistic-distribution"></a>
+</h2>
+<p>The Log-logistic distribution have two canonical parameters, the
+scale and the shape parameters.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pobj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/s_loglogistic.html">s_loglogistic</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">3</span>, shape <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/SURVIVAL.html">plot_survival</a></span><span class="op">(</span><span class="va">pobj</span>, timeto <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+<p><img src="example_distributions_files/figure-html/loglogistic-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div class="section level2">
+<h2 id="log-normal-distribution">Log-Normal distribution<a class="anchor" aria-label="anchor" href="#log-normal-distribution"></a>
+</h2>
+<p>The Log-normal distribution have two canonical parameters. The shape
+parameter that defined the median value of the distribution, and the
+shape parameter that represents the standard deviation of the
+distribution in the log scale.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pobj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/s_lognormal.html">s_lognormal</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">1.5</span>, shape <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/SURVIVAL.html">plot_survival</a></span><span class="op">(</span><span class="va">pobj</span>, timeto <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+<p><img src="example_distributions_files/figure-html/lognormal-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div class="section level2">
 <h2 id="comparison-of-survival-objects">Comparison of SURVIVAL objects<a class="anchor" aria-label="anchor" href="#comparison-of-survival-objects"></a>
 </h2>
 <p>The function <code><a href="../reference/SURVIVAL.html">compare_survival()</a></code> can produce a graphic
 comparison of two SURVIVAL objects. The objects no need to be from the
 same distribution family.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">cobj1</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/s_exponential.html">s_exponential</a></span><span class="op">(</span>lambda <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">cobj2</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/s_gompertz.html">s_gompertz</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">3</span>, shape <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span>
@@ -410,6 +445,11 @@ Bender, R., Thomas Augustin, and Maria Blettner. 2003. <span>“Generating
 Survival Times to Simulate Cox Proportional Hazards Models.”</span>
 <em>Universitätsbibliothek Der Ludwig-Maximilians-Universität
 München</em>. <a href="https://doi.org/10.5282/UBM/EPUB.1716" class="external-link">https://doi.org/10.5282/UBM/EPUB.1716</a>.
+</div>
+<div id="ref-leemis1987" class="csl-entry">
+Leemis, Lawrence M. 1987. <span>“Variate Generation for Accelerated Life
+and Proportional Hazards Models.”</span> <em>Operations Research</em> 35
+(6). <a href="https://www.jstor.org/stable/171438" class="external-link">https://www.jstor.org/stable/171438</a>.
 </div>
 </div>
 </div>
