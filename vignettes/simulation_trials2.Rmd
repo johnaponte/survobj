@@ -2,7 +2,7 @@
 title: "Simulation trials: non-proportional hazard"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Simulation trials (2)}
+  %\VignetteIndexEntry{Simulation trials: non-proportional hazard}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
