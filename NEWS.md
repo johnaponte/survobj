@@ -1,4 +1,4 @@
-# survobj (development version)
+# survobj 2.0.0
 
 # News
 
