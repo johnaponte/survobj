@@ -1,8 +1,8 @@
-# survobj 2.0.0
+# survobj
 
 # News
 
-# survobj 2.0
+# survobj 2.0.0
 Addition of new distributions and new random generators functions
 
   - Add Log-Logistic distribution
