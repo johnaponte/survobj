@@ -76,6 +76,6 @@ ggplot_survival_aft(s_obj, aft = 2, nsim = 10, subjects = 1000, timeto = 5)
 In this example, the scale parameter of the Log-Normal distribution represents the
 mean time and it this simulation and accelerated factor of 2 move the average median from 2 to 1
 
-If the proportional hazard and the accelerated failure is combined and accelerated hazard time is generated. This can be acomplished with the function `rsurvah()` function and the `ggplot_random_ah()` functions
+If the proportional hazard and the accelerated failure is combined and accelerated hazard time is generated. This can be accomplished with the function `rsurvah()` function and the `ggplot_random_ah()` functions
 
 ## References

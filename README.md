@@ -53,7 +53,7 @@ The current factories are implemented:
 
 -   `s_piecewise()`: for Piecewise exponential distributions
 
--   `s_loglogistic()`: for Log Logisitic distributions
+-   `s_loglogistic()`: for Log Logistic distributions
 
 -   `s_lognormal()`: for Log Normal distributions
 
