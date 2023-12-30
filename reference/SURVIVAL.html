@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">survobj</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.9100</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -191,16 +191,16 @@ cumulative hazard, inverse of the cumulative hazard, a random draw or a plot</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draw one random survival time from the distribution</span></span></span>
 <span class="r-in"><span><span class="fu">rsurv</span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.246957</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 16.72925</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draw one random survival time from the distribution under Proportional</span></span></span>
 <span class="r-in"><span><span class="co"># hazard, Accelerated time failure or Accelerated hazard.</span></span></span>
 <span class="r-in"><span><span class="fu">rsurvhr</span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, hr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12.62201</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.443236</span>
 <span class="r-in"><span><span class="fu">rsurvaft</span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, aft <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8.235091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.570746</span>
 <span class="r-in"><span><span class="fu">rsurvah</span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, aft <span class="op">=</span> <span class="fl">2</span>, hr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.563077</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.919839</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot the survival functions</span></span></span>
 <span class="r-in"><span><span class="fu">plot_survival</span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, timeto <span class="op">=</span> <span class="fl">2</span>, main <span class="op">=</span> <span class="st">"Example of Weibull distribution"</span> <span class="op">)</span></span></span>
