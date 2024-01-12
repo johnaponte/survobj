@@ -1,4 +1,3 @@
-# survobj
 
 # News
 
