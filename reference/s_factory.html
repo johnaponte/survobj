@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">survobj</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,6 +26,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/example_distributions.html">Defining and using objects of class SURVIVAL</a>
     <a class="dropdown-item" href="../articles/simulation_distributions.html">Simulation of survival times</a>
+    <a class="dropdown-item" href="../articles/simulation_recurent.html">Simulating trials with multiple events</a>
     <a class="dropdown-item" href="../articles/simulation_trials.html">Simulating trials with survival endpoints</a>
     <a class="dropdown-item" href="../articles/simulation_trials2.html">Simulation trials: non-proportional hazard</a>
   </div>
@@ -124,11 +125,11 @@ calculate:</p><ul><li><p>survival time function: <code><a href="SURVIVAL.html">s
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draw one random survival time from the distribution</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="SURVIVAL.html">rsurv</a></span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.126779</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1737629</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draw one random survival time from the distribution, with hazard ratio 0.5</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="SURVIVAL.html">rsurvhr</a></span><span class="op">(</span>SURVIVAL <span class="op">=</span> <span class="va">obj</span>, hr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.931189</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.05279276</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot the survival functions</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">obj</span><span class="op">)</span></span></span>

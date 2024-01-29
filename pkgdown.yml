@@ -4,9 +4,10 @@ pkgdown_sha: ~
 articles:
   example_distributions: example_distributions.html
   simulation_distributions: simulation_distributions.html
+  simulation_recurent: simulation_recurent.html
   simulation_trials: simulation_trials.html
   simulation_trials2: simulation_trials2.html
-last_built: 2024-01-12T11:04Z
+last_built: 2024-01-29T19:37Z
 urls:
   reference: https://johnaponte.github.io/survobj/reference
   article: https://johnaponte.github.io/survobj/articles

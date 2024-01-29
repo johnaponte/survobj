@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">survobj</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,6 +26,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/example_distributions.html">Defining and using objects of class SURVIVAL</a>
     <a class="dropdown-item" href="../articles/simulation_distributions.html">Simulation of survival times</a>
+    <a class="dropdown-item" href="../articles/simulation_recurent.html">Simulating trials with multiple events</a>
     <a class="dropdown-item" href="../articles/simulation_trials.html">Simulating trials with survival endpoints</a>
     <a class="dropdown-item" href="../articles/simulation_trials2.html">Simulation trials: non-proportional hazard</a>
   </div>
@@ -65,7 +66,7 @@
 
       <dl><dt>
           
-          <code><a href="SURVIVAL.html">sfx()</a></code> <code><a href="SURVIVAL.html">hfx()</a></code> <code><a href="SURVIVAL.html">Cum_Hfx()</a></code> <code><a href="SURVIVAL.html">invCum_Hfx()</a></code> <code><a href="SURVIVAL.html">rsurv()</a></code> <code><a href="SURVIVAL.html">rsurvhr()</a></code> <code><a href="SURVIVAL.html">rsurvhr()</a></code> <code><a href="SURVIVAL.html">rsurvaft()</a></code> <code><a href="SURVIVAL.html">rsurvah()</a></code> <code><a href="SURVIVAL.html">plot_survival()</a></code> <code><a href="SURVIVAL.html">ggplot_survival_random()</a></code> <code><a href="SURVIVAL.html">compare_survival()</a></code> <code><a href="SURVIVAL.html">ggplot_survival_hr()</a></code> <code><a href="SURVIVAL.html">ggplot_survival_aft()</a></code> <code><a href="SURVIVAL.html">ggplot_survival_ah()</a></code> 
+          <code><a href="SURVIVAL.html">sfx()</a></code> <code><a href="SURVIVAL.html">hfx()</a></code> <code><a href="SURVIVAL.html">Cum_Hfx()</a></code> <code><a href="SURVIVAL.html">invCum_Hfx()</a></code> <code><a href="SURVIVAL.html">rsurv()</a></code> <code><a href="SURVIVAL.html">rsurvhr()</a></code> <code><a href="SURVIVAL.html">rsurvaft()</a></code> <code><a href="SURVIVAL.html">rsurvah()</a></code> <code><a href="SURVIVAL.html">plot_survival()</a></code> <code><a href="SURVIVAL.html">ggplot_survival_random()</a></code> <code><a href="SURVIVAL.html">compare_survival()</a></code> <code><a href="SURVIVAL.html">ggplot_survival_hr()</a></code> <code><a href="SURVIVAL.html">ggplot_survival_aft()</a></code> <code><a href="SURVIVAL.html">ggplot_survival_ah()</a></code> 
         </dt>
         <dd>Functions for SURVIVAL objects</dd>
       </dl><dl><dt>
@@ -83,6 +84,16 @@
           <code><a href="is_single_number.html">is_single_number()</a></code> 
         </dt>
         <dd>Confirm is a single number</dd>
+      </dl><dl><dt>
+          
+          <code><a href="nhpp.html">nhpphr()</a></code> <code><a href="nhpp.html">nhppaft()</a></code> 
+        </dt>
+        <dd>Generate random recurrent episodes under a non homogeneous Poisson process</dd>
+      </dl><dl><dt>
+          
+          <code><a href="renewal.html">renewhr()</a></code> <code><a href="renewal.html">renewaft()</a></code> 
+        </dt>
+        <dd>Generate random recurrent episodes under a renewal Poisson process</dd>
       </dl><dl><dt>
           
           <code><a href="s_exponential.html">s_exponential()</a></code> 
