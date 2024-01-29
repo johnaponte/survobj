@@ -1,6 +1,6 @@
 
 # News
-# survobj 2.1.0
+# survobj 3.0.0
 Addition of recurrent event simulaion under homogeneous and non homogeneous
 Poisson process
 
