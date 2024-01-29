@@ -168,14 +168,6 @@ rsurvhr <- function(SURVIVAL, hr){
   SURVIVAL$rsurvhr(hr)
 }
 
-#' @param hr a vector with hazard rates.
-#' @param SURVIVAL a SURVIVAL object
-#' @export
-#' @describeIn SURVIVAL Generate random values from the distribution under proportional hazard ratios
-rsurvhr <- function(SURVIVAL, hr){
-  stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
-  SURVIVAL$rsurvhr(hr)
-}
 
 #' @param aft a vector with accelerated failure time ratio.
 #' @param SURVIVAL a SURVIVAL object

@@ -29,8 +29,6 @@ rsurv(SURVIVAL, n)
 
 rsurvhr(SURVIVAL, hr)
 
-rsurvhr(SURVIVAL, hr)
-
 rsurvaft(SURVIVAL, aft)
 
 rsurvah(SURVIVAL, aft, hr)
@@ -92,8 +90,6 @@ All the SURVIVAL objects have access to the functions described here
 \item \code{invCum_Hfx()}: Inverse of the Cumulative Hazard function
 
 \item \code{rsurv()}: Generate random values from the distribution
-
-\item \code{rsurvhr()}: Generate random values from the distribution under proportional hazard ratios
 
 \item \code{rsurvhr()}: Generate random values from the distribution under proportional hazard ratios
 
