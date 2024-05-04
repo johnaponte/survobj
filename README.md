@@ -24,7 +24,6 @@ The objects of the class SURVIVAL encapsulate distributions of survival times. E
 
 -   generate random survival times under accelerate hazard: `rsurvah()`
 
-
 There are several functions to plot the distributions
 
 -   generic S3: `plot.SURVIVAL()`
@@ -37,7 +36,7 @@ There are several functions to plot the distributions
 
 -   `ggplot_survival_aft()`: to ggplot random draws from the distribution using accelerated time failure
 
--   `ggplot_survival_ah()`: to ggplot random draws from the distribution using accelerated hazard 
+-   `ggplot_survival_ah()`: to ggplot random draws from the distribution using accelerated hazard
 
 -   `compare_survival()`: to graphically compare the functions of two SURVIVAL objects
 
@@ -68,3 +67,7 @@ To install the development version of this package from github use:
 For more information:
 
 <https://johnaponte.github.io/survobj/>
+
+```         
+<a href="https://johnaponte.github.io/survobj/"<img src="man/figures/logo.png" align="right" height="139" alt="survobj website" /></a>
+```
