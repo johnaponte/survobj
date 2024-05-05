@@ -68,6 +68,6 @@ For more information:
 
 <https://johnaponte.github.io/survobj/>
 
-```         
+
 <a href="https://johnaponte.github.io/survobj/"<img src="man/figures/logo.png" align="right" height="139" alt="survobj website" /></a>
-```
+
