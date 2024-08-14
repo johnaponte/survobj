@@ -6,6 +6,8 @@
 \alias{survobj-package}
 \title{survobj: Objects to Simulate Survival Times}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Generate objects that simulate survival times. Random values for the distributions are generated using the method described by Bender (2003) \url{https://epub.ub.uni-muenchen.de/id/eprint/1716} and Leemis (1987) in Operations Research, 35(6), 892–894.
 }
 \seealso{

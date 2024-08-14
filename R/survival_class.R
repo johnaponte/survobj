@@ -272,6 +272,7 @@ plot.SURVIVAL <- function(x,...){
 #' @importFrom ggplot2 ggtitle
 #' @importFrom dplyr select
 #' @importFrom dplyr mutate
+#' @importFrom dplyr bind_rows
 #' @importFrom tidyr pivot_longer
 #' @importFrom survival survfit
 #' @describeIn SURVIVAL ggplot of the simulation of survival times
@@ -290,7 +291,15 @@ ggplot_survival_random <- function(SURVIVAL, timeto, subjects, nsim, alpha = 0.1
             time = so$time,
             survival = so$surv,
             cumhazard = so$cumhaz
-          )
+          ) |>
+            bind_rows(data.frame(
+              simid = x,
+              time = 0,
+              survival = 1,
+              cumhazard = 0
+            ))
+          |>
+            unique()
         )
     }
   )
@@ -449,6 +458,7 @@ compare_survival <- function(SURVIVAL1, SURVIVAL2, timeto, main) {
 #' @importFrom ggplot2 ggtitle
 #' @importFrom dplyr select
 #' @importFrom dplyr mutate
+#' @importFrom dplyr bind_rows
 #' @importFrom tidyr pivot_longer
 #' @importFrom survival survfit
 #' @importFrom survival Surv
@@ -470,7 +480,15 @@ ggplot_survival_hr <- function(SURVIVAL, hr, timeto, subjects, nsim, alpha = 0.1
           time = so$time,
           survival = so$surv,
           cumhazard = so$cumhaz
-        )
+        ) |> bind_rows(
+          data.frame(
+            simid = c(x,x),
+            grp = factor(c(0,1)),
+            time = c(0,0),
+            survival = c(1,1),
+            cumhazard = c(0,0)
+          )) |>
+            unique()
       )
     }
   )
@@ -528,6 +546,7 @@ ggplot_survival_hr <- function(SURVIVAL, hr, timeto, subjects, nsim, alpha = 0.1
 #' @importFrom ggplot2 ggtitle
 #' @importFrom dplyr select
 #' @importFrom dplyr mutate
+#' @importFrom dplyr bind_rows
 #' @importFrom tidyr pivot_longer
 #' @importFrom survival survfit
 #' @importFrom survival Surv
@@ -549,7 +568,15 @@ ggplot_survival_aft <- function(SURVIVAL, aft, timeto, subjects, nsim, alpha = 0
           time = so$time,
           survival = so$surv,
           cumhazard = so$cumhaz
-        )
+        )|> bind_rows(
+          data.frame(
+            simid = c(x,x),
+            grp = factor(c(0,1)),
+            time = c(0,0),
+            survival = c(1,1),
+            cumhazard = c(0,0)
+          )) |>
+          unique()
       )
     }
   )
@@ -609,6 +636,7 @@ ggplot_survival_aft <- function(SURVIVAL, aft, timeto, subjects, nsim, alpha = 0
 #' @importFrom ggplot2 ggtitle
 #' @importFrom dplyr select
 #' @importFrom dplyr mutate
+#' @importFrom dplyr bind_rows
 #' @importFrom tidyr pivot_longer
 #' @importFrom survival survfit
 #' @importFrom survival Surv
@@ -631,7 +659,15 @@ ggplot_survival_ah <- function(SURVIVAL, aft, hr, timeto, subjects, nsim, alpha 
           time = so$time,
           survival = so$surv,
           cumhazard = so$cumhaz
-        )
+        )|> bind_rows(
+          data.frame(
+            simid = c(x,x),
+            grp = factor(c(0,1)),
+            time = c(0,0),
+            survival = c(1,1),
+            cumhazard = c(0,0)
+          )) |>
+          unique()
       )
     }
   )
