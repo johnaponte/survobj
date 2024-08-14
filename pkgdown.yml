@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.0.9
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   example_distributions: example_distributions.html
@@ -7,8 +7,7 @@ articles:
   simulation_recurent: simulation_recurent.html
   simulation_trials: simulation_trials.html
   simulation_trials2: simulation_trials2.html
-last_built: 2024-05-05T13:12Z
+last_built: 2024-08-14T19:28Z
 urls:
   reference: https://johnaponte.github.io/survobj/reference
   article: https://johnaponte.github.io/survobj/articles
-

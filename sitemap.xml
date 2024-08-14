@@ -1,81 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://johnaponte.github.io/survobj/404.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/articles/example_distributions.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/articles/simulation_distributions.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/articles/simulation_recurent.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/articles/simulation_trials.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/articles/simulation_trials2.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/index.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/reference/SURVIVAL.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/reference/censor_event.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/reference/fx_h_time.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/reference/is_single_number.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/reference/nhpp.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/reference/renewal.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/reference/s_exponential.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/reference/s_factory.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/reference/s_gompertz.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/reference/s_loglogistic.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/reference/s_lognormal.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/reference/s_piecewise.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/reference/s_weibull.html</loc>
-  </url>
-  <url>
-    <loc>https://johnaponte.github.io/survobj/reference/survobj-package.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://johnaponte.github.io/survobj/404.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/LICENSE.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/articles/example_distributions.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/articles/index.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/articles/simulation_distributions.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/articles/simulation_recurent.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/articles/simulation_trials.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/articles/simulation_trials2.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/authors.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/index.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/news/index.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/reference/SURVIVAL.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/reference/censor_event.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/reference/fx_h_time.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/reference/index.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/reference/is_single_number.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/reference/nhpp.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/reference/renewal.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/reference/s_exponential.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/reference/s_factory.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/reference/s_gompertz.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/reference/s_loglogistic.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/reference/s_lognormal.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/reference/s_piecewise.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/reference/s_weibull.html</loc></url>
+<url><loc>https://johnaponte.github.io/survobj/reference/survobj-package.html</loc></url>
 </urlset>
+
