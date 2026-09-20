@@ -103,4 +103,69 @@ s_obj <- s_lognormal(scale = 2, shape = 0.5)
 ggplot_survival_eh(s_obj, aft = 2, hr = 0.5, nsim = 10, subjects = 1000, timeto = 5)
 ```
 
+## Simulating recurrent episodes
+
+When a subject can have more than one episode over follow-up (e.g.
+repeated infections or hospitalizations), the time of each subsequent
+episode can be generated conditional on the time of the previous one,
+following @leemis1987. Two assumptions about how risk behaves after an
+episode give two different processes.
+
+### Renewal process
+
+Under a renewal process, risk resets after each episode: the time to
+the next episode is a fresh, independent draw from the same (baseline,
+proportional hazards, or accelerated failure time) distribution, added
+to the time of the previous episode:
+$$ T_{i+1} = T_i + H^{-1}\left(\frac{-\log(U)}{HR}\right) $$
+or, under an accelerated failure time effect,
+$$ T_{i+1} = T_i + \frac{H^{-1}(-\log(U))}{AFT} $$
+This is implemented by `renewhr(s_object, hr, prevtime)` and
+`renewaft(s_object, aft, prevtime)`, which take the time of the
+previous episode `prevtime` and generate the time of the next one.
+
+### Non-homogeneous Poisson process
+
+Under a non-homogeneous Poisson process, risk does not reset after
+each episode: a single cumulative hazard $H(t)$ accumulates over
+calendar time from the start of follow-up, and consecutive episode
+times satisfy $H(T_{i+1}) - H(T_i) \sim \text{Exponential}(1)$, so
+$$ T_{i+1} = H^{-1}\left(H(T_i) - \frac{\log(U)}{HR}\right) $$
+or, under an accelerated failure time effect,
+$$ T_{i+1} = \frac{H^{-1}\left(H(AFT \cdot T_i) - \log(U)\right)}{AFT} $$
+This is implemented by `nhpphr(s_object, hr, prevtime)` and
+`nhppaft(s_object, aft, prevtime)`.
+
+The difference between the two processes only shows up when the
+baseline hazard is not constant. With an increasing baseline hazard,
+for example, a renewal process keeps generating episodes at the same
+average pace, since every episode resets the risk back to its starting
+point. Under a non-homogeneous Poisson process, risk keeps
+accumulating over calendar time and never resets, so later episodes
+follow each other increasingly quickly:
+
+```{r}
+# Weibull baseline with an increasing hazard (shape > 1)
+s_obj <- s_weibull(scale = 1, shape = 2)
+n <- 5000
+hr <- rep(1, n)
+
+# First episode, common to both processes
+t1 <- rsurvhr(s_obj, hr)
+
+# Renewal process: risk resets at each episode
+t2 <- renewhr(s_obj, hr, t1)
+t3 <- renewhr(s_obj, hr, t2)
+c(gap1 = mean(t1), gap2 = mean(t2 - t1), gap3 = mean(t3 - t2))
+
+# Non-homogeneous Poisson process: risk keeps accumulating, never resets
+p2 <- nhpphr(s_obj, hr, t1)
+p3 <- nhpphr(s_obj, hr, p2)
+c(gap1 = mean(t1), gap2 = mean(p2 - t1), gap3 = mean(p3 - p2))
+```
+
+The average gap between episodes stays roughly constant under the
+renewal process, while it shrinks with each successive episode under
+the non-homogeneous Poisson process.
+
 ## References

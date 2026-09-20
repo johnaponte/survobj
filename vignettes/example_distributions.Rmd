@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-Here we present examples on how to construct and use objects of the
+Here we present details on how to construct and use objects of the
 class SURVIVAL.
 
 The function `s_factory(s_family,...)` is a function that calls the
@@ -39,11 +39,15 @@ following set of methods:
     free of events) at time `t`
 -   `hfx(SURVIVAL, t)` for the hazard at time `t`
 -   `Cum_Hfx(SURVIVAL, t)` for the cumulative hazard at time `t`
--   `InvCum_Hfx(SURVIVAL, H)` for inverse of the cumulative hazard `H`
+-   `invCum_Hfx(SURVIVAL, H)` for inverse of the cumulative hazard `H`
 -   `rsurv(SURVIVAL, n)` for the generation of `n` random survival times
     from the distribution
 -   `rsurvhr(SURVIVAL, hr)` for the generation of random survival times
     with a hazard ratio `hr`
+-   `rsurvaft(SURVIVAL, aft)` for the generation of random survival times
+    with an accelerated failure time ratio `aft`
+-   `rsurveh(SURVIVAL, aft, hr)` for the generation of random survival
+    times under the Extended Hazards model
 
 Instead of using the helper functions to call these methods, the methods
 can be called directly from the object as:
@@ -56,11 +60,15 @@ can be called directly from the object as:
 
 -   `obj$Cum_Hfx(t)`
 
--   `obj$InvCum_Hfx(H)`
+-   `obj$invCum_Hfx(H)`
 
 -   `obj$rsurv(n)`
 
 -   `obj$rsurvhr(hr)`
+
+-   `obj$rsurvaft(aft)`
+
+-   `obj$rsurveh(aft, hr)`
 
 In addition, the following functions help to plot the distributions
 
