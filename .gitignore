@@ -30,3 +30,4 @@ survobj.Rproj
 .Rproj.user
 inst/doc
 docs
+pkgdown

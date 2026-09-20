@@ -29,10 +29,10 @@ ytom(x)
 the converted time
 }
 \description{
-This set of functions help in the time conversion, taking into account
+This set of functions helps in the time conversion, taking into account
 generic times and not specific times. The conversions are based on the
 assumption that 1 year is 365.25 days and is 12 months. There is no
-adjustment for lap days or ours or difference of days between months
+adjustment for leap days or hours or difference of days between months
 }
 \section{Functions}{
 \itemize{

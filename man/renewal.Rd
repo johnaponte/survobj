@@ -25,7 +25,7 @@ Vector of survival times
 Vector of survival times
 }
 \description{
-Generate a random draws from the distribution of recurrent set of survival
+Generate random draws from the distribution of a recurrent set of survival
 times under a renewal Poisson process following Leemis (1987)
 }
 \section{Functions}{

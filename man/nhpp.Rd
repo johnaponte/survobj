@@ -4,7 +4,7 @@
 \alias{nhpp}
 \alias{nhpphr}
 \alias{nhppaft}
-\title{Generate random recurrent episodes under a non homogeneous Poisson process}
+\title{Generate random recurrent episodes under a non-homogeneous Poisson process}
 \usage{
 nhpphr(SURVIVAL, hr, prevtime)
 
@@ -23,8 +23,8 @@ nhppaft(SURVIVAL, aft, prevtime)
 Vector of survival times
 }
 \description{
-Generate a random draws from the distribution of recurrent set of survival
-times under a a non homogeneous Poisson process following Leemis (1987)
+Generate random draws from the distribution of a recurrent set of survival
+times under a non-homogeneous Poisson process following Leemis (1987)
 }
 \section{Functions}{
 \itemize{

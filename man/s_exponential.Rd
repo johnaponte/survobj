@@ -32,7 +32,7 @@ lambda = -log(surv)/t
 
 lambda = -log(1-fail)/t
 
-The parameters should be spell correctly as partial matching is not available
+The parameters should be spelled correctly as partial matching is not available
 }
 
 \examples{

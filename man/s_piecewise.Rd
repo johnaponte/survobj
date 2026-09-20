@@ -14,27 +14,27 @@ a SURVIVAL object of the piecewise exponential distribution family. See the
 documentation of \code{s_factory} for the methods available for SURVIVAL objects
 }
 \description{
-Creates a SURVIVAL object with an Piecewise Exponential distribution.
+Creates a SURVIVAL object with a Piecewise Exponential distribution.
 }
 \section{Parameters}{
 
 
-To create an piecewise exponential survival object the following
+To create a piecewise exponential survival object the following
 options are available:
 
 \emph{\code{breaks}} and \emph{\code{hazards}} to specify the exponential (constant) hazard until each break, or
 
-\emph{\code{surv}}, \emph{\code{breaks}} and \emph{\code{segments}} for the proportion surviving (no events) at the end of last segment or
+\emph{\code{surv}}, \emph{\code{breaks}} and \emph{\code{segments}} for the proportion surviving (no events) at the end of the last segment, or
 
-\emph{\code{fail}}, \emph{\code{breaks}} and \emph{\code{segments}} for the proportion failing (events) at the end of last segment
+\emph{\code{fail}}, \emph{\code{breaks}} and \emph{\code{segments}} for the proportion failing (events) at the end of the last segment
 
 If \emph{\code{surv}} or \emph{\code{fail}} parameters are indicated, the \emph{\code{segments}} are scaled to hazards in order
-to mach the surviving or failing proportion at the end of the last segment.
+to match the surviving or failing proportion at the end of the last segment.
 
 Define the last break point as \code{Inf} to fully define the distribution, otherwise
-an error will be produce if function after the last break is requested
+an error will be produced if the function after the last break is requested
 
-The parameters should be spell correctly as partial matching is not available
+The parameters should be spelled correctly as partial matching is not available
 }
 
 \examples{

@@ -21,13 +21,13 @@ call with a value for all times.}
 censored time or event
 }
 \description{
-if censor_time < time, event is change to 0, otherwise not changed
+if censor_time < time, event is changed to 0, otherwise not changed
 }
 \details{
 if censor_time < time, time is changed to censor_time, otherwise no change
 
 Be careful and do not overwrite the time variable with the censor time variable
-to not loose track of the events
+to not lose track of the events
 }
 \section{Functions}{
 \itemize{
@@ -35,7 +35,7 @@ to not loose track of the events
 
 }}
 \examples{
-\dontshow{if ({FALSE}) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if ({FALSE}) withAutoprint(\{ # examplesIf}
 
 # Typical workflow in a simulation of survival time.
 # Simulate time to event (sim_t_event)
@@ -47,7 +47,7 @@ data.frame(
   sim_t_event = c(0.5,0.6,1,10,20),
   sim_t_ltof = c(2,0.5,2,2,0.8)
  ) |>
- mutate(sevent = censor_event(1,sim_t_event,sim_event=1)) |>
+ mutate(sevent = censor_event(1,sim_t_event,event=1)) |>
  mutate(stime = censor_time(1,sim_t_event)) |>
  mutate(event = censor_event(sim_t_ltof, stime, sevent)) |>
  mutate(timeto = censor_time(sim_t_ltof, stime))

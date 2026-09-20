@@ -14,15 +14,15 @@ a SURVIVAL object of the Gompertz distribution family. See the
 documentation of \code{s_factory} for the methods available for SURVIVAL objects
 }
 \description{
-Creates a SURVIVAL object with an Gompertz distribution.
+Creates a SURVIVAL object with a Gompertz distribution.
 }
 \section{Parameters}{
 
 
-To create an exponential survival object the following
+To create a Gompertz survival object the following
 options are available:
 
-\emph{\code{scale}} and \emph{\code{shape}} to specify the canonical parameter of the distribution, or
+\emph{\code{scale}} and \emph{\code{shape}} to specify the canonical parameters of the distribution, or
 
 \emph{\code{surv}}, \emph{\code{t}} and \emph{\code{shape}}  for the proportion surviving (no events) at time t and shape, or
 
@@ -32,7 +32,7 @@ scale = -log(surv)·shape/(exp(shape·t))
 
 scale = -log(1-fail)·shape/(exp(shape·t))
 
-The parameters should be spell correctly as partial matching is not available
+The parameters should be spelled correctly as partial matching is not available
 }
 
 \section{Negative shape}{
@@ -42,7 +42,7 @@ A negative \code{shape} produces a decreasing hazard whose cumulative hazard is 
 above by \code{scale / abs(shape)} (following Bender, Augustin & Blettner 2005). This
 makes the distribution improper: a cure fraction of \code{exp(-scale / abs(shape))}
 of the subjects never experience the event, so their simulated survival time
-(\code{rsurv}, \code{rsurvhr}, \code{rsurvaft}, \code{rsurvah}) and \code{invCum_Hfx()} are returned as \code{Inf}.
+(\code{rsurv}, \code{rsurvhr}, \code{rsurvaft}, \code{rsurveh}) and \code{invCum_Hfx()} are returned as \code{Inf}.
 }
 
 \examples{

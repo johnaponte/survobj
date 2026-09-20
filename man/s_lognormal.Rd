@@ -19,20 +19,20 @@ Creates a SURVIVAL object with a Log Normal distribution.
 \section{Parameters}{
 
 
-To create an exponential survival object the following
+To create a Log Normal survival object the following
 options are available:
 
 \emph{\code{scale}} and \emph{\code{shape}} to specify the canonical parameters of the distribution, or
 
 \emph{\code{surv}}, \emph{\code{t}} and \emph{\code{shape}} for the proportion surviving (no events) at time t and the shape parameter, or
 
-\emph{\code{fail}}, \emph{\code{t}} and \emph{\code{shape}} for the proportion failing (events) at time t and the shape parameter or
+\emph{\code{fail}}, \emph{\code{t}} and \emph{\code{shape}} for the proportion failing (events) at time t and the shape parameter, or
 
-\emph{\code{intercept}} and \emph{\code{shape}} for the parameters returned by \code{survreg(.., dist = "lognormal")} models.
+\emph{\code{intercept}} and \emph{\code{scale}} for the parameters returned by \code{survreg(.., dist = "lognormal")} models.
 
 The scale parameter is the median value of the distribution, and the shape is the log standard deviation
 
-The parameters should be spell correctly as partial matching is not available
+The parameters should be spelled correctly as partial matching is not available
 }
 
 \examples{

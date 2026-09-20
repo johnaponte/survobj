@@ -23,15 +23,15 @@ survival times. Each class has its own set of parameters but once the
 SURVIVAL object is defined, they have access to the same functions to
 calculate:
 \itemize{
-\item survival time function: \code{sfx()},
-\item hazard time function: \code{hfx()},
+\item survival function: \code{sfx()},
+\item hazard function: \code{hfx()},
 \item cumulative hazard function: \code{Cum_Hfx()}
 \item the inverse of the cumulative hazard function: \code{invCum_Hfx()}.
 \item generate random survival times: \code{rsurv()}
 \item generate random survival times under proportional hazard ratio: \code{rsurvhr()}.
 }
 
-There several functions to plot the distributions
+There are several functions to plot the distributions
 \itemize{
 \item generic S3:  \code{plot.SURVIVAL()}
 \item \code{plot_survival()}: to plot the functions
@@ -41,12 +41,14 @@ There several functions to plot the distributions
 }
 \section{Distributions}{
 
-The current factories are implemented:
+The following factories are implemented:
 \itemize{
 \item \code{s_exponential()}: for Exponential distributions
 \item \code{s_weibull()}: for Weibull distributions
 \item \code{s_gompertz()}: for Gompertz distributions
-\item \code{s_picewise()}: for Piecewise exponential distributions
+\item \code{s_piecewise()}: for Piecewise exponential distributions
+\item \code{s_loglogistic()}: for Log-Logistic distributions
+\item \code{s_lognormal()}: for Log-Normal distributions
 }
 }
 

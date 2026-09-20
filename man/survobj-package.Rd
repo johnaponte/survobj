@@ -4,11 +4,11 @@
 \name{survobj-package}
 \alias{survobj}
 \alias{survobj-package}
-\title{survobj: Objects to Simulate Survival Times}
+\title{survobj: Simulate Parametric and Semi-Parametric Survival Times with Object-Oriented Design}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Generate objects that simulate survival times. Random values for the distributions are generated using the method described by Bender (2003) \url{https://epub.ub.uni-muenchen.de/id/eprint/1716} and Leemis (1987) in Operations Research, 35(6), 892–894.
+Simulate parametric and semi-parametric survival times through a consistent, reusable interface for each distribution, using an object-oriented design. Supported distributions include Exponential, Weibull, Gompertz, Log-Logistic, Log-Normal, and Piecewise Exponential. Random variates can be generated under Proportional Hazards, Accelerated Failure Time, and Extended Hazards models, as well as under renewal and non-homogeneous Poisson recurrent event processes, following the methods described by Bender (2003) \doi{10.5282/UBM/EPUB.1716} and Leemis (1987) in Operations Research, 35(6), 892-894.
 }
 \seealso{
 Useful links:
@@ -21,6 +21,11 @@ Useful links:
 }
 \author{
 \strong{Maintainer}: Aponte John \email{john.j.aponte@gmail.com} (\href{https://orcid.org/0000-0002-3014-3673}{ORCID}) [copyright holder]
+
+Authors:
+\itemize{
+  \item Aponte John \email{john.j.aponte@gmail.com} (\href{https://orcid.org/0000-0002-3014-3673}{ORCID}) [copyright holder]
+}
 
 }
 \keyword{internal}

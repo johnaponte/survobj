@@ -8,13 +8,13 @@
 \alias{rsurv}
 \alias{rsurvhr}
 \alias{rsurvaft}
-\alias{rsurvah}
+\alias{rsurveh}
 \alias{plot_survival}
 \alias{ggplot_survival_random}
 \alias{compare_survival}
 \alias{ggplot_survival_hr}
 \alias{ggplot_survival_aft}
-\alias{ggplot_survival_ah}
+\alias{ggplot_survival_eh}
 \title{Functions for SURVIVAL objects}
 \usage{
 sfx(SURVIVAL, t)
@@ -31,7 +31,7 @@ rsurvhr(SURVIVAL, hr)
 
 rsurvaft(SURVIVAL, aft)
 
-rsurvah(SURVIVAL, aft, hr)
+rsurveh(SURVIVAL, aft, hr)
 
 plot_survival(SURVIVAL, timeto, main)
 
@@ -43,7 +43,7 @@ ggplot_survival_hr(SURVIVAL, hr, timeto, subjects, nsim, alpha = 0.1)
 
 ggplot_survival_aft(SURVIVAL, aft, timeto, subjects, nsim, alpha = 0.1)
 
-ggplot_survival_ah(SURVIVAL, aft, hr, timeto, subjects, nsim, alpha = 0.1)
+ggplot_survival_eh(SURVIVAL, aft, hr, timeto, subjects, nsim, alpha = 0.1)
 }
 \arguments{
 \item{SURVIVAL}{a SURVIVAL object}
@@ -79,6 +79,15 @@ cumulative hazard, inverse of the cumulative hazard, a random draw or a plot
 \description{
 All the SURVIVAL objects have access to the functions described here
 }
+\details{
+\code{rsurveh()} generates random values under the Extended Hazards model of
+Chen & Jewell (2001), which combines a proportional-hazards effect and an
+accelerated-failure-time effect: h*(t) = hr * aft * h0(aft * t). It nests
+the proportional hazards model (\code{aft = 1}) and the accelerated failure
+time model (\code{hr = 1}) as special cases. Note this differs from the
+Accelerated Hazards model of Chen & Wang (2000), h*(t) = h0(theta * t),
+which is the special case \code{hr = 1 / aft}.
+}
 \section{Functions}{
 \itemize{
 \item \code{sfx()}: Survival function
@@ -95,7 +104,7 @@ All the SURVIVAL objects have access to the functions described here
 
 \item \code{rsurvaft()}: Generate random values from the distribution under accelerated failure time ratios
 
-\item \code{rsurvah()}: Generate random values from the distribution under accelerated hazard ratios
+\item \code{rsurveh()}: Generate random values from the distribution under the Extended Hazards model (combined proportional hazards and accelerated failure time)
 
 \item \code{plot_survival()}: Plot of the survival functions
 
@@ -105,9 +114,9 @@ All the SURVIVAL objects have access to the functions described here
 
 \item \code{ggplot_survival_hr()}: ggplot of the simulation of survival times with hazard ratios
 
-\item \code{ggplot_survival_aft()}: ggplot of the simulation of survival times with accelerated time failures
+\item \code{ggplot_survival_aft()}: ggplot of the simulation of survival times with accelerated failure times
 
-\item \code{ggplot_survival_ah()}: ggplot of the simulation of survival times with accelerated hazard
+\item \code{ggplot_survival_eh()}: ggplot of the simulation of survival times with the Extended Hazards model
 
 }}
 \examples{
@@ -126,10 +135,10 @@ invCum_Hfx(SURVIVAL = obj, H = 0.8)
 rsurv(SURVIVAL = obj, n = 1)
 
 # Draw one random survival time from the distribution under Proportional
-# hazard, Accelerated time failure or Accelerated hazard.
+# hazard, Accelerated failure time or the combined Extended Hazards model.
 rsurvhr(SURVIVAL = obj, hr = 0.5)
 rsurvaft(SURVIVAL = obj, aft = 2)
-rsurvah(SURVIVAL = obj, aft = 2, hr = 0.5)
+rsurveh(SURVIVAL = obj, aft = 2, hr = 0.5)
 
 # Plot the survival functions
 plot_survival(SURVIVAL = obj, timeto = 2, main = "Example of Weibull distribution" )

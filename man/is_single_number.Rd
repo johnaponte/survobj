@@ -10,7 +10,7 @@ is_single_number(x)
 \item{x}{a variable to evaluate}
 }
 \value{
-\code{TRUE} if is a single number, \code{FALSE} otherwise
+\code{TRUE} if it is a single number, \code{FALSE} otherwise
 }
 \description{
 Evaluates if the argument is a single number

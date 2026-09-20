@@ -36,25 +36,35 @@ export(s_weibull)
 export(sfx)
 export(ytod)
 export(ytom)
-importFrom(dplyr,bind_rows)
-importFrom(dplyr,mutate)
-importFrom(dplyr,select)
-importFrom(ggplot2,aes)
-importFrom(ggplot2,facet_wrap)
-importFrom(ggplot2,geom_step)
-importFrom(ggplot2,ggplot)
-importFrom(ggplot2,ggtitle)
-importFrom(ggplot2,scale_color_discrete)
-importFrom(ggplot2,scale_y_continuous)
-importFrom(ggplot2,theme)
-importFrom(graphics,par)
-importFrom(graphics,title)
-importFrom(stats,dlnorm)
-importFrom(stats,plnorm)
-importFrom(stats,qlnorm)
-importFrom(stats,qnorm)
-importFrom(stats,runif)
-importFrom(stats,uniroot)
-importFrom(survival,Surv)
-importFrom(survival,survfit)
+importFrom(dplyr,
+  bind_rows,
+  mutate,
+  select
+)
+importFrom(ggplot2,
+  aes,
+  facet_wrap,
+  geom_step,
+  ggplot,
+  ggtitle,
+  scale_color_discrete,
+  scale_y_continuous,
+  theme
+)
+importFrom(graphics,
+  par,
+  title
+)
+importFrom(stats,
+  dlnorm,
+  plnorm,
+  qlnorm,
+  qnorm,
+  runif,
+  uniroot
+)
+importFrom(survival,
+  Surv,
+  survfit
+)
 importFrom(tidyr,pivot_longer)
