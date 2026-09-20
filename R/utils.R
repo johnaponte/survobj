@@ -8,7 +8,7 @@
 #'
 #' Evaluates if the argument is a single number
 #' @param x a variable to evaluate
-#' @return `TRUE` if is a single number, `FALSE` otherwise
+#' @return `TRUE` if it is a single number, `FALSE` otherwise
 #' @export
 #' @examples
 #' is_single_number(3)  #TRUE
@@ -23,10 +23,10 @@ is_single_number<- function(x){
 
 #' Functions to help in time conversion
 #'
-#' This set of functions help in the time conversion, taking into account
+#' This set of functions helps in the time conversion, taking into account
 #' generic times and not specific times. The conversions are based on the
 #' assumption that 1 year is 365.25 days and is 12 months. There is no
-#' adjustment for lap days or ours or difference of days between months
+#' adjustment for leap days or hours or difference of days between months
 #'
 #' @param x the time to convert
 #' @return the converted time
@@ -66,12 +66,12 @@ ytom <- function(x){dtom(ytod(x))}
 
 #' Censor of events
 #'
-#'  if censor_time < time, event is change to 0, otherwise not changed
+#'  if censor_time < time, event is changed to 0, otherwise not changed
 #'
 #'  if censor_time < time, time is changed to censor_time, otherwise no change
 #'
 #'  Be careful and do not overwrite the time variable with the censor time variable
-#'  to not loose track of the events
+#'  to not lose track of the events
 #'
 #' @param censor_time the time to censor
 #' @param time the time variable where the censor_time is applied
@@ -91,7 +91,7 @@ ytom <- function(x){dtom(ytod(x))}
 #'   sim_t_event = c(0.5,0.6,1,10,20),
 #'   sim_t_ltof = c(2,0.5,2,2,0.8)
 #'  ) |>
-#'  mutate(sevent = censor_event(1,sim_t_event,sim_event=1)) |>
+#'  mutate(sevent = censor_event(1,sim_t_event,event=1)) |>
 #'  mutate(stime = censor_time(1,sim_t_event)) |>
 #'  mutate(event = censor_event(sim_t_ltof, stime, sevent)) |>
 #'  mutate(timeto = censor_time(sim_t_ltof, stime))

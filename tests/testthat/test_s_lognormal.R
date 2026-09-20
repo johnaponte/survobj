@@ -96,3 +96,40 @@ test_that(
   }
 
 })
+
+test_that(
+  "lognormal invCum_Hfx does not truncate to Inf for large H (regression)",
+  {
+    # 1 - exp(-H) underflows to exactly 1 for H > ~36 (S(t) < 2.2e-16),
+    # which used to make qlnorm(1 - exp(-H), ...) truncate the quantile to Inf.
+    xx <- s_lognormal(scale = 2, shape = 2)
+
+    expect_false(is.infinite(xx$invCum_Hfx(40)))
+    expect_false(is.infinite(xx$invCum_Hfx(1000)))
+    expect_true(all(is.finite(xx$invCum_Hfx(c(40, 100, 500, 1000)))))
+
+    # round trip should hold well beyond the old underflow boundary
+    expect_equal(xx$Cum_Hfx(xx$invCum_Hfx(1000)), 1000, tolerance = 1e-6)
+
+    # should still agree with the old formula in the range where it was accurate
+    expect_equal(
+      xx$invCum_Hfx(c(0.001, 0.5, 1, 5)),
+      qlnorm(1 - exp(-c(0.001, 0.5, 1, 5)), log(2), 2),
+      tolerance = 1e-6
+    )
+})
+
+test_that(
+  "lognormal hfx(0) equals the limit 0 instead of NA (regression)",
+  {
+    # dlnorm(0,...) and plnorm(0,...) are both exactly 0 in double precision,
+    # so f(0)/S(0) = 0/1 = 0 with no division-by-zero risk; hfx() used to
+    # special-case t == 0 to NA_real_ instead of returning this true limit.
+    xx <- s_lognormal(scale = 2, shape = 0.5)
+    expect_identical(xx$hfx(0), 0)
+    expect_false(anyNA(xx$hfx(c(0, 0.5, 1, 2))))
+    expect_equal(
+      xx$hfx(c(0, 0.5, 1, 2)),
+      dlnorm(c(0, 0.5, 1, 2), log(2), 0.5) / (1 - plnorm(c(0, 0.5, 1, 2), log(2), 0.5))
+    )
+})

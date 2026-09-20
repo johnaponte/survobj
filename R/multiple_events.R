@@ -3,7 +3,7 @@
 
 #' Generate random recurrent episodes under a renewal Poisson process
 #'
-#' Generate a random draws from the distribution of recurrent set of survival
+#' Generate random draws from the distribution of a recurrent set of survival
 #' times under a renewal Poisson process following Leemis (1987)
 #'
 #' @param SURVIVAL Object of survival class
@@ -40,7 +40,7 @@ renewhr <- function(SURVIVAL, hr,  prevtime){
 #' timea <- rsurvaft(s_obj2, aft)
 #' timeb <- renewaft(s_obj2, aft, timea)
 #' @describeIn renewal Recurrent episodes under an accelerated failure time model
-renewaft <- function(SURVIVAL, prevtime, aft){
+renewaft <- function(SURVIVAL, aft, prevtime){
   stopifnot("Is not a SURVIVAL object" = inherits(SURVIVAL, "SURVIVAL"))
   stopifnot("prevtime should be numeric" = is.numeric(prevtime))
   stopifnot("aft should be numeric" = is.numeric(aft))
@@ -51,10 +51,10 @@ renewaft <- function(SURVIVAL, prevtime, aft){
 
 
 
-#' Generate random recurrent episodes under a non homogeneous Poisson process
+#' Generate random recurrent episodes under a non-homogeneous Poisson process
 #'
-#' Generate a random draws from the distribution of recurrent set of survival
-#' times under a a non homogeneous Poisson process following Leemis (1987)
+#' Generate random draws from the distribution of a recurrent set of survival
+#' times under a non-homogeneous Poisson process following Leemis (1987)
 #'
 #' @param SURVIVAL Object of survival class
 #' @param prevtime Vector of previous survival times

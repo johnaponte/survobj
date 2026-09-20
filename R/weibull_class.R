@@ -7,14 +7,14 @@
 #'
 #' @section Parameters:
 #'
-#' To create an exponential survival object the following
+#' To create a Weibull survival object the following
 #' options are available:
 #'
 #' _`scale`_ and _`shape`_ to specify the canonical parameters of the distribution, or
 #'
 #' _`surv`_, _`t`_ and _`shape`_ for the proportion surviving (no events) at time t and the shape parameter, or
 #'
-#' _`fail`_, _`t`_ and _`shape`_ for the proportion failing (events) at time t and the shape parameter or
+#' _`fail`_, _`t`_ and _`shape`_ for the proportion failing (events) at time t and the shape parameter, or
 #'
 #' _`intercept`_ and _`scale`_ for the parameters returned by `survreg(.., dist = "weibull")` models.
 #'
@@ -22,7 +22,7 @@
 #'
 #' scale = -log(1-fail)/(t^shape)
 #'
-#' The parameters should be spell correctly as partial matching is not available
+#' The parameters should be spelled correctly as partial matching is not available
 #'
 #' @param ... Parameters to define the distribution. See the Parameters for details
 #' @return a SURVIVAL object of the Weibull distribution family. See the
@@ -76,7 +76,7 @@ s_weibull <- function(...) {
           stopifnot("aft must be positive numbers > 0" = all(aft > 0))
           iCum_Hfx(-log(runif(length(aft))))/aft
         },
-        rsurvah = function(aft,hr){
+        rsurveh = function(aft,hr){
           stopifnot("aft must be numeric" = is.numeric(aft))
           stopifnot("hr must be numeric" = is.numeric(hr))
           stopifnot("aft and hr must be of the same length" = length(aft)==length(hr) )
@@ -91,7 +91,7 @@ s_weibull <- function(...) {
   }
 
   # Definition based on scale and shape
-  if (length(nparam == 2) &
+  if (length(nparam) == 2 &
       all(c("scale","shape") %in% nparam)) {
     stopifnot("scale should be a single number" = is_single_number(params$scale))
     stopifnot("scale must be greater than 0" = params$scale > 0)
@@ -103,7 +103,7 @@ s_weibull <- function(...) {
 
   # Definition based in proportion surviving, time and shape
   if(
-    length(nparam == 3) &
+    length(nparam) == 3 &
     all(c("surv","t","shape") %in% nparam)) {
     stopifnot("surv must be a single number" = is_single_number(params$surv))
     stopifnot("surv must be greater than 0" = params$surv > 0)
@@ -120,7 +120,7 @@ s_weibull <- function(...) {
 
   # Definition based on proportion failing and time
   if(
-    length(nparam == 3) &
+    length(nparam) == 3 &
     all(c("fail","t","shape") %in% nparam)) {
     stopifnot("fail must be a single number" = is_single_number(params$fail))
     stopifnot("fail must be greater than 0" = params$fail > 0)
@@ -135,7 +135,7 @@ s_weibull <- function(...) {
   }
 
   if(
-    length(nparam == 2) &
+    length(nparam) == 2 &
     all(c("intercept","scale") %in% nparam)) {
     stopifnot("intercept must be a single number" = is_single_number(params$intercept))
     stopifnot("scale must be a single number" = is_single_number(params$scale))

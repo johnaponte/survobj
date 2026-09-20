@@ -7,21 +7,20 @@
 #'
 #' @section Parameters:
 #'
-#' To create an exponential survival object the following
+#' To create a Log Normal survival object the following
 #' options are available:
 #'
 #' _`scale`_ and _`shape`_ to specify the canonical parameters of the distribution, or
 #'
 #' _`surv`_, _`t`_ and _`shape`_ for the proportion surviving (no events) at time t and the shape parameter, or
 #'
-#' _`fail`_, _`t`_ and _`shape`_ for the proportion failing (events) at time t and the shape parameter or
+#' _`fail`_, _`t`_ and _`shape`_ for the proportion failing (events) at time t and the shape parameter, or
 #'
-#' _`intercept`_ and _`shape`_ for the parameters returned by `survreg(.., dist = "lognormal")` models.
+#' _`intercept`_ and _`scale`_ for the parameters returned by `survreg(.., dist = "lognormal")` models.
 #'
 #' The scale parameter is the median value of the distribution, and the shape is the log standard deviation
-
 #'
-#' The parameters should be spell correctly as partial matching is not available
+#' The parameters should be spelled correctly as partial matching is not available
 #'
 #' @param ... Parameters to define the distribution. See the Parameters for details
 #' @return a SURVIVAL object of the log-normal distribution family. See the
@@ -45,7 +44,9 @@ s_lognormal <- function(...) {
   .factory_lognormal <- function(scale, shape) {
     iCum_Hfx <- function(H){
       stopifnot("Must be positive number" = all(H >= 0))
-      qlnorm(1 - exp(-H), log(scale), shape)
+      # 1 - exp(-H) underflows to exactly 1 for H > ~36 (S(t) < 2.2e-16),
+      # truncating the result to Inf. Use log.p/lower.tail to stay accurate.
+      qlnorm(-H, log(scale), shape, lower.tail = FALSE, log.p = TRUE)
       }
     structure(
       list(
@@ -57,24 +58,18 @@ s_lognormal <- function(...) {
         },
         hfx = function(t) {
           stopifnot("Must be positive number" = all(t >= 0))
-          ifelse(t == 0,
-                 NA_real_,
-                 dlnorm(t,log(scale),shape) / (1-plnorm(t,log(scale),shape))
-          )
+          dlnorm(t,log(scale),shape) / (1-plnorm(t,log(scale),shape))
         },
         Cum_Hfx = function(t) {
           stopifnot("Must be positive number" = all(t >= 0))
-          -log(1-plnorm(t, log(scale), shape))
+          # Mirrors the invCum_Hfx fix: 1-plnorm(t,...) underflows to exactly 0
+          # for large t, truncating -log(0) to Inf. log.p/lower.tail stays accurate.
+          -plnorm(t, log(scale), shape, lower.tail = FALSE, log.p = TRUE)
         },
         invCum_Hfx=iCum_Hfx,
         rsurv =  function(n){
           stopifnot("Must be positive number" = all(n > 0))
           iCum_Hfx(-log(runif(n)))
-        },
-        rsurvhr = function(hr){
-          stopifnot("Must be positive numbers > 0" = all(hr > 0))
-          # Following Bender, Augustin and Blettner 2005
-          iCum_Hfx(-log(runif(length(hr)))/hr)
         },
         rsurvhr = function(hr){
           stopifnot("hr must be numeric" = is.numeric(hr))
@@ -87,7 +82,7 @@ s_lognormal <- function(...) {
           stopifnot("aft must be positive numbers > 0" = all(aft > 0))
           iCum_Hfx(-log(runif(length(aft))))/aft
         },
-        rsurvah = function(aft,hr){
+        rsurveh = function(aft,hr){
           stopifnot("aft must be numeric" = is.numeric(aft))
           stopifnot("hr must be numeric" = is.numeric(hr))
           stopifnot("aft and hr must be of the same length" = length(aft)==length(hr) )
@@ -101,7 +96,7 @@ s_lognormal <- function(...) {
   }
 
   # Definition based on scale and shape
-  if (length(nparam == 2) &
+  if (length(nparam) == 2 &
       all(c("scale","shape") %in% nparam)) {
     stopifnot("scale should be a single number" = is_single_number(params$scale))
     stopifnot("scale must be greater than 0 " = params$scale > 0)
@@ -113,7 +108,7 @@ s_lognormal <- function(...) {
 
   # Definition based in proportion surviving, time and shape
   if(
-    length(nparam == 3) &
+    length(nparam) == 3 &
     all(c("surv","t","shape") %in% nparam)) {
     stopifnot("surv must be a single number" = is_single_number(params$surv))
     stopifnot("surv must be greater than 0" = params$surv > 0)
@@ -130,7 +125,7 @@ s_lognormal <- function(...) {
 
   # Definition based on proportion failing and time
   if(
-    length(nparam == 3) &
+    length(nparam) == 3 &
     all(c("fail","t","shape") %in% nparam)) {
     stopifnot("fail must be a single number" = is_single_number(params$fail))
     stopifnot("fail must be greater than 0" = params$fail > 0)
@@ -145,7 +140,7 @@ s_lognormal <- function(...) {
   }
 
   if(
-    length(nparam == 2) &
+    length(nparam) == 2 &
     all(c("intercept","scale") %in% nparam)) {
     stopifnot("intercept must be a single number" = is_single_number(params$intercept))
     stopifnot("scale must be a single number" = is_single_number(params$scale))

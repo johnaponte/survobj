@@ -11,9 +11,9 @@
 #' SURVIVAL object is defined, they have access to the same functions to
 #' calculate:
 #'
-#'   - survival time function: `sfx()`,
+#'   - survival function: `sfx()`,
 #'
-#'   - hazard time function: `hfx()`,
+#'   - hazard function: `hfx()`,
 #'
 #'   - cumulative hazard function: `Cum_Hfx()`
 #'
@@ -23,7 +23,7 @@
 #'
 #'   - generate random survival times under proportional hazard ratio: `rsurvhr()`.
 #'
-#' There several functions to plot the distributions
+#' There are several functions to plot the distributions
 #'
 #'   - generic S3:  `plot.SURVIVAL()`
 #'
@@ -34,7 +34,7 @@
 #'   - `compare_survival()`:  to compare the functions of two SURVIVAL objects
 #'
 #' @section Distributions:
-#' The current factories are implemented:
+#' The following factories are implemented:
 #'
 #'   - `s_exponential()`: for Exponential distributions
 #'
@@ -42,7 +42,11 @@
 #'
 #'   - `s_gompertz()`: for Gompertz distributions
 #'
-#'   - `s_picewise()`: for Piecewise exponential distributions
+#'   - `s_piecewise()`: for Piecewise exponential distributions
+#'
+#'   - `s_loglogistic()`: for Log-Logistic distributions
+#'
+#'   - `s_lognormal()`: for Log-Normal distributions
 #'
 #' @param s_family a factory for a specific distribution
 #' @param ... parameters to define the survival distribution
@@ -105,10 +109,10 @@ print.SURVIVAL <- function(x, ...){
 #' rsurv(SURVIVAL = obj, n = 1)
 #'
 #' # Draw one random survival time from the distribution under Proportional
-#' # hazard, Accelerated time failure or Accelerated hazard.
+#' # hazard, Accelerated failure time or the combined Extended Hazards model.
 #' rsurvhr(SURVIVAL = obj, hr = 0.5)
 #' rsurvaft(SURVIVAL = obj, aft = 2)
-#' rsurvah(SURVIVAL = obj, aft = 2, hr = 0.5)
+#' rsurveh(SURVIVAL = obj, aft = 2, hr = 0.5)
 #'
 #' # Plot the survival functions
 #' plot_survival(SURVIVAL = obj, timeto = 2, main = "Example of Weibull distribution" )
@@ -159,7 +163,7 @@ rsurv <- function(SURVIVAL, n){
   SURVIVAL$rsurv(n)
 }
 
-#' @param hr a vector with hazard rates.
+#' @param hr Vector of hazard ratios.
 #' @param SURVIVAL a SURVIVAL object
 #' @export
 #' @describeIn SURVIVAL Generate random values from the distribution under proportional hazard ratios
@@ -169,7 +173,7 @@ rsurvhr <- function(SURVIVAL, hr){
 }
 
 
-#' @param aft a vector with accelerated failure time ratio.
+#' @param aft Vector of accelerated failure time ratios.
 #' @param SURVIVAL a SURVIVAL object
 #' @export
 #' @describeIn SURVIVAL Generate random values from the distribution under accelerated failure time ratios
@@ -178,14 +182,22 @@ rsurvaft <- function(SURVIVAL, aft){
   SURVIVAL$rsurvaft(aft)
 }
 
-#' @param aft a vector with accelerated failure time ratio.
-#' @param hr  a vector with hazard ratios.
+#' @param aft Vector of accelerated failure time ratios.
+#' @param hr Vector of hazard ratios.
 #' @param SURVIVAL a SURVIVAL object
+#' @details
+#' `rsurveh()` generates random values under the Extended Hazards model of
+#' Chen & Jewell (2001), which combines a proportional-hazards effect and an
+#' accelerated-failure-time effect: h*(t) = hr * aft * h0(aft * t). It nests
+#' the proportional hazards model (`aft = 1`) and the accelerated failure
+#' time model (`hr = 1`) as special cases. Note this differs from the
+#' Accelerated Hazards model of Chen & Wang (2000), h*(t) = h0(theta * t),
+#' which is the special case `hr = 1 / aft`.
 #' @export
-#' @describeIn SURVIVAL Generate random values from the distribution under accelerated hazard ratios
-rsurvah <- function(SURVIVAL, aft, hr){
+#' @describeIn SURVIVAL Generate random values from the distribution under the Extended Hazards model (combined proportional hazards and accelerated failure time)
+rsurveh <- function(SURVIVAL, aft, hr){
   stopifnot("Not a SURVIVAL OBJECT" = inherits(SURVIVAL,"SURVIVAL"))
-  SURVIVAL$rsurvah(aft, hr)
+  SURVIVAL$rsurveh(aft, hr)
 }
 
 
@@ -248,12 +260,12 @@ plot.SURVIVAL <- function(x,...){
   else {
     maint = params$main
   }
-  p5 <- uniroot(function(y){ifelse(y < 0, -10,x$sfx(y)-0.05)}, lower = 0, upper = 10, extendInt = "downX")
+  p5 <- try(uniroot(function(y){ifelse(y < 0, -10,x$sfx(y)-0.05)}, lower = 0, upper = 10, extendInt = "downX"), silent = TRUE)
   if (! inherits(p5,"try-error")){
     plot_survival(x, timeto = p5$root, main = maint)
   }
   else {
-    stop("Error finding and adequate time interval. Use the function plot_survival instead")
+    stop("Error finding an adequate time interval. Use the function plot_survival instead")
   }
 }
 
@@ -336,6 +348,16 @@ ggplot_survival_random <- function(SURVIVAL, timeto, subjects, nsim, alpha = 0.1
       subtitle = paste0("Subjects: ", subjects, "  Number of simulations: ", nsim))
 }
 
+# Finite hazard values for both SURVIVAL objects, sampled on the same grid
+# (matching the n = 101 points plot.function() uses to draw the curves) so
+# an interior peak in either hazard (e.g. log-normal, log-logistic) is not
+# missed when computing the shared ylim for the hazard comparison panel.
+.hazard_yvals <- function(SURVIVAL1, SURVIVAL2, timeto, n = 101) {
+  xgrid <- seq(0, timeto, length.out = n)
+  yvals <- c(SURVIVAL1$hfx(xgrid), SURVIVAL2$hfx(xgrid))
+  yvals[is.finite(yvals)]
+}
+
 #' @param SURVIVAL1 a SURVIVAL object
 #' @param SURVIVAL2 a SURVIVAL object
 #' @param timeto timeto used in the graphs
@@ -370,8 +392,7 @@ compare_survival <- function(SURVIVAL1, SURVIVAL2, timeto, main) {
   )
 
   #min for scale
-  yvals <- c(SURVIVAL1$hfx(0:timeto), SURVIVAL2$hfx(c(0,timeto)))
-  yvals<- yvals[is.finite(yvals)]
+  yvals <- .hazard_yvals(SURVIVAL1, SURVIVAL2, timeto)
 
   plot(
     SURVIVAL1$hfx,
@@ -550,7 +571,7 @@ ggplot_survival_hr <- function(SURVIVAL, hr, timeto, subjects, nsim, alpha = 0.1
 #' @importFrom tidyr pivot_longer
 #' @importFrom survival survfit
 #' @importFrom survival Surv
-#' @describeIn SURVIVAL ggplot of the simulation of survival times with accelerated time failures
+#' @describeIn SURVIVAL ggplot of the simulation of survival times with accelerated failure times
 ggplot_survival_aft <- function(SURVIVAL, aft, timeto, subjects, nsim, alpha = 0.1) {
 
   ldf<- lapply(
@@ -640,14 +661,14 @@ ggplot_survival_aft <- function(SURVIVAL, aft, timeto, subjects, nsim, alpha = 0
 #' @importFrom tidyr pivot_longer
 #' @importFrom survival survfit
 #' @importFrom survival Surv
-#' @describeIn SURVIVAL ggplot of the simulation of survival times with accelerated hazard
-ggplot_survival_ah <- function(SURVIVAL, aft, hr, timeto, subjects, nsim, alpha = 0.1) {
+#' @describeIn SURVIVAL ggplot of the simulation of survival times with the Extended Hazards model
+ggplot_survival_eh <- function(SURVIVAL, aft, hr, timeto, subjects, nsim, alpha = 0.1) {
 
   ldf<- lapply(
     1:nsim,
     function(x){
-      simtime <- c(SURVIVAL$rsurvah(rep(1,subjects), rep(1,subjects)),
-                   SURVIVAL$rsurvah(rep(aft,subjects), rep(hr, subjects)))
+      simtime <- c(SURVIVAL$rsurveh(rep(1,subjects), rep(1,subjects)),
+                   SURVIVAL$rsurveh(rep(aft,subjects), rep(hr, subjects)))
       simgrp <- factor(c(rep(0,subjects),rep(1,subjects)))
       simevent <- ifelse(simtime <= timeto,1,0)
       simtime <- ifelse(simevent == 0, timeto, simtime)
@@ -704,7 +725,7 @@ ggplot_survival_ah <- function(SURVIVAL, aft, hr, timeto, subjects, nsim, alpha 
     scale_y_continuous("") +
     scale_color_discrete("Group") +
     ggtitle(
-      paste(SURVIVAL$distribution, "simulations with accelerated hazard"),
+      paste(SURVIVAL$distribution, "simulations with the Extended Hazards model"),
       subtitle = paste0("Subjects per group: ", subjects, "  Number of simulations: ", nsim)) +
     theme(legend.position = "bottom")
 }

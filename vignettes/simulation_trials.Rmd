@@ -22,10 +22,10 @@ knitr::opts_chunk$set(
 
 We can use objects of the class SURVIVAL to simulate surviving times in
 clinical trials. We present one example in which we want to estimate the
-empirical power to detect significantly a vaccine efficacy.
+empirical power to detect a significant vaccine efficacy.
 
-The empirical power is define as the percentage of times the p-value for the 
-coefficient that indicates the treatment is equal or below 0.05.
+The empirical power is defined as the percentage of times the p-value for the
+coefficient that indicates the treatment is equal to or below 0.05.
 
 ```{r setup}
 library(survobj)
@@ -41,7 +41,7 @@ Assumptions:
 -   There are 250 participants in each group, one group is control and
     the other is vaccinated
 
--   The vaccine efficacy is 40% (i.e the hazard ratio is 1-40/100 = 0.6)
+-   The vaccine efficacy is 40% (i.e. the hazard ratio is 1-40/100 = 0.6)
 
 -   The control group follows an exponential distribution with 40% of
     subjects having an event at time 12 months (365.25 days)
@@ -119,7 +119,7 @@ sim_df <- do.call(rbind, sim)
 
 
 ```{r loadsimul, include=FALSE }
- # The simulation takes to much time to be included in CRAN
+ # The simulation takes too much time to be included in CRAN
  # Load a previous simulation
  load("sim_df.rda")
 ```
@@ -131,7 +131,7 @@ empirical_power = binom.test(sum(sim_df$pval <= 0.05), length(sim_df$pval))
 empirical_power$estimate
 empirical_power$conf.int
 
-# Distribution of the simulated VEs}
+# Distribution of the simulated VEs
 summary(sim_df$ve)
 
 # Distribution of the simulated number of events
@@ -147,7 +147,7 @@ The simulation provides an estimate of the empirical power of
 `r round(empirical_power$conf.int[2]*100,1)`%
 )
 
-As reference, the output of power calculation using PASS 2021(R) using
+As reference, the output of the power calculation using PASS 2021(R) with
 the same parameters
 
 ![](report_pass.png)

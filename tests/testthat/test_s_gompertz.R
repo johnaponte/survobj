@@ -47,3 +47,34 @@ test_that(
     expect_equal(unname(res2["hrcox"]),hr, tolerance = 1/reps*10)
   }
 })
+
+test_that(
+  "Gompertz with negative shape returns Inf (cure fraction) instead of NaN (regression)",
+  {
+    # With shape < 0 the hazard decreases towards 0, so the cumulative hazard
+    # is bounded above by scale/|shape|. Draws beyond that bound used to
+    # evaluate log() of a negative number, silently producing NaN.
+    obj <- s_gompertz(scale = 0.5, shape = -0.2)
+    cure_fraction <- exp(-0.5/0.2)
+
+    # Directly probe invCum_Hfx just past and just below the bound
+    bound <- 0.5/0.2
+    expect_true(is.infinite(obj$invCum_Hfx(bound + 1)))
+    expect_false(is.infinite(obj$invCum_Hfx(bound - 0.01)))
+    expect_true(all(is.finite(obj$invCum_Hfx(seq(0, bound * 0.999, length.out = 50)))))
+
+    # rsurv should never produce NaN/NA, and should produce some Inf draws
+    # roughly matching the theoretical cure fraction
+    set.seed(123)
+    res <- obj$rsurv(5000)
+    expect_false(anyNA(res))
+    expect_false(any(is.nan(res)))
+    expect_equal(mean(is.infinite(res)), cure_fraction, tolerance = 0.05)
+
+    # positive shape must remain unaffected (cumulative hazard is unbounded)
+    objp <- s_gompertz(scale = 1, shape = 1.5)
+    set.seed(1)
+    resp <- objp$rsurv(1000)
+    expect_false(anyNA(resp))
+    expect_false(any(is.infinite(resp)))
+})

@@ -4,14 +4,14 @@
 
 #' Factory of SURVIVAL objects with Gompertz distributions
 #'
-#' Creates a SURVIVAL object with an Gompertz distribution.
+#' Creates a SURVIVAL object with a Gompertz distribution.
 #'
 #' @section Parameters:
 #'
-#' To create an exponential survival object the following
+#' To create a Gompertz survival object the following
 #' options are available:
 #'
-#' _`scale`_ and _`shape`_ to specify the canonical parameter of the distribution, or
+#' _`scale`_ and _`shape`_ to specify the canonical parameters of the distribution, or
 #'
 #' _`surv`_, _`t`_ and _`shape`_  for the proportion surviving (no events) at time t and shape, or
 #'
@@ -21,7 +21,15 @@
 #'
 #' scale = -log(1-fail)·shape/(exp(shape·t))
 #'
-#' The parameters should be spell correctly as partial matching is not available
+#' The parameters should be spelled correctly as partial matching is not available
+#'
+#' @section Negative shape:
+#'
+#' A negative `shape` produces a decreasing hazard whose cumulative hazard is bounded
+#' above by `scale / abs(shape)` (following Bender, Augustin & Blettner 2005). This
+#' makes the distribution improper: a cure fraction of `exp(-scale / abs(shape))`
+#' of the subjects never experience the event, so their simulated survival time
+#' (`rsurv`, `rsurvhr`, `rsurvaft`, `rsurveh`) and `invCum_Hfx()` are returned as `Inf`.
 #'
 #' @param ... Parameters to define the distribution. See the Parameters for details
 #' @return a SURVIVAL object of the Gompertz distribution family. See the
@@ -41,8 +49,14 @@ s_gompertz <- function(...) {
   .factory_gompertz <- function(scale, shape) {
     iCum_Hfx <- function(H){
       stopifnot("Must be positive number" = all(H >= 0))
-      1/shape*log(shape/scale*H+1)
-      #log(shape/scale*H+1)/shape
+      # When shape < 0 the hazard decreases towards 0 and the cumulative
+      # hazard is bounded above by -scale/shape, so H beyond that bound
+      # corresponds to a cure fraction that never experiences the event.
+      arg <- shape/scale*H+1
+      out <- rep(Inf, length(arg))
+      ok <- arg > 0
+      out[ok] <- 1/shape*log(arg[ok])
+      out
     }
     structure(
       list(
@@ -79,7 +93,7 @@ s_gompertz <- function(...) {
           stopifnot("aft must be positive numbers > 0" = all(aft > 0))
           iCum_Hfx(-log(runif(length(aft))))/aft
         },
-        rsurvah = function(aft,hr){
+        rsurveh = function(aft,hr){
           stopifnot("aft must be numeric" = is.numeric(aft))
           stopifnot("hr must be numeric" = is.numeric(hr))
           stopifnot("aft and hr must be of the same length" = length(aft)==length(hr) )
@@ -93,7 +107,7 @@ s_gompertz <- function(...) {
   }
 
   # Definition based on scale and shape
-  if (length(nparam == 2) &
+  if (length(nparam) == 2 &
       all(c("scale","shape") %in% nparam)) {
     stopifnot("scale should be a single number" = is_single_number(params$scale))
     stopifnot("scale must be greater than 0" = params$scale > 0)
@@ -105,7 +119,7 @@ s_gompertz <- function(...) {
 
   # Definition based in proportion surviving, time and shape
   if(
-    length(nparam == 3) &
+    length(nparam) == 3 &
     all(c("surv","t","shape") %in% nparam)) {
     stopifnot("surv must be a single number" = is_single_number(params$surv))
     stopifnot("surv must be greater than 0" = params$surv > 0)
@@ -121,7 +135,7 @@ s_gompertz <- function(...) {
 
   # Definition based on proportion failing and time
   if(
-    length(nparam == 3) &
+    length(nparam) == 3 &
     all(c("fail","t","shape") %in% nparam)) {
     stopifnot("fail must be a single number" = is_single_number(params$fail))
     stopifnot("fail must be greater than 0" = params$fail > 0)

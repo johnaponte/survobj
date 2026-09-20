@@ -23,7 +23,7 @@ library(dplyr)
 
 ## Introduction
 
-This document presents a way to simulate a trial with multiple events and compare the empirical power of the analysis of the first or only episode using Cox regression and the analysis of multiple episodes under an Andersen and Gill model. Data is generated using a renewal homogeneous Poisson process as described  @leemis1987 .
+This document presents a way to simulate a trial with multiple events and compare the empirical power of the analysis of the first or only episode using Cox regression and the analysis of multiple episodes under an Andersen and Gill model. Data is generated using a renewal homogeneous Poisson process as described by @leemis1987.
 
 ## Trial simulation
 
@@ -102,7 +102,7 @@ sim_rec <- do.call(rbind, sim)
 ```
 
 ```{r, include=FALSE }
- # The simulation takes to much time to be included in CRAN
+ # The simulation takes too much time to be included in CRAN
  # Load a previous simulation
  load("sim_rec.rda")
 ```
@@ -118,7 +118,7 @@ rec_empirical_power =
 rec_empirical_power$estimate
 rec_empirical_power$conf.int
 
-# Distribution of the simulated VEs}
+# Distribution of the simulated hazard ratios
 summary(sim_rec$hr[sim_rec$res == "recurrent"])
 
 # Distribution of the simulated number of events
@@ -135,7 +135,7 @@ sing_empirical_power =
 sing_empirical_power$estimate
 sing_empirical_power$conf.int
 
-# Distribution of the simulated VEs}
+# Distribution of the simulated hazard ratios
 summary(sim_rec$hr[sim_rec$res == "single"])
 
 # Distribution of the simulated number of events

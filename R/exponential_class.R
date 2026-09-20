@@ -20,7 +20,7 @@
 #'
 #' lambda = -log(1-fail)/t
 #'
-#' The parameters should be spell correctly as partial matching is not available
+#' The parameters should be spelled correctly as partial matching is not available
 #'
 #' @param ... Parameters to define the distribution. See the Parameters for details
 #' @return a SURVIVAL object of the exponential distribution family. See the
@@ -77,7 +77,7 @@ s_exponential <- function(...) {
           stopifnot("aft must be positive numbers > 0" = all(aft > 0))
           iCum_Hfx(-log(runif(length(aft))))/aft
         },
-        rsurvah = function(aft,hr){
+        rsurveh = function(aft,hr){
           stopifnot("aft must be numeric" = is.numeric(aft))
           stopifnot("hr must be numeric" = is.numeric(hr))
           stopifnot("aft and hr must be of the same length" = length(aft)==length(hr) )
@@ -91,7 +91,7 @@ s_exponential <- function(...) {
   }
 
   # Definition based on lambda
-  if (length(nparam == 1) &
+  if (length(nparam) == 1 &
       ("lambda" %in% nparam)) {
     stopifnot("lambda should be a single number" = is_single_number(params$lambda) )
     stopifnot("lambda should be greater than 0" = params$lambda > 0 )
@@ -101,7 +101,7 @@ s_exponential <- function(...) {
 
   # Definition based in proportion surviving and time
   if(
-    length(nparam == 2) &
+    length(nparam) == 2 &
     all(c("surv","t") %in% nparam)) {
     stopifnot("surv must be a single number" = is_single_number(params$surv))
     stopifnot("surv must be greater than 0" = params$surv > 0)
@@ -115,7 +115,7 @@ s_exponential <- function(...) {
 
   # Definition based on proportion failing and time
   if(
-    length(nparam == 2) &
+    length(nparam) == 2 &
     all(c("fail","t") %in% nparam)) {
     stopifnot("fail must be a single number" = is_single_number(params$fail))
     stopifnot("fail must be greater than 0" = params$fail > 0)
@@ -127,7 +127,7 @@ s_exponential <- function(...) {
     return(.factory_exponential(lambda))
   }
   message(
-    "Valid parameters to define a Exponential distribution are: \n",
+    "Valid parameters to define an Exponential distribution are: \n",
     "lambda: for the canonical parameter of the distribution, or\n",
     "surv, t: for the surviving proportion (no events) at time t, or\n",
     "fail, t: for the failure proportion (events) at time t \n")

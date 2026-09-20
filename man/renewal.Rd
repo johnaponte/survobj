@@ -8,7 +8,7 @@
 \usage{
 renewhr(SURVIVAL, hr, prevtime)
 
-renewaft(SURVIVAL, prevtime, aft)
+renewaft(SURVIVAL, aft, prevtime)
 }
 \arguments{
 \item{SURVIVAL}{Object of survival class}

@@ -1,4 +1,32 @@
 # News
+# survobj 3.2.0
+
+  - Fix reversed argument order in `renewaft()`: the signature was
+  `(SURVIVAL, prevtime, aft)`, inconsistent with `renewhr()`/`nhpphr()`/`nhppaft()`,
+  causing generated renewal times to be computed with `prevtime` and `aft`
+  swapped and occasionally precede the prior event.
+
+  - Fix index overflow in `s_piecewise()` when only a single finite break is
+  supplied (e.g. `breaks = c(1, Inf)`), which produced reversed index ranges
+  and made the function fail with "Unsucess scale".
+
+  - Fix `s_gompertz()` silently generating `NaN` for a negative `shape`
+  (decreasing hazard). Draws that fall into the resulting cure fraction now
+  correctly return `Inf` instead of `NaN`. See the new "Negative shape"
+  documentation section for `s_gompertz()`.
+
+  - Fix numerical truncation to `Inf` in `s_lognormal()`'s `invCum_Hfx()` and
+  `Cum_Hfx()` for large cumulative hazards / late times, caused by probabilities
+  underflowing to exactly 0 or 1 in double precision. Both now use
+  `log.p`/`lower.tail` forms of `qlnorm()`/`plnorm()` to stay accurate.
+
+  - Rename `rsurvah()`/`ggplot_survival_ah()` to `rsurveh()`/`ggplot_survival_eh()`.
+  These generate the Extended Hazards model of Chen & Jewell (2001)
+  (`h*(t) = hr * aft * h0(aft * t)`, nesting proportional hazards and
+  accelerated failure time as special cases), not the Accelerated Hazards
+  model of Chen & Wang (2000) as the previous name implied. This is a
+  breaking rename with no deprecated alias.
+
 # survobj 3.1.1
 Fix graph after simulation to start in survival 1 at time 0 and cumulative 
 risk 0 at time 0
@@ -7,7 +35,7 @@ risk 0 at time 0
 Add logo
 
 ## survobj 3.0.0
-Addition of recurrent event simulation under homogeneous and non homogeneous
+Addition of recurrent event simulation under homogeneous and non-homogeneous
 Poisson process
 
 ## survobj 2.0.0

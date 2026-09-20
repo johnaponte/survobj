@@ -22,7 +22,7 @@ The objects of the class SURVIVAL encapsulate distributions of survival times. E
 
 -   generate random survival times under accelerated failure : `rsuvrvaft()`
 
--   generate random survival times under accelerate hazard: `rsurvah()`
+-   generate random survival times under the Extended Hazards model (combined proportional hazards and accelerated failure time): `rsurveh()`
 
 There are several functions to plot the distributions
 
@@ -36,7 +36,7 @@ There are several functions to plot the distributions
 
 -   `ggplot_survival_aft()`: to ggplot random draws from the distribution using accelerated time failure
 
--   `ggplot_survival_ah()`: to ggplot random draws from the distribution using accelerated hazard
+-   `ggplot_survival_eh()`: to ggplot random draws from the distribution using the Extended Hazards model
 
 -   `compare_survival()`: to graphically compare the functions of two SURVIVAL objects
 

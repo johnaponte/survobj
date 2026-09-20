@@ -35,6 +35,16 @@ scale = -log(1-fail)·shape/(exp(shape·t))
 The parameters should be spell correctly as partial matching is not available
 }
 
+\section{Negative shape}{
+
+
+A negative \code{shape} produces a decreasing hazard whose cumulative hazard is bounded
+above by \code{scale / abs(shape)} (following Bender, Augustin & Blettner 2005). This
+makes the distribution improper: a cure fraction of \code{exp(-scale / abs(shape))}
+of the subjects never experience the event, so their simulated survival time
+(\code{rsurv}, \code{rsurvhr}, \code{rsurvaft}, \code{rsurvah}) and \code{invCum_Hfx()} are returned as \code{Inf}.
+}
+
 \examples{
 s_gompertz(scale = 1, shape = 1.5)
 s_gompertz(surv = 0.4, t = 2, shape = 1.5)

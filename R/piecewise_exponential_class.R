@@ -5,26 +5,26 @@
 
 #' Factory of SURVIVAL objects with Piecewise Exponential distributions
 #'
-#' Creates a SURVIVAL object with an Piecewise Exponential distribution.
+#' Creates a SURVIVAL object with a Piecewise Exponential distribution.
 #'
 #' @section Parameters:
 #'
-#' To create an piecewise exponential survival object the following
+#' To create a piecewise exponential survival object the following
 #' options are available:
 #'
 #' _`breaks`_ and _`hazards`_ to specify the exponential (constant) hazard until each break, or
 #'
-#' _`surv`_, _`breaks`_ and _`segments`_ for the proportion surviving (no events) at the end of last segment or
+#' _`surv`_, _`breaks`_ and _`segments`_ for the proportion surviving (no events) at the end of the last segment, or
 #'
-#' _`fail`_, _`breaks`_ and _`segments`_ for the proportion failing (events) at the end of last segment
+#' _`fail`_, _`breaks`_ and _`segments`_ for the proportion failing (events) at the end of the last segment
 #'
 #' If _`surv`_ or _`fail`_ parameters are indicated, the _`segments`_ are scaled to hazards in order
-#' to mach the surviving or failing proportion at the end of the last segment.
+#' to match the surviving or failing proportion at the end of the last segment.
 #'
 #' Define the last break point as `Inf` to fully define the distribution, otherwise
-#' an error will be produce if function after the last break is requested
+#' an error will be produced if the function after the last break is requested
 #'
-#' The parameters should be spell correctly as partial matching is not available
+#' The parameters should be spelled correctly as partial matching is not available
 #'
 #'
 #' @param ... Parameters to define the distribution. See the Parameters for details
@@ -44,7 +44,7 @@ s_piecewise <- function(...) {
   # This function is the factory of the class
   .factory_piecewise <- function(breaks, hazards) {
     maxfinitb <- which(breaks == max(breaks[is.finite(breaks)]))
-    dtimes <- c(breaks[1],breaks[2:maxfinitb]-breaks[1:(maxfinitb-1)])
+    dtimes <- diff(c(0, breaks[1:maxfinitb]))
     chazards <- c(0,dtimes*hazards[1:maxfinitb])
     cumhazards<-c(cumsum(chazards))
     tbreaks <- c(0, breaks[1:maxfinitb])
@@ -120,7 +120,7 @@ s_piecewise <- function(...) {
           stopifnot("aft must be positive numbers > 0" = all(aft > 0))
           iCum_Hfx(-log(runif(length(aft))))/aft
         },
-        rsurvah = function(aft,hr){
+        rsurveh = function(aft,hr){
           stopifnot("aft must be numeric" = is.numeric(aft))
           stopifnot("hr must be numeric" = is.numeric(hr))
           stopifnot("aft and hr must be of the same length" = length(aft)==length(hr) )
@@ -134,20 +134,20 @@ s_piecewise <- function(...) {
   }
 
   # Definition based on lambda
-  if (length(nparam == 2) & all(c("breaks","hazards") %in% nparam)) {
+  if (length(nparam) == 2 & all(c("breaks","hazards") %in% nparam)) {
       stopifnot("breaks must be numeric" = is.numeric(params$breaks))
       stopifnot("breaks and hazards must be of same length" = length(params$breaks) == length(params$hazards))
       stopifnot("breaks must > 0" = all(params$breaks > 0))
       stopifnot("breaks must be increasing"  = all(params$breaks == cummax(params$breaks)))
       stopifnot("breaks must not be duplicated" = ! any(duplicated(params$breaks)))
-      stopifnot("hazards must be numeric" = is.numeric(params$breaks))
+      stopifnot("hazards must be numeric" = is.numeric(params$hazards))
       stopifnot("hazards must be >= 0" = all(params$hazards >= 0))
       return(.factory_piecewise(params$breaks, params$hazards))
   }
 
   # Definition based in proportion surviving and time
   if(
-    length(nparam == 3) &
+    length(nparam) == 3 &
     all(c("surv","breaks","segments") %in% nparam)) {
     stopifnot("surv must be a single number" = is_single_number(params$surv))
     stopifnot("surv must be greater than 0" = params$surv > 0)
@@ -160,8 +160,7 @@ s_piecewise <- function(...) {
     stopifnot("segments must be numeric" = is.numeric(params$segments))
     stopifnot("segments must be >= 0" = all(params$segments >= 0))
     wfin <- which(is.finite(params$breaks))
-    ntimes = length(params$breaks[wfin])
-    dtime = c(params$breaks[1],params$breaks[2:ntimes] - params$breaks[1:(ntimes-1)])
+    dtime = diff(c(0, params$breaks[wfin]))
     unscaledH = sum(params$segments[wfin]*dtime)
     scalefactor = -log(params$surv)/unscaledH
     hazards = params$segments*scalefactor
@@ -172,7 +171,7 @@ s_piecewise <- function(...) {
 
   # Definition based on proportion failing and time
   if(
-    length(nparam == 3) &
+    length(nparam) == 3 &
     all(c("fail","breaks","segments") %in% nparam)) {
     stopifnot("fail must be a single number" = is_single_number(params$fail))
     stopifnot("fail must be greater than 0" = params$fail > 0)
@@ -185,8 +184,7 @@ s_piecewise <- function(...) {
     stopifnot("segments must be numeric" = is.numeric(params$segments))
     stopifnot("segments must be >= 0" = all(params$segments >= 0))
     wfin <- which(is.finite(params$breaks))
-    ntimes = length(params$breaks[wfin])
-    dtime = c(params$breaks[1],params$breaks[2:ntimes] - params$breaks[1:(ntimes-1)])
+    dtime = diff(c(0, params$breaks[wfin]))
     unscaledH = sum(params$segments[wfin]*dtime)
     scalefactor = -log(1-params$fail)/unscaledH
     hazards = params$segments*scalefactor
