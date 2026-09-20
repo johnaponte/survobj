@@ -26,6 +26,8 @@
   accelerated failure time as special cases), not the Accelerated Hazards
   model of Chen & Wang (2000) as the previous name implied. This is a
   breaking rename with no deprecated alias.
+  
+  - Improve documentation and vignettes
 
 # survobj 3.1.1
 Fix graph after simulation to start in survival 1 at time 0 and cumulative 
