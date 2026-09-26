@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/johnaponte/survobj/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/johnaponte/survobj/blob/v3.2.0/DESCRIPTION)
 
 John A (2026). *survobj: Simulate Parametric and Semi-Parametric
 Survival Times with Object-Oriented Design*. R package version 3.2.0,
